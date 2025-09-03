@@ -1,0 +1,23 @@
+<h2>Lista de Categorias</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Nome</th>
+      <th>Descrição</th>
+      <th>Ações</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let cat of categorias">
+      <td>{{ cat.nome }}</td>
+      <td>{{ cat.descricao }}</td>
+      <td>
+        <button (click)="deletarCategoria(cat.id)">Deletar</button>
+        <button [routerLink]="['/categorias/form', cat.id]">Editar</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<button [routerLink]="['/categorias/form']">Nova Categoria</button>

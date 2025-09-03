@@ -1,0 +1,16 @@
+<h2>{{ categoria.id ? 'Editar Categoria' : 'Nova Categoria' }}</h2>
+
+<form (ngSubmit)="salvar()">
+  <div>
+    <label for="nome">Nome:</label>
+    <input id="nome" [(ngModel)]="categoria.nome" name="nome" required>
+  </div>
+
+  <div>
+    <label for="descricao">Descrição:</label>
+    <input id="descricao" [(ngModel)]="categoria.descricao" name="descricao" required>
+  </div>
+
+  <button type="submit">Salvar</button>
+  <button type="button" (click)="cancelar()">Cancelar</button>
+</form>
