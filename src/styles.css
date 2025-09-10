@@ -1,1 +1,33 @@
-/* You can add global styles to this file, and also import other style files */
+/* Garantir que html e body ocupem toda a tela */
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+/* Container principal */
+.main-container {
+  display: flex;
+  height: 100%;
+  width: 100%;
+}
+
+/* Navbar fixa à esquerda */
+.navbar {
+  width: 20%;
+  min-width: 200px; /* opcional para não ficar muito estreita */
+  background-color: #D32F2F;
+  color: white;
+  padding: 20px;
+  box-sizing: border-box;
+  height: 100%;
+}
+
+/* Conteúdo à direita */
+.content {
+  width: 80%;
+  height: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+  overflow-y: auto; /* permite rolar verticalmente */
+  overflow-x: hidden; /* remove scroll horizontal */
+}

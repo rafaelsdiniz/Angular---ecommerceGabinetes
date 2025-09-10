@@ -1,1 +1,62 @@
-<p>gabinete-list works!</p>
+<mat-form-field>
+  <mat-label>Pesquisar</mat-label>
+  <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Gabinete X" #input>
+</mat-form-field>
+
+<div class="mat-elevation-z8">
+  <table mat-table [dataSource]="dataSource" matSort>
+    <!-- ID Column -->
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+      <td mat-cell *matCellDef="let row"> {{row.id}} </td>
+    </ng-container>
+
+    <!-- Nome Exibição Column -->
+    <ng-container matColumnDef="nomeExibicao">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Nome </th>
+      <td mat-cell *matCellDef="let row"> {{row.nomeExibicao}} </td>
+    </ng-container>
+
+    <!-- Cor Column -->
+    <ng-container matColumnDef="cor">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Cor </th>
+      <td mat-cell *matCellDef="let row"> {{row.cor}} </td>
+    </ng-container>
+
+    <!-- Preço Column -->
+    <ng-container matColumnDef="preco">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Preço </th>
+      <td mat-cell *matCellDef="let row"> {{row.preco | currency:'BRL'}} </td>
+    </ng-container>
+
+    <!-- Ações Column -->
+    <ng-container matColumnDef="acoes">
+      <th mat-header-cell *matHeaderCellDef> Ações </th>
+      <td mat-cell *matCellDef="let row">
+        <div class="acoesContainer">
+          <button class="botaoEditar" (click)="editarGabinete(row.id)">Editar</button>
+          <button class="botaoExcluir" (click)="excluirGabinete(row.id)">Excluir</button>
+        </div>
+      </td>
+    </ng-container>
+
+    <!-- Header e Rows -->
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+    <!-- Row mostrada quando não há dados -->
+    <tr class="mat-row" *matNoDataRow>
+      <td class="mat-cell" colspan="5">Nenhum gabinete encontrado para "{{input.value}}"</td>
+    </tr>
+  </table>
+
+  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Selecione página de gabinetes"></mat-paginator>
+</div>
+
+      <hr>
+
+      <div class="botoes">
+        <div class="containerBotao">
+          <a class="botaoNova" href="http://localhost:4200/gabinete/form">Novo Gabinete</a>
+        </div>
+      </div>

@@ -1,0 +1,127 @@
+/* Faz html e body ocuparem toda altura */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: 'Arial', sans-serif;
+}
+
+/* Container principal do Home */
+.home-container {
+  min-height: 100vh; /* altura mínima da tela inteira */
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  gap: 30px;
+  box-sizing: border-box;
+}
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background-color: #E0E0E0;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* Título */
+.titulo {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: clamp(2rem, 5vw, 3rem);
+  background: linear-gradient(90deg, #1a1818, #feb47b);
+  -webkit-background-clip: text;
+  color: transparent;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+}
+
+/* Botões */
+.menu-buttons {
+  display: flex;
+  gap: 15px;
+}
+
+.btn {
+  padding: 10px 25px;
+  font-size: 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.btn.login {
+  background-color: #1976D2;
+  color: #fff;
+}
+
+.btn.login:hover {
+  background-color: #0D47A1;
+}
+
+.btn.cadastrar {
+  background-color: #FF6F00;
+  color: #fff;
+}
+
+.btn.cadastrar:hover {
+  background-color: #E65100;
+}
+
+/* Container dos cards */
+.cards-container1 {
+  padding-top: 100px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 100px;
+  flex-grow: 1;
+}
+
+.cards-container2 {
+  padding-top: 100px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 100px;
+  flex-grow: 1;
+}
+
+.cards-container3 {
+  padding-top: 100px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 100px;
+  flex-grow: 1;
+}
+
+.cards-container4 {
+  padding-top: 100px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 100px;
+  flex-grow: 1;
+}
+
+/* Estilo dos cards */
+mat-card {
+  width: 100%;
+  max-width: 350px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}

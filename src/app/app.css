@@ -1,0 +1,75 @@
+/* Garantir que html e body ocupem toda a tela */
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+/* Container principal */
+.main-container {
+  display: flex;
+  height: 100%;
+  width: 100%;
+}
+
+/* Navbar fixa à esquerda */
+.navbar {
+  width: 10%;           /* agora ocupa 10% da tela */
+  min-width: 150px;     /* evita ficar muito estreita */
+  background-color: #D32F2F;
+  color: white;
+  padding: 20px;
+  box-sizing: border-box;
+  height: 100%;
+}
+
+.navbar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.navbar li {
+  margin: 15px 0;
+}
+
+.navbar a {
+  color: white;
+  text-decoration: none;
+}
+
+/* Conteúdo à direita */
+.content {
+  width: 90%;           /* agora ocupa 90% da tela */
+  height: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+  overflow-y: auto;     /* permite rolar verticalmente */
+  overflow-x: hidden;   /* remove scroll horizontal */
+}
+
+/* Ajustes para tabelas dentro do content */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+td, th {
+  padding: 8px;
+  border: 1px solid #ccc;
+}
+
+/* Botões */
+button {
+  cursor: pointer;
+}
+
+.categoriasNavBar{
+  font-size: 18px;
+  text-transform: uppercase;
+  padding-bottom: 50px;
+}
+
+h2{
+  font-size: 25px;
+  padding-bottom: 30px;
+}

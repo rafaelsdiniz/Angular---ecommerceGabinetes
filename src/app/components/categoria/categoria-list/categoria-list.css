@@ -1,20 +1,109 @@
+/* Container principal com navbar à esquerda e conteúdo à direita */
+.main-container {
+  display: flex;
+  height: 100vh; /* ocupa toda altura da tela */
+}
+
+/* Conteúdo principal à direita */
+.content {
+  width: 90%;
+  padding: 20px;
+  overflow-x: auto; /* para tabelas grandes */
+}
+
+/* Tabela */
 table {
   width: 100%;
-  border-collapse: collapse;
 }
 
-th, td {
-  border: 1px solid #ccc;
-  padding: 8px;
-  text-align: left;
+td, th {
+  width: auto;
 }
 
-th {
-  background-color: #f4f4f4;
+/* Form Field */
+.mat-mdc-form-field {
+  font-size: 14px;
+  max-width: 800px;
 }
 
-button {
-  margin-right: 5px;
-  padding: 5px 10px;
+/* Botão Nova Categoria */
+.botaoNova {
+  text-decoration: none;
+  font-size: 18px;
+  width: 150px;
+  height: 70px;
+  background-color: #2fcf34; /* verde */
+  color: white;
+  border-radius: 8px;
+  display: flex;            
+  align-items: center;       
+  justify-content: center;   
+  transition: 0.3s;
+}
+
+.botaoNova:hover {
+  background-color: #27a830; /* verde mais escuro */
+}
+
+/* Botão Editar */
+.botaoEditar {
+  font-size: 16px;
+  width: 100px;
+  height: 40px;
+  background-color: #2196F3; /* azul */
+  color: white;
+  border: none;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
+  transition: 0.3s;
+}
+
+.botaoEditar:hover {
+  background-color: #1565C0; /* azul escuro */
+}
+
+/* Botão Excluir */
+.botaoExcluir {
+  font-size: 16px;
+  width: 100px;
+  height: 40px;
+  background-color: #F44336; /* vermelho */
+  color: white;
+  border: none;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.botaoExcluir:hover {
+  background-color: #D32F2F; /* vermelho escuro */
+}
+
+/* Container de botões dentro da linha */
+.acoesContainer {
+  display: flex;
+  gap: 10px;
+}
+
+/* Container do botão Nova Categoria */
+.containerBotao {
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Container geral de botões */
+
+
+/* Links */
+a {
+  color: white;
+  text-decoration: none;
 }

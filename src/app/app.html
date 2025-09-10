@@ -1,2 +1,23 @@
-<h1>{{ title() }}</h1>
-<router-outlet></router-outlet>
+<div class="main-container">
+  <!-- Navbar fixa à esquerda -->
+  <div class="navbar">
+    <h2> ECOMMERCE </h2>
+    <ul>
+      <li class="categoriasNavBar"><a routerLink="/home">Home</a></li>
+      <li class="categoriasNavBar"><a routerLink="/gabinete">Gabinetes</a></li>
+      <li class="categoriasNavBar"><a routerLink="/categorias">Categorias</a></li>
+      <li class="categoriasNavBar"><a routerLink="/cliente-juridico">Clientes Jurídicos</a></li>
+      <li class="categoriasNavBar"><a routerLink="/cliente-fisico">Clientes Físicos</a></li>
+      <li class="categoriasNavBar"><a routerLink="/estoque">Estoque</a></li>
+      <li class="categoriasNavBar"><a routerLink="/item-pedido">Itens-Pedidos</a></li>
+      <li class="categoriasNavBar"><a routerLink="/marca">Marcas</a></li>
+      <li class="categoriasNavBar"><a routerLink="/pagamento">Pagamentos</a></li>
+      <li class="categoriasNavBar"><a routerLink="/pedido">Pedidos</a></li>
+    </ul>
+  </div>
+
+  <!-- Conteúdo da página -->
+  <div class="content">
+    <router-outlet></router-outlet>
+  </div>
+</div>
