@@ -1,0 +1,104 @@
+/* Container centralizado */
+.container {
+  max-width: 600px;
+  margin: 2rem auto;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Card do formulário */
+.form-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+  overflow: hidden;
+}
+
+/* Cabeçalho do formulário */
+.form-header {
+  background-color: #0d6efd;
+  color: #fff;
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.form-header h2 {
+  margin: 0;
+  font-weight: 600;
+}
+
+/* Corpo do formulário */
+.form-body {
+  padding: 2rem;
+}
+
+/* Grupo de campos */
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+/* Input e Number */
+.form-control {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  transition: border 0.3s;
+}
+
+.form-control:focus {
+  border-color: #0d6efd;
+  outline: none;
+}
+
+/* Campos inválidos */
+.is-invalid {
+  border-color: #dc3545 !important;
+}
+
+.invalid-feedback {
+  color: #dc3545;
+  margin-top: 0.25rem;
+  font-size: 0.875rem;
+}
+
+/* Botões */
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.btn {
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  transition: 0.3s;
+}
+
+/* Botão salvar */
+.btn-save {
+  background-color: #28a745;
+  color: #fff;
+}
+
+.btn-save:hover {
+  background-color: #218838;
+}
+
+/* Botão cancelar */
+.btn-cancel {
+  background-color: #6c757d;
+  color: #fff;
+}
+
+.btn-cancel:hover {
+  background-color: #5a6268;
+}

@@ -1,1 +1,34 @@
-<p>marca-form works!</p>
+<div class="container">
+  <div class="form-card">
+    <div class="form-header">
+      <h2>{{ marca.id ? 'Editar Marca' : 'Nova Marca' }}</h2>
+    </div>
+    <div class="form-body">
+      <form (ngSubmit)="salvar()" #marcaForm="ngForm" novalidate>
+
+        <!-- Nome -->
+        <div class="form-group">
+          <label for="nome">Nome da Marca</label>
+          <input 
+            type="text" 
+            id="nome" 
+            [(ngModel)]="marca.nome" 
+            name="nome" 
+            required
+            class="form-control"
+            [ngClass]="{'is-invalid': marcaForm.submitted && !marca.nome}">
+          <div *ngIf="marcaForm.submitted && !marca.nome" class="invalid-feedback">
+            O nome é obrigatório.
+          </div>
+        </div>
+
+        <!-- Botões -->
+        <div class="form-actions">
+          <button type="submit" class="btn btn-save">Salvar</button>
+          <button type="button" class="btn btn-cancel" (click)="cancelar()">Cancelar</button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,127 +1,218 @@
-/* Faz html e body ocuparem toda altura */
-html, body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  font-family: 'Arial', sans-serif;
+/* home.component.css */
+
+/* Variáveis rápidas: definem valores reutilizáveis para largura máxima, espaçamento e borda dos cards */
+:root{
+  --max-width: 1200px;    /* largura máxima dos containers centrais */
+  --gap: 20px;            /* espaçamento padrão entre elementos */
+  --card-radius: 12px;    /* raio das bordas dos cards */
 }
 
-/* Container principal do Home */
-.home-container {
-  min-height: 100vh; /* altura mínima da tela inteira */
-  display: flex;
-  flex-direction: column;
-  padding: 20px;
-  gap: 30px;
-  box-sizing: border-box;
+/* Reset mínimo */
+:host { 
+  display: block;         /* componente ocupa toda largura disponível */
+  box-sizing: border-box; /* inclui padding e border no cálculo de largura/altura */
+  color: #222;            /* cor padrão do texto */
+}
+* { box-sizing: inherit; } /* todos os elementos herdam o box-sizing para consistência */
+
+/* Topbar (barra superior do site) */
+.topbar {
+  display:flex;                 /* organiza conteúdo em linha */
+  align-items:center;           /* alinha verticalmente ao centro */
+  justify-content:space-between;/* espaço entre esquerda e direita */
+  gap: 12px;                    /* espaçamento interno entre itens */
+  padding: 8px 16px;            /* espaço interno da topbar */
+  position: sticky;             /* fixa no topo ao rolar a página */
+  top: 0;                        /* distância do topo */
+  z-index: 30;                  /* sobreposição acima de outros elementos */
+  backdrop-filter: blur(6px);   /* efeito de desfoque do fundo */
 }
 
-/* Header */
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px;
-  background-color: #E0E0E0;
-  border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+/* Área esquerda da topbar (logo + nome) */
+.topbar .left { 
+  display:flex; 
+  align-items:center; 
+  gap:12px; 
+}
+.logo { font-size: 1.6rem; }       /* tamanho do emoji/logo */
+.brand { 
+  margin:0; 
+  font-size:1.1rem; 
+  font-weight:700; 
+  letter-spacing:0.3px; 
 }
 
-/* Título */
-.titulo {
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 700;
-  font-size: clamp(2rem, 5vw, 3rem);
-  background: linear-gradient(90deg, #1a1818, #feb47b);
-  -webkit-background-clip: text;
-  color: transparent;
-  text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+/* Área central da topbar: campo de busca */
+.search { 
+  width: min(600px, 45vw);   /* largura máxima 600px ou 45% da tela */
+  max-width: 600px;          /* garante que não ultrapasse 600px */
 }
 
-/* Botões */
-.menu-buttons {
-  display: flex;
-  gap: 15px;
+/* CTA (call-to-action) da topbar */
+.cta { margin-left: 8px; }    /* pequeno espaço à esquerda do botão */
+
+/* Hero (seção principal promocional) */
+.hero{
+  display:flex;                                /* conteúdo lado a lado */
+  gap: var(--gap);                             /* espaçamento interno */
+  align-items:center;                           /* alinha verticalmente */
+  justify-content:space-between;               /* espaço entre texto e imagem */
+  padding: 40px 16px;                          /* espaço interno */
+  background: linear-gradient(90deg, rgba(25,118,210,0.08), rgba(255,111,0,0.04)); /* fundo degradê suave */
+  border-radius: 12px;                          /* borda arredondada */
+  max-width: var(--max-width);                  /* largura máxima centralizada */
+  margin: 24px auto;                            /* centraliza horizontalmente */
+  overflow:hidden;                              /* evita que elementos extrapolem */
 }
 
-.btn {
-  padding: 10px 25px;
-  font-size: 16px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+/* Conteúdo textual do Hero */
+.hero .hero-content { 
+  flex:1; 
+  min-width: 260px; /* mínimo para não quebrar layout */
+}
+.hero h2 { 
+  margin:0 0 8px 0; 
+  font-size: clamp(1.6rem, 3.2vw, 2.2rem); /* tamanho responsivo entre 1.6 e 2.2rem */
+}
+.hero p { 
+  margin:0 0 16px 0; 
+  color:#444; 
+}
+.hero-actions { display:flex; gap:12px; } /* botões na horizontal, espaçados */
+
+/* Visual do Hero (imagem) */
+.hero-visual { 
+  width: 260px; 
+  display:flex; 
+  align-items:center; 
+  justify-content:center; 
+}
+.hero-visual img { 
+  width:100%; 
+  max-width:260px; 
+  transform: translateY(0); 
+  transition: transform .35s ease; /* animação suave */
+}
+.hero-visual img:hover { 
+  transform: translateY(-6px) rotate(-1deg); /* efeito hover animado */
 }
 
-.btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+/* Features / Vantagens do site */
+.features {
+  display:flex; 
+  gap:20px; 
+  max-width: var(--max-width); 
+  margin: 0 auto 20px; 
+  justify-content:center; 
+}
+.feature {
+  display:flex; 
+  gap:12px; 
+  align-items:center; 
+  padding:12px 18px; 
+  border-radius:10px; 
+  background: #fff; 
+  box-shadow: 0 6px 18px rgba(0,0,0,0.04); /* sombra suave */
+  min-width:220px; 
+}
+.feature mat-icon { font-size:28px; color: #1976D2; } /* ícone colorido */
+
+/* Catalog / Lista de produtos */
+.catalog { 
+  max-width: var(--max-width); 
+  margin: 10px auto 30px; 
+  padding: 0 16px; 
+}
+.catalog-header { 
+  display:flex; 
+  justify-content:space-between; 
+  align-items:center; 
+  margin-bottom: 12px; 
+}
+.catalog-header h3 { margin:0; font-size:1.2rem; }
+.catalog-meta { color:#666; font-size:0.95rem; }
+
+/* Grid responsivo de produtos */
+.grid {
+  display: grid; 
+  gap: 18px; 
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* colunas automáticas, mínimo 220px */
+  
 }
 
-.btn.login {
-  background-color: #1976D2;
-  color: #fff;
+/* Cards individuais */
+.product-card {
+  border-radius: var(--card-radius); 
+  overflow: hidden; 
+  transition: transform .22s ease, box-shadow .22s ease; /* animação ao passar mouse */
+  display:flex; 
+  flex-direction:column; 
+  justify-content:space-between; 
+}
+.product-card:hover {
+  transform: translateY(-6px); 
+  box-shadow: 0 12px 30px rgba(0,0,0,0.08); /* efeito hover */
 }
 
-.btn.login:hover {
-  background-color: #0D47A1;
+/* Imagem e badge do card */
+.card-media { 
+  position: relative; 
+  display:flex; 
+  align-items:center; 
+  justify-content:center; 
+  padding: 12px; 
+  background: linear-gradient(180deg, #fff, #fafafa); 
+}
+.card-media img { 
+  width: 100%; 
+  max-height: 160px; 
+  object-fit: contain; /* garante proporção da imagem */
+}
+.badge {
+  position:absolute; 
+  top:10px; 
+  left:10px; 
+  background: #FF6F00; 
+  color: #fff; 
+  padding: 6px 8px; 
+  border-radius: 8px; 
+  font-weight:700; 
+  font-size:0.75rem; 
 }
 
-.btn.cadastrar {
-  background-color: #FF6F00;
-  color: #fff;
+/* Conteúdo do card */
+.product-title { margin: 8px 0 2px; font-size: 1rem; }
+.product-subtitle { margin:0 0 8px; font-size:0.85rem; color:#666; }
+.product-desc { margin:0 0 12px; font-size:0.85rem; color:#555; }
+
+/* Ações do card (botões, preço) */
+.card-actions {
+  display:flex; 
+  align-items:center; 
+  justify-content:space-between; 
+  gap:12px; 
+  padding: 12px; 
+}
+.price { font-weight:800; font-size:1.05rem; color:#111; }
+.actions-right { display:flex; gap:8px; align-items:center; }
+
+/* Footer */
+.site-footer {
+  max-width: var(--max-width); 
+  margin: 30px auto; 
+  padding: 18px; 
+  display:flex; 
+  justify-content:space-between; 
+  gap:12px; 
+  align-items:center; 
+  color:#666; 
 }
 
-.btn.cadastrar:hover {
-  background-color: #E65100;
-}
-
-/* Container dos cards */
-.cards-container1 {
-  padding-top: 100px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: flex-start;
-  gap: 100px;
-  flex-grow: 1;
-}
-
-.cards-container2 {
-  padding-top: 100px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: flex-start;
-  gap: 100px;
-  flex-grow: 1;
-}
-
-.cards-container3 {
-  padding-top: 100px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: flex-start;
-  gap: 100px;
-  flex-grow: 1;
-}
-
-.cards-container4 {
-  padding-top: 100px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: flex-start;
-  gap: 100px;
-  flex-grow: 1;
-}
-
-/* Estilo dos cards */
-mat-card {
-  width: 100%;
-  max-width: 350px;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+/* Responsividade para telas menores */
+@media (max-width: 900px) {
+  .hero { flex-direction: column-reverse; text-align:center; } /* hero em coluna */
+  .hero-visual { width: 200px; }   /* imagem menor */
+  .search { width: 60vw; }         /* campo de busca responsivo */
+  .features { flex-direction: column; align-items:stretch; } /* features empilhadas */
+  .topbar { flex-wrap:wrap; gap:8px; } /* barra superior quebra linha se necessário */
 }

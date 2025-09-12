@@ -2,7 +2,7 @@
 html, body {
   height: 100%;
   margin: 0;
-  font-family: Arial, sans-serif;
+  font-family: 'Roboto', Arial, sans-serif;
 }
 
 /* Container principal */
@@ -14,62 +14,93 @@ html, body {
 
 /* Navbar fixa à esquerda */
 .navbar {
-  width: 10%;           /* agora ocupa 10% da tela */
-  min-width: 150px;     /* evita ficar muito estreita */
+  width: 220px;
   background-color: #D32F2F;
   color: white;
+  display: flex;
+  flex-direction: column;
   padding: 20px;
   box-sizing: border-box;
-  height: 100%;
 }
 
-.navbar ul {
+.navbar-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 40px;
+}
+
+.logo {
+  font-size: 24px;
+}
+
+.brand {
+  font-size: 20px;
+  font-weight: bold;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+/* Links */
+.navbar-links {
   list-style: none;
   padding: 0;
+  margin: 0;
+  flex: 1;
 }
 
-.navbar li {
-  margin: 15px 0;
+.navbar-links li {
+  margin-bottom: 20px;
 }
 
-.navbar a {
+.navbar-links a {
+  display: block;
+  padding: 10px 15px;
   color: white;
   text-decoration: none;
+  border-radius: 6px;
+  transition: background 0.2s, padding-left 0.2s;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+/* Hover e item ativo */
+.navbar-links a:hover,
+.navbar-links a.active {
+  background-color: #B71C1C;
+  padding-left: 20px;
 }
 
 /* Conteúdo à direita */
 .content {
-  width: 90%;           /* agora ocupa 90% da tela */
-  height: 100%;
+  flex: 1;
+  background: #f9f9f9;
   padding: 20px;
   box-sizing: border-box;
-  overflow-y: auto;     /* permite rolar verticalmente */
-  overflow-x: hidden;   /* remove scroll horizontal */
+  overflow-y: auto;
 }
 
 /* Ajustes para tabelas dentro do content */
 table {
   width: 100%;
   border-collapse: collapse;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
 }
 
 td, th {
-  padding: 8px;
-  border: 1px solid #ccc;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background: #f0f0f0;
+  text-align: left;
+  font-weight: 600;
 }
 
 /* Botões */
 button {
   cursor: pointer;
-}
-
-.categoriasNavBar{
-  font-size: 18px;
-  text-transform: uppercase;
-  padding-bottom: 50px;
-}
-
-h2{
-  font-size: 25px;
-  padding-bottom: 30px;
 }

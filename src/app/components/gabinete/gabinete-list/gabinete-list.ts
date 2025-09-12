@@ -69,7 +69,7 @@ export class GabineteList implements OnInit, AfterViewInit {
   }
 
   editarGabinete(id: number) {
-    this.router.navigate(['/gabinetes/form', id]);
+    this.router.navigate(['/gabinete/form', id]);
   }
 
   excluirGabinete(id: number) {

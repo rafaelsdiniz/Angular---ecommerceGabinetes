@@ -1,295 +1,107 @@
-<div class="home-container">
-  <!-- Header -->
-  <header class="header">
-    <h1 class="titulo">Ecommerce Gabinetes</h1>
-    <div class="menu-buttons">
-      <button class="btn login">Login</button>
-      <button class="btn cadastrar">Cadastre-se</button>
+<mat-toolbar class="topbar" color="primary">
+  <div class="left">
+    <span class="logo" role="img" aria-hidden="true">🖥️</span>
+    <h1 class="brand">Ecommerce Gabinetes</h1>
+  </div>
+
+  <div class="center">
+    <mat-form-field appearance="outline" class="search">
+      <mat-icon matPrefix>search</mat-icon>
+      <input matInput placeholder="Buscar por modelo, tipo ou preço" [(ngModel)]="search" aria-label="Pesquisar produtos">
+      <button mat-icon-button matSuffix *ngIf="search" (click)="search = ''" aria-label="Limpar busca">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+  </div>
+
+  <div class="right">
+    <button mat-icon-button aria-label="Favoritos"><mat-icon>favorite_border</mat-icon></button>
+    <button mat-icon-button aria-label="Carrinho"><mat-icon>shopping_cart</mat-icon></button>
+    <button mat-flat-button color="accent" class="cta">Entrar / Cadastrar</button>
+  </div>
+</mat-toolbar>
+
+<!-- Hero -->
+<section class="hero" role="region" aria-label="Promoção principal">
+  <div class="hero-content">
+    <h2>Monte o PC dos seus sonhos</h2>
+    <p>Gabinetes com design moderno, ventilação otimizada e compatibilidade com os melhores componentes.</p>
+    <div class="hero-actions">
+      <button mat-flat-button color="primary">Ver ofertas</button>
+      <button mat-stroked-button (click)="search='rgb'">Ver RGB</button>
     </div>
+  </div>
+  <div class="hero-visual" aria-hidden="true">
+    <img src="assets/gabinete1.png" alt="">
+  </div>
+</section>
+
+<!-- Features / Benefits -->
+<section class="features" aria-label="Vantagens">
+  <div class="feature">
+    <mat-icon>local_shipping</mat-icon>
+    <div>
+      <strong>Frete rápido</strong>
+      <span> Envio em 24-48h (regiões selecionadas)</span>
+    </div>
+  </div>
+  <div class="feature">
+    <mat-icon>verified</mat-icon>
+    <div>
+      <strong>Garantia autorizada</strong>
+      <span> Assistência em todo o Brasil</span>
+    </div>
+  </div>
+  <div class="feature">
+    <mat-icon>support_agent</mat-icon>
+    <div>
+      <strong>Suporte especializado</strong>
+      <span> Ajuda para escolher o gabinete ideal</span>
+    </div>
+  </div>
+</section>
+
+<!-- Product grid -->
+<section class="catalog" aria-label="Lista de produtos">
+  <header class="catalog-header">
+    <h3>Produtos populares</h3>
+    <span class="catalog-meta">{{ filtered.length }} resultados</span>
   </header>
 
-  <!-- Container dos cards -->
-  <div class="cards-container1">
-    <!-- Card 1 -->
-    <mat-card appearance="outlined">
-      <mat-card-header>
-        <div mat-card-avatar class="example-header-image"></div>
-        <mat-card-title>Gabinete Gamer</mat-card-title>
-        <mat-card-subtitle>Computador Desktop</mat-card-subtitle>
-      </mat-card-header>
-      <img mat-card-image src="assets/gabinete1.png" alt="Gabinete 1">
+  <div class="grid">
+    <mat-card *ngFor="let p of filtered" class="product-card" id="product-{{p.id}}">
+      <div class="card-media">
+        <img mat-card-image [src]="p.img" [alt]="p.title">
+        <span class="badge" *ngIf="p.badge">{{ p.badge }}</span>
+      </div>
+
       <mat-card-content>
-        <p>Gabinete Gamer compacto, design moderno, ideal para PCs de alto desempenho.</p>
+        <h4 class="product-title">{{ p.title }}</h4>
+        <p class="product-subtitle">{{ p.subtitle }}</p>
+        <p class="product-desc">{{ p.description }}</p>
       </mat-card-content>
-      <mat-card-actions>
-        <button mat-button>LIKE</button>
-        <button mat-button>SHARE</button>
+
+      <mat-card-actions class="card-actions">
+        <div class="price">{{ p.price }}</div>
+        <div class="actions-right">
+          <button mat-icon-button aria-label="Curtir" (click)="onLike(p)"><mat-icon>thumb_up_off_alt</mat-icon></button>
+          <button mat-icon-button aria-label="Compartilhar" (click)="onShare(p)"><mat-icon>share</mat-icon></button>
+          <button mat-flat-button color="primary">Comprar</button>
+        </div>
       </mat-card-actions>
     </mat-card>
-
-    <!-- Card 2: CardOverviewExample importado -->
-         <mat-card appearance="outlined">
-      <mat-card-header>
-        <div mat-card-avatar class="example-header-image"></div>
-        <mat-card-title>Gabinete Gamer</mat-card-title>
-        <mat-card-subtitle>Computador Desktop</mat-card-subtitle>
-      </mat-card-header>
-      <img mat-card-image src="assets/gabinete1.png" alt="Gabinete 1">
-      <mat-card-content>
-        <p>Gabinete Gamer compacto, design moderno, ideal para PCs de alto desempenho.</p>
-      </mat-card-content>
-      <mat-card-actions>
-        <button mat-button>LIKE</button>
-        <button mat-button>SHARE</button>
-      </mat-card-actions>
-    </mat-card>
-
-        <!-- Card 3 -->
-        <mat-card appearance="outlined">
-      <mat-card-header>
-        <div mat-card-avatar class="example-header-image"></div>
-        <mat-card-title>Gabinete Gamer</mat-card-title>
-        <mat-card-subtitle>Computador Desktop</mat-card-subtitle>
-      </mat-card-header>
-      <img mat-card-image src="assets/gabinete2.png" alt="Gabinete 1">
-      <mat-card-content>
-        <p>Gabinete Gamer compacto, design moderno, ideal para PCs de alto desempenho.</p>
-      </mat-card-content>
-      <mat-card-actions>
-        <button mat-button>LIKE</button>
-        <button mat-button>SHARE</button>
-      </mat-card-actions>
-    </mat-card>
-
-        <!-- Card 4 -->
-        <mat-card appearance="outlined">
-      <mat-card-header>
-        <div mat-card-avatar class="example-header-image"></div>
-        <mat-card-title>Gabinete Gamer</mat-card-title>
-        <mat-card-subtitle>Computador Desktop</mat-card-subtitle>
-      </mat-card-header>
-      <img mat-card-image src="assets/gabinete3.png" alt="Gabinete 1">
-      <mat-card-content>
-        <p>Gabinete Gamer compacto, design moderno, ideal para PCs de alto desempenho.</p>
-      </mat-card-content>
-      <mat-card-actions>
-        <button mat-button>LIKE</button>
-        <button mat-button>SHARE</button>
-      </mat-card-actions>
-    </mat-card>
-
   </div>
+</section>
 
-  <div class="cards-container2">
-    <!-- Card 1 -->
-    <mat-card appearance="outlined">
-      <mat-card-header>
-        <div mat-card-avatar class="example-header-image"></div>
-        <mat-card-title>Gabinete Gamer</mat-card-title>
-        <mat-card-subtitle>Computador Desktop</mat-card-subtitle>
-      </mat-card-header>
-      <img mat-card-image src="assets/gabinete1.png" alt="Gabinete 1">
-      <mat-card-content>
-        <p>Gabinete Gamer compacto, design moderno, ideal para PCs de alto desempenho.</p>
-      </mat-card-content>
-      <mat-card-actions>
-        <button mat-button>LIKE</button>
-        <button mat-button>SHARE</button>
-      </mat-card-actions>
-    </mat-card>
-
-    <!-- Card 2: CardOverviewExample importado -->
-         <mat-card appearance="outlined">
-      <mat-card-header>
-        <div mat-card-avatar class="example-header-image"></div>
-        <mat-card-title>Gabinete Gamer</mat-card-title>
-        <mat-card-subtitle>Computador Desktop</mat-card-subtitle>
-      </mat-card-header>
-      <img mat-card-image src="assets/gabinete1.png" alt="Gabinete 1">
-      <mat-card-content>
-        <p>Gabinete Gamer compacto, design moderno, ideal para PCs de alto desempenho.</p>
-      </mat-card-content>
-      <mat-card-actions>
-        <button mat-button>LIKE</button>
-        <button mat-button>SHARE</button>
-      </mat-card-actions>
-    </mat-card>
-
-        <!-- Card 3 -->
-        <mat-card appearance="outlined">
-      <mat-card-header>
-        <div mat-card-avatar class="example-header-image"></div>
-        <mat-card-title>Gabinete Gamer</mat-card-title>
-        <mat-card-subtitle>Computador Desktop</mat-card-subtitle>
-      </mat-card-header>
-      <img mat-card-image src="assets/gabinete2.png" alt="Gabinete 1">
-      <mat-card-content>
-        <p>Gabinete Gamer compacto, design moderno, ideal para PCs de alto desempenho.</p>
-      </mat-card-content>
-      <mat-card-actions>
-        <button mat-button>LIKE</button>
-        <button mat-button>SHARE</button>
-      </mat-card-actions>
-    </mat-card>
-
-        <!-- Card 4 -->
-        <mat-card appearance="outlined">
-      <mat-card-header>
-        <div mat-card-avatar class="example-header-image"></div>
-        <mat-card-title>Gabinete Gamer</mat-card-title>
-        <mat-card-subtitle>Computador Desktop</mat-card-subtitle>
-      </mat-card-header>
-      <img mat-card-image src="assets/gabinete3.png" alt="Gabinete 1">
-      <mat-card-content>
-        <p>Gabinete Gamer compacto, design moderno, ideal para PCs de alto desempenho.</p>
-      </mat-card-content>
-      <mat-card-actions>
-        <button mat-button>LIKE</button>
-        <button mat-button>SHARE</button>
-      </mat-card-actions>
-    </mat-card>
-
+<!-- Footer -->
+<footer class="site-footer" aria-label="Rodapé do site">
+  <div class="footer-left">
+    <strong>Ecommerce Gabinetes</strong>
+    <small>© {{ currentYear }} • Todos os direitos reservados</small>
   </div>
-
-  <div class="cards-container3">
-    <!-- Card 1 -->
-    <mat-card appearance="outlined">
-      <mat-card-header>
-        <div mat-card-avatar class="example-header-image"></div>
-        <mat-card-title>Gabinete Gamer</mat-card-title>
-        <mat-card-subtitle>Computador Desktop</mat-card-subtitle>
-      </mat-card-header>
-      <img mat-card-image src="assets/gabinete1.png" alt="Gabinete 1">
-      <mat-card-content>
-        <p>Gabinete Gamer compacto, design moderno, ideal para PCs de alto desempenho.</p>
-      </mat-card-content>
-      <mat-card-actions>
-        <button mat-button>LIKE</button>
-        <button mat-button>SHARE</button>
-      </mat-card-actions>
-    </mat-card>
-
-    <!-- Card 2: CardOverviewExample importado -->
-         <mat-card appearance="outlined">
-      <mat-card-header>
-        <div mat-card-avatar class="example-header-image"></div>
-        <mat-card-title>Gabinete Gamer</mat-card-title>
-        <mat-card-subtitle>Computador Desktop</mat-card-subtitle>
-      </mat-card-header>
-      <img mat-card-image src="assets/gabinete1.png" alt="Gabinete 1">
-      <mat-card-content>
-        <p>Gabinete Gamer compacto, design moderno, ideal para PCs de alto desempenho.</p>
-      </mat-card-content>
-      <mat-card-actions>
-        <button mat-button>LIKE</button>
-        <button mat-button>SHARE</button>
-      </mat-card-actions>
-    </mat-card>
-
-        <!-- Card 3 -->
-        <mat-card appearance="outlined">
-      <mat-card-header>
-        <div mat-card-avatar class="example-header-image"></div>
-        <mat-card-title>Gabinete Gamer</mat-card-title>
-        <mat-card-subtitle>Computador Desktop</mat-card-subtitle>
-      </mat-card-header>
-      <img mat-card-image src="assets/gabinete2.png" alt="Gabinete 1">
-      <mat-card-content>
-        <p>Gabinete Gamer compacto, design moderno, ideal para PCs de alto desempenho.</p>
-      </mat-card-content>
-      <mat-card-actions>
-        <button mat-button>LIKE</button>
-        <button mat-button>SHARE</button>
-      </mat-card-actions>
-    </mat-card>
-
-        <!-- Card 4 -->
-        <mat-card appearance="outlined">
-      <mat-card-header>
-        <div mat-card-avatar class="example-header-image"></div>
-        <mat-card-title>Gabinete Gamer</mat-card-title>
-        <mat-card-subtitle>Computador Desktop</mat-card-subtitle>
-      </mat-card-header>
-      <img mat-card-image src="assets/gabinete3.png" alt="Gabinete 1">
-      <mat-card-content>
-        <p>Gabinete Gamer compacto, design moderno, ideal para PCs de alto desempenho.</p>
-      </mat-card-content>
-      <mat-card-actions>
-        <button mat-button>LIKE</button>
-        <button mat-button>SHARE</button>
-      </mat-card-actions>
-    </mat-card>
-
+  <div class="footer-right">
+    <a class="footer-link">Sobre</a>
+    <a class="footer-link">Ajuda</a>
+    <a class="footer-link">Contato</a>
   </div>
-
-  <div class="cards-container4">
-    <!-- Card 1 -->
-    <mat-card appearance="outlined">
-      <mat-card-header>
-        <div mat-card-avatar class="example-header-image"></div>
-        <mat-card-title>Gabinete Gamer</mat-card-title>
-        <mat-card-subtitle>Computador Desktop</mat-card-subtitle>
-      </mat-card-header>
-      <img mat-card-image src="assets/gabinete1.png" alt="Gabinete 1">
-      <mat-card-content>
-        <p>Gabinete Gamer compacto, design moderno, ideal para PCs de alto desempenho.</p>
-      </mat-card-content>
-      <mat-card-actions>
-        <button mat-button>LIKE</button>
-        <button mat-button>SHARE</button>
-      </mat-card-actions>
-    </mat-card>
-
-    <!-- Card 2: CardOverviewExample importado -->
-         <mat-card appearance="outlined">
-      <mat-card-header>
-        <div mat-card-avatar class="example-header-image"></div>
-        <mat-card-title>Gabinete Gamer</mat-card-title>
-        <mat-card-subtitle>Computador Desktop</mat-card-subtitle>
-      </mat-card-header>
-      <img mat-card-image src="assets/gabinete1.png" alt="Gabinete 1">
-      <mat-card-content>
-        <p>Gabinete Gamer compacto, design moderno, ideal para PCs de alto desempenho.</p>
-      </mat-card-content>
-      <mat-card-actions>
-        <button mat-button>LIKE</button>
-        <button mat-button>SHARE</button>
-      </mat-card-actions>
-    </mat-card>
-
-        <!-- Card 3 -->
-        <mat-card appearance="outlined">
-      <mat-card-header>
-        <div mat-card-avatar class="example-header-image"></div>
-        <mat-card-title>Gabinete Gamer</mat-card-title>
-        <mat-card-subtitle>Computador Desktop</mat-card-subtitle>
-      </mat-card-header>
-      <img mat-card-image src="assets/gabinete2.png" alt="Gabinete 1">
-      <mat-card-content>
-        <p>Gabinete Gamer compacto, design moderno, ideal para PCs de alto desempenho.</p>
-      </mat-card-content>
-      <mat-card-actions>
-        <button mat-button>LIKE</button>
-        <button mat-button>SHARE</button>
-      </mat-card-actions>
-    </mat-card>
-
-        <!-- Card 4 -->
-        <mat-card appearance="outlined">
-      <mat-card-header>
-        <div mat-card-avatar class="example-header-image"></div>
-        <mat-card-title>Gabinete Gamer</mat-card-title>
-        <mat-card-subtitle>Computador Desktop</mat-card-subtitle>
-      </mat-card-header>
-      <img mat-card-image src="assets/gabinete3.png" alt="Gabinete 1">
-      <mat-card-content>
-        <p>Gabinete Gamer compacto, design moderno, ideal para PCs de alto desempenho.</p>
-      </mat-card-content>
-      <mat-card-actions>
-        <button mat-button>LIKE</button>
-        <button mat-button>SHARE</button>
-      </mat-card-actions>
-    </mat-card>
-
-  </div>
-</div>
+</footer>
