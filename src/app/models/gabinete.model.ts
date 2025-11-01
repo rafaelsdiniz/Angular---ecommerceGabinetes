@@ -1,6 +1,7 @@
 export interface Gabinete{
     id?: number;
     nomeExibicao: string;
+    marca: string;
     preco: number;
     cor: string;
     formato?: string;
@@ -12,4 +13,5 @@ export interface Gabinete{
     qtdRgb?: number;
     usb?: number;
     usbc?: number;
+    descricao?: string;
 }

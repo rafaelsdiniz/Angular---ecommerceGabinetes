@@ -1,0 +1,153 @@
+<div class="page-container">
+  <!-- Header Section -->
+  <div class="page-header">
+    <h1 class="page-title">Gerenciamento de Pedidos</h1>
+    <div class="search-container">
+      <mat-form-field appearance="outline" class="search-field">
+        <mat-icon matPrefix>search</mat-icon>
+        <input
+          matInput
+          (keyup)="applyFilter($event)"
+          placeholder="Buscar por cliente, número do pedido ou status..."
+        />
+      </mat-form-field>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="carregando" class="loading-container">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p class="loading-text">Carregando pedidos...</p>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="!carregando && pedidosFiltrados.length === 0" class="empty-state">
+    <mat-icon class="empty-icon">inbox</mat-icon>
+    <h2 class="empty-title">Nenhum pedido encontrado</h2>
+    <p class="empty-description">Não há pedidos cadastrados no momento.</p>
+  </div>
+
+  <!-- Pedidos Grid -->
+  <div *ngIf="!carregando && pedidosFiltrados.length > 0" class="pedidos-grid">
+    <mat-card
+      *ngFor="let pedido of pedidosFiltrados"
+      class="pedido-card"
+      [class.card-expanded]="isPedidoExpandido(pedido.id!)"
+    >
+      <!-- Card Header - Clickable -->
+      <div class="card-header" (click)="togglePedido(pedido.id!)">
+        <div class="header-content">
+          <div class="pedido-number">
+            <mat-icon class="pedido-icon">receipt_long</mat-icon>
+            <span class="number-text">Pedido #{{ pedido.id }}</span>
+          </div>
+          
+          <mat-chip [ngClass]="getStatusClass(pedido.statusPedido)" class="status-chip">
+            {{ getStatusLabel(pedido.statusPedido) }}
+          </mat-chip>
+        </div>
+
+        <div class="header-info">
+          <div class="info-group">
+            <mat-icon class="info-icon">person</mat-icon>
+            <span class="info-text">{{ pedido.cliente?.nome || 'Cliente não informado' }}</span>
+          </div>
+          <div class="info-group">
+            <mat-icon class="info-icon">event</mat-icon>
+            <span class="info-text">{{ formatarData(pedido.dataPedido) }}</span>
+          </div>
+        </div>
+
+        <div class="valor-total-container">
+          <span class="valor-label">Valor Total</span>
+          <span class="valor-total">{{ formatarValor(pedido.valorTotal) }}</span>
+        </div>
+
+        <div class="expand-toggle">
+          <mat-icon>{{ isPedidoExpandido(pedido.id!) ? 'expand_less' : 'expand_more' }}</mat-icon>
+        </div>
+      </div>
+
+      <!-- Expanded Content -->
+      <div *ngIf="isPedidoExpandido(pedido.id!)" class="card-body" (click)="$event.stopPropagation()">
+        <mat-divider></mat-divider>
+
+        <!-- Itens do Pedido -->
+        <div class="details-section">
+          <div class="section-header">
+            <mat-icon class="section-icon">shopping_cart</mat-icon>
+            <h3 class="section-title">Itens do Pedido</h3>
+          </div>
+
+          <div class="itens-container">
+            <div *ngFor="let item of pedido.itens; let last = last" class="item-card">
+              <div class="item-main">
+                <div class="item-details">
+                  <span class="item-name">{{ item.gabinete?.nomeExibicao || 'Produto' }}</span>
+                  <span class="item-qty">Quantidade: {{ item.quantidade }}</span>
+                </div>
+                <div class="item-prices">
+                  <span class="item-unit-price">{{ formatarValor(item.precoUnitario) }} un.</span>
+                  <span class="item-total-price">{{ formatarValor(item.quantidade * item.precoUnitario) }}</span>
+                </div>
+              </div>
+              <mat-divider *ngIf="!last"></mat-divider>
+            </div>
+          </div>
+        </div>
+
+        <mat-divider class="section-divider"></mat-divider>
+
+        <!-- Endereço de Entrega -->
+        <div class="details-section">
+          <div class="section-header">
+            <mat-icon class="section-icon">location_on</mat-icon>
+            <h3 class="section-title">Endereço de Entrega</h3>
+          </div>
+
+          <div class="endereco-card" *ngIf="pedido.endereco">
+            <!-- Adicionando o campo numero que estava faltando e reorganizando a exibição -->
+            <div class="endereco-row" *ngIf="pedido.endereco?.complemento && pedido.endereco?.numero">
+              {{ pedido.endereco?.complemento }}, {{ pedido.endereco?.numero }}
+            </div>
+            <div class="endereco-row" *ngIf="pedido.endereco?.bairro">
+              {{ pedido.endereco?.bairro }}
+            </div>
+            <div class="endereco-row" *ngIf="pedido.endereco?.cidade && pedido.endereco?.estado">
+              {{ pedido.endereco?.cidade }} - {{ pedido.endereco?.estado }}
+            </div>
+            <div class="endereco-row" *ngIf="pedido.endereco?.cep">
+              <strong>CEP:</strong> {{ pedido.endereco?.cep }}
+            </div>
+          </div>
+        </div>
+
+        <mat-divider class="section-divider"></mat-divider>
+
+        <!-- Ações -->
+        <div class="actions-container">
+          <button
+            mat-stroked-button
+            color="warn"
+            class="action-button cancel-button"
+            (click)="cancelarPedido(pedido.id!)"
+            *ngIf="pedido.statusPedido !== 'CANCELADO' && pedido.statusPedido !== 'ENTREGUE'"
+          >
+            <mat-icon>cancel</mat-icon>
+            Cancelar Pedido
+          </button>
+
+          <button
+            mat-flat-button
+            class="action-button primary-button"
+            (click)="finalizarPedido(pedido.id!)"
+            *ngIf="pedido.statusPedido === 'ENVIADO'"
+          >
+            <mat-icon>check_circle</mat-icon>
+            Confirmar Entrega
+          </button>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+</div>

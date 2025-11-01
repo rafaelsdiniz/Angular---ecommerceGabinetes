@@ -3,7 +3,7 @@ import { StatusPagamento } from "./enums/statusPagamento";
 import { Pedido } from "./pedido.model";
 
 export interface Pagamento{
-    id: number;
+    id?: number;
     pedido: Pedido;
     formaPagamento: FormaPagamento;
     statusPagamento: StatusPagamento;

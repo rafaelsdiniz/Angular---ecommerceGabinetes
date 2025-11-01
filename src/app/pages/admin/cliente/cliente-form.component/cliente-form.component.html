@@ -1,0 +1,92 @@
+<div class="page-container">
+  <mat-card>
+    <div class="header">
+      <h2>{{ isEdicao ? "Editar Cliente" : "Novo Cliente" }}</h2>
+    </div>
+
+    <form (ngSubmit)="salvar()">
+      <div class="form-section">
+        <h3>Dados Pessoais</h3>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Nome</mat-label>
+          <input matInput [(ngModel)]="cliente.nome" name="nome" required />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Email</mat-label>
+          <input matInput [(ngModel)]="cliente.email" name="email" required type="email" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Telefone</mat-label>
+          <input matInput [(ngModel)]="cliente.telefone" name="telefone" required />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>CPF</mat-label>
+          <input matInput [(ngModel)]="cliente.cpf" name="cpf" required />
+        </mat-form-field>
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <div class="form-section">
+        <div class="sub-header">
+          <h3>Endereços</h3>
+          <button mat-icon-button color="primary" type="button" (click)="adicionarEndereco()">
+            <mat-icon>add_circle</mat-icon>
+          </button>
+        </div>
+
+        <div *ngFor="let endereco of cliente.endereco; let i = index" class="endereco-card">
+          <div class="endereco-title">
+            <h4>Endereço {{ i + 1 }}</h4>
+            <button mat-icon-button color="warn" type="button" (click)="removerEndereco(i)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+
+          <div class="endereco-fields">
+            <mat-form-field appearance="outline">
+              <mat-label>Estado</mat-label>
+              <input matInput [(ngModel)]="endereco.estado" [name]="'estado-' + i" />
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Cidade</mat-label>
+              <input matInput [(ngModel)]="endereco.cidade" [name]="'cidade-' + i" />
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Bairro</mat-label>
+              <input matInput [(ngModel)]="endereco.bairro" [name]="'bairro-' + i" />
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>CEP</mat-label>
+              <input matInput [(ngModel)]="endereco.cep" [name]="'cep-' + i" />
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Número</mat-label>
+              <input matInput [(ngModel)]="endereco.numero" [name]="'numero-' + i" />
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Complemento</mat-label>
+              <input matInput [(ngModel)]="endereco.complemento" [name]="'complemento-' + i" />
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div *ngIf="!cliente.endereco || cliente.endereco.length === 0" class="no-endereco">
+          Nenhum endereço adicionado
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button mat-raised-button color="primary" type="submit">
+          <mat-icon>save</mat-icon>
+          Salvar
+        </button>
+        <button mat-stroked-button type="button" (click)="cancelar()">Cancelar</button>
+      </div>
+    </form>
+  </mat-card>
+</div>

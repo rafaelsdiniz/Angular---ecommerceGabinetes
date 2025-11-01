@@ -1,6 +1,6 @@
-export enum StatusPedido{
-    PROCESSANDO,
-    ENVIADO,
-    ENTREGUE,
-    CANCELADO
+export enum StatusPedido {
+  PROCESSANDO = "PROCESSANDO",
+  ENVIADO = "ENVIADO",
+  ENTREGUE = "ENTREGUE",
+  CANCELADO = "CANCELADO",
 }

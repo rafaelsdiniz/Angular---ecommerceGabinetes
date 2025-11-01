@@ -4,7 +4,7 @@ import { StatusPedido } from "./enums/statusPedido";
 import { ItemPedido } from "./item-pedido.model";
 
 export interface Pedido{
-    id: number;
+    id?: number;
     cliente: Cliente;
     dataPedido: Date;
     itens: ItemPedido[];

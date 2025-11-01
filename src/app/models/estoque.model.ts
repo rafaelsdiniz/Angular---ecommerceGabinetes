@@ -1,7 +1,7 @@
 import { Gabinete } from "./gabinete.model";
 
 export interface Estoque{
-    id: number;
+    id?: number;
     gabinete: Gabinete;
     quantidadeDisponivel: number;
 }

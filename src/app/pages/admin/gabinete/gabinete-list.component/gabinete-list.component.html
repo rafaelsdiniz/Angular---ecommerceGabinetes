@@ -1,0 +1,111 @@
+<div class="page-container">
+  <!-- Removed large header, simplified to just action button -->
+  <div class="toolbar">
+    <button mat-fab extended class="btn-add" (click)="novoGabinete()">
+      <mat-icon>add</mat-icon>
+      Novo Gabinete
+    </button>
+  </div>
+
+  <div class="content-card">
+    <!-- Search bar -->
+    <div class="search-bar">
+      <mat-form-field appearance="outline" class="search-input">
+        <mat-icon matPrefix>search</mat-icon>
+        <input matInput (keyup)="applyFilter($event)" placeholder="Buscar gabinetes..." #input>
+      </mat-form-field>
+    </div>
+
+    <!-- Loading state -->
+    <div *ngIf="carregando" class="loading-state">
+      <mat-spinner diameter="48"></mat-spinner>
+    </div>
+
+    <!-- Table -->
+    <div *ngIf="!carregando" class="table-wrapper">
+      <table mat-table [dataSource]="dataSource" matSort class="data-table">
+        
+        <!-- ID Column -->
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+          <td mat-cell *matCellDef="let row"> 
+            <span class="id-chip">{{row.id}}</span>
+          </td>
+        </ng-container>
+
+        <!-- Nome Exibição Column -->
+        <ng-container matColumnDef="nomeExibicao">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Nome </th>
+          <td mat-cell *matCellDef="let row"> 
+            <span class="product-name">{{row.nomeExibicao}}</span>
+          </td>
+        </ng-container>
+
+        <!-- Preço Column -->
+        <ng-container matColumnDef="preco">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Preço </th>
+          <td mat-cell *matCellDef="let row"> 
+            <span class="price">{{formatarPreco(row.preco)}}</span>
+          </td>
+        </ng-container>
+
+        <!-- Cor Column -->
+        <ng-container matColumnDef="cor">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Cor </th>
+          <td mat-cell *matCellDef="let row"> 
+            <span class="color-badge">{{row.cor}}</span>
+          </td>
+        </ng-container>
+
+        <!-- Formato Column -->
+        <ng-container matColumnDef="formato">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Formato </th>
+          <td mat-cell *matCellDef="let row"> 
+            <span class="format-text">{{row.formato || '-'}}</span>
+          </td>
+        </ng-container>
+
+        <!-- Ações Column -->
+        <ng-container matColumnDef="acoes">
+          <th mat-header-cell *matHeaderCellDef> Ações </th>
+          <td mat-cell *matCellDef="let row">
+            <div class="actions">
+              <button 
+                mat-icon-button 
+                (click)="editarGabinete(row.id)"
+                matTooltip="Editar"
+                class="action-btn edit-btn">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button 
+                mat-icon-button 
+                (click)="excluirGabinete(row.id)"
+                matTooltip="Excluir"
+                class="action-btn delete-btn">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="data-row"></tr>
+
+        <!-- No data row -->
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell" colspan="6">
+            <div class="empty-state">
+              <mat-icon>inbox</mat-icon>
+              <p>Nenhum gabinete encontrado</p>
+            </div>
+          </td>
+        </tr>
+      </table>
+
+      <mat-paginator 
+        [pageSizeOptions]="[5, 10, 25, 50]" 
+        showFirstLastButtons>
+      </mat-paginator>
+    </div>
+  </div>
+</div>

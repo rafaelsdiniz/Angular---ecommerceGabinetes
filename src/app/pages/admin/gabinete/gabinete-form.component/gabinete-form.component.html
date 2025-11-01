@@ -1,0 +1,260 @@
+<div class="page-container">
+  <div class="form-container">
+    <!-- Simplified header without large title -->
+    <div class="form-header">
+      <button mat-icon-button class="back-btn" (click)="cancelar()">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <h2 class="form-title">{{ isEdicao ? 'Editar Gabinete' : 'Novo Gabinete' }}</h2>
+    </div>
+
+    <!-- Loading State -->
+    <div *ngIf="carregando" class="loading-state">
+      <mat-spinner diameter="48"></mat-spinner>
+    </div>
+
+    <!-- Form -->
+    <div *ngIf="!carregando" class="form-card">
+      <form (ngSubmit)="salvar()" #gabineteForm="ngForm" novalidate>
+        
+        <!-- Informações Básicas -->
+        <div class="form-section">
+          <h3 class="section-title">Informações Básicas</h3>
+          
+          <!-- Nome Exibição -->
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Nome de Exibição</mat-label>
+            <input 
+              matInput 
+              type="text" 
+              [(ngModel)]="gabinete.nomeExibicao" 
+              name="nomeExibicao" 
+              required
+              placeholder="Ex: Gabinete Gamer RGB">
+            <mat-icon matPrefix>computer</mat-icon>
+            <mat-error *ngIf="gabineteForm.submitted && !gabinete.nomeExibicao">
+              Campo obrigatório
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Preço -->
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Preço</mat-label>
+            <input 
+              matInput 
+              type="number" 
+              [(ngModel)]="gabinete.preco" 
+              name="preco" 
+              required
+              min="0"
+              step="0.01"
+              placeholder="0.00">
+            <mat-icon matPrefix>attach_money</mat-icon>
+            <mat-error *ngIf="gabineteForm.submitted && !gabinete.preco">
+              Campo obrigatório
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Cor -->
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Cor</mat-label>
+            <input 
+              matInput 
+              type="text" 
+              [(ngModel)]="gabinete.cor" 
+              name="cor" 
+              required
+              placeholder="Ex: Preto, Branco, RGB">
+            <mat-icon matPrefix>palette</mat-icon>
+            <mat-error *ngIf="gabineteForm.submitted && !gabinete.cor">
+              Campo obrigatório
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Formato -->
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Formato</mat-label>
+            <input 
+              matInput 
+              type="text" 
+              [(ngModel)]="gabinete.formato" 
+              name="formato"
+              placeholder="Ex: ATX, Mid Tower, Full Tower">
+            <mat-icon matPrefix>view_in_ar</mat-icon>
+          </mat-form-field>
+        </div>
+
+        <!-- Dimensões e Peso -->
+        <div class="form-section">
+          <h3 class="section-title">Dimensões e Peso</h3>
+          
+          <div class="form-row">
+            <!-- Altura -->
+            <mat-form-field appearance="outline" class="form-field half-width">
+              <mat-label>Altura (mm)</mat-label>
+              <input 
+                matInput 
+                type="number" 
+                [(ngModel)]="gabinete.altura" 
+                name="altura"
+                min="0"
+                placeholder="0">
+              <mat-icon matPrefix>height</mat-icon>
+            </mat-form-field>
+
+            <!-- Largura -->
+            <mat-form-field appearance="outline" class="form-field half-width">
+              <mat-label>Largura (mm)</mat-label>
+              <input 
+                matInput 
+                type="number" 
+                [(ngModel)]="gabinete.largura" 
+                name="largura"
+                min="0"
+                placeholder="0">
+              <mat-icon matPrefix>straighten</mat-icon>
+            </mat-form-field>
+          </div>
+
+          <!-- Peso -->
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Peso (kg)</mat-label>
+            <input 
+              matInput 
+              type="number" 
+              [(ngModel)]="gabinete.peso" 
+              name="peso"
+              min="0"
+              step="0.1"
+              placeholder="0.0">
+            <mat-icon matPrefix>scale</mat-icon>
+          </mat-form-field>
+        </div>
+
+        <!-- Compatibilidade -->
+        <div class="form-section">
+          <h3 class="section-title">Compatibilidade</h3>
+          
+          <div class="form-row">
+            <!-- Tamanho Máximo GPU -->
+            <mat-form-field appearance="outline" class="form-field half-width">
+              <mat-label>Tamanho Máx. GPU (mm)</mat-label>
+              <input 
+                matInput 
+                type="number" 
+                [(ngModel)]="gabinete.tamanhoMaxGpu" 
+                name="tamanhoMaxGpu"
+                min="0"
+                placeholder="0">
+              <mat-icon matPrefix>memory</mat-icon>
+            </mat-form-field>
+
+            <!-- Altura Máxima Cooler -->
+            <mat-form-field appearance="outline" class="form-field half-width">
+              <mat-label>Altura Máx. Cooler (mm)</mat-label>
+              <input 
+                matInput 
+                type="number" 
+                [(ngModel)]="gabinete.alturaMaxCooler" 
+                name="alturaMaxCooler"
+                min="0"
+                placeholder="0">
+              <mat-icon matPrefix>ac_unit</mat-icon>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <!-- Conectividade -->
+        <div class="form-section">
+          <h3 class="section-title">Conectividade e Recursos</h3>
+          
+          <div class="form-row">
+            <!-- Quantidade RGB -->
+            <mat-form-field appearance="outline" class="form-field third-width">
+              <mat-label>Qtd. RGB</mat-label>
+              <input 
+                matInput 
+                type="number" 
+                [(ngModel)]="gabinete.qtdRgb" 
+                name="qtdRgb"
+                min="0"
+                placeholder="0">
+              <mat-icon matPrefix>lightbulb</mat-icon>
+            </mat-form-field>
+
+            <!-- USB -->
+            <mat-form-field appearance="outline" class="form-field third-width">
+              <mat-label>Portas USB</mat-label>
+              <input 
+                matInput 
+                type="number" 
+                [(ngModel)]="gabinete.usb" 
+                name="usb"
+                min="0"
+                placeholder="0">
+              <mat-icon matPrefix>usb</mat-icon>
+            </mat-form-field>
+
+            <!-- USB-C -->
+            <mat-form-field appearance="outline" class="form-field third-width">
+              <mat-label>Portas USB-C</mat-label>
+              <input 
+                matInput 
+                type="number" 
+                [(ngModel)]="gabinete.usbc" 
+                name="usbc"
+                min="0"
+                placeholder="0">
+              <mat-icon matPrefix>cable</mat-icon>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <!-- Descrição -->
+        <div class="form-section">
+          <h3 class="section-title">Descrição</h3>
+          
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Descrição</mat-label>
+            <textarea 
+              matInput 
+              [(ngModel)]="gabinete.descricao" 
+              name="descricao" 
+              rows="4"
+              placeholder="Descreva as características do gabinete...">
+            </textarea>
+            <mat-icon matPrefix>notes</mat-icon>
+          </mat-form-field>
+        </div>
+
+        <!-- Error message -->
+        <div *ngIf="erro" class="error-alert">
+          <mat-icon>error_outline</mat-icon>
+          <span>{{ erro }}</span>
+        </div>
+
+        <!-- Actions -->
+        <div class="form-actions">
+          <button 
+            mat-stroked-button 
+            type="button" 
+            class="cancel-btn" 
+            (click)="cancelar()"
+            [disabled]="salvando">
+            Cancelar
+          </button>
+          <button 
+            mat-flat-button 
+            type="submit" 
+            class="save-btn"
+            [disabled]="salvando">
+            <mat-spinner *ngIf="salvando" diameter="20" class="btn-spinner"></mat-spinner>
+            <span *ngIf="!salvando">{{ isEdicao ? 'Salvar' : 'Criar' }}</span>
+            <span *ngIf="salvando">Salvando...</span>
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,5 +1,10 @@
+import { Endereco } from "./endereco.model";
+
 export interface Cliente{
-    id: number;
+    id?: number;
+    nome: string;
     email: string;
     telefone: string;
+    cpf: string;
+    endereco?: Endereco[];
 }

@@ -1,5 +1,5 @@
 export enum StatusPagamento{
-    APROVADO,
-    RECUSADO,
-    PENDENTE
+    APROVADO = 'APROVADO',
+    RECUSADO = 'RECUSADO',
+    PENDENTE = 'PENDENTE'
 }

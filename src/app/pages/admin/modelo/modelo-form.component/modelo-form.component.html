@@ -1,0 +1,86 @@
+<div class="page-container">
+  <div class="form-container">
+    <!-- Header -->
+    <div class="form-header">
+      <button mat-icon-button class="back-btn" (click)="cancelar()">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <h2 class="form-title">{{ isEdicao ? 'Editar Modelo' : 'Novo Modelo' }}</h2>
+    </div>
+
+    <!-- Loading State -->
+    <div *ngIf="carregando" class="loading-state">
+      <mat-spinner diameter="48"></mat-spinner>
+    </div>
+
+    <!-- Form -->
+    <div *ngIf="!carregando" class="form-card">
+      <form (ngSubmit)="salvar()" #modeloForm="ngForm" novalidate>
+        
+        <!-- Nome Modelo -->
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Nome do Modelo</mat-label>
+          <input 
+            matInput 
+            type="text" 
+            [(ngModel)]="modelo.nomeModelo" 
+            name="nomeModelo" 
+            required
+            placeholder="Ex: RTX 4090">
+          <mat-icon matPrefix>devices</mat-icon>
+          <mat-error *ngIf="modeloForm.submitted && !modelo.nomeModelo">
+            Campo obrigatório
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Marca -->
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Marca</mat-label>
+          <mat-select 
+            [(ngModel)]="modelo.marca" 
+            name="marca" 
+            required>
+            <mat-select-trigger>
+              {{ modelo.marca.nome}}
+            </mat-select-trigger>
+            <mat-option *ngFor="let marca of marcas" [value]="marca">
+              {{ marca.nome }}
+            </mat-option>
+          </mat-select>
+          <mat-icon matPrefix>branding_watermark</mat-icon>
+          <mat-error *ngIf="modeloForm.submitted && !modelo.marca">
+            Campo obrigatório
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Error message -->
+        <div *ngIf="erro" class="error-alert">
+          <mat-icon>error_outline</mat-icon>
+          <span>{{ erro }}</span>
+        </div>
+
+        <!-- Actions -->
+        <div class="form-actions">
+          <button 
+            mat-stroked-button 
+            type="button" 
+            class="cancel-btn" 
+            (click)="cancelar()"
+            [disabled]="salvando">
+            Cancelar
+          </button>
+          <button 
+            mat-flat-button 
+            type="submit" 
+            class="save-btn"
+            [disabled]="salvando">
+            <mat-spinner *ngIf="salvando" diameter="20" class="btn-spinner"></mat-spinner>
+            <span *ngIf="!salvando">{{ isEdicao ? 'Salvar' : 'Criar' }}</span>
+            <span *ngIf="salvando">Salvando...</span>
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>

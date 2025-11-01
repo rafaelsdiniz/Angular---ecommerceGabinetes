@@ -4,5 +4,5 @@ export interface Endereco{
     bairro: string;
     cep: string;
     numero: string;
-    logradouro: string;
+    complemento?: string;
 }

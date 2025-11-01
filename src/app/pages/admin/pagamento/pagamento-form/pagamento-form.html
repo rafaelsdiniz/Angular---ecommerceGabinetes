@@ -1,0 +1,92 @@
+<div class="form-container">
+  <div class="form-header">
+    <h1>{{ pagamentoId ? 'Editar' : 'Novo' }} Pagamento</h1>
+  </div>
+
+  <div class="form-content" *ngIf="!loading">
+    <form [formGroup]="form" (ngSubmit)="salvar()">
+      <div class="form-group">
+        <label for="pedido">Pedido *</label>
+        <select id="pedido" formControlName="pedido" class="form-control">
+          <option value="">Selecione um pedido</option>
+          <option *ngFor="let pedido of pedidos" [value]="pedido.id">
+            Pedido #{{ pedido.id }}
+          </option>
+        </select>
+        <span class="error" *ngIf="form.get('pedido')?.touched && form.get('pedido')?.invalid">
+          Pedido é obrigatório
+        </span>
+      </div>
+
+      <div class="form-group">
+        <label for="formaPagamento">Forma de Pagamento *</label>
+        <select id="formaPagamento" formControlName="formaPagamento" class="form-control">
+          <option value="">Selecione uma forma</option>
+          <option *ngFor="let forma of formasPagamento" [value]="forma">
+            {{ forma }}
+          </option>
+        </select>
+        <span class="error" *ngIf="form.get('formaPagamento')?.touched && form.get('formaPagamento')?.invalid">
+          Forma de pagamento é obrigatória
+        </span>
+      </div>
+
+      <div class="form-group">
+        <label for="statusPagamento">Status *</label>
+        <select id="statusPagamento" formControlName="statusPagamento" class="form-control">
+          <option value="">Selecione um status</option>
+          <option *ngFor="let status of statusPagamentos" [value]="status">
+            {{ status }}
+          </option>
+        </select>
+        <span class="error" *ngIf="form.get('statusPagamento')?.touched && form.get('statusPagamento')?.invalid">
+          Status é obrigatório
+        </span>
+      </div>
+
+      <div class="form-group">
+        <label for="valor">Valor (R$) *</label>
+        <input
+          id="valor"
+          type="number"
+          formControlName="valor"
+          class="form-control"
+          step="0.01"
+          min="0"
+          placeholder="0,00"
+        />
+        <span class="error" *ngIf="form.get('valor')?.touched && form.get('valor')?.invalid">
+          Valor válido é obrigatório
+        </span>
+      </div>
+
+      <div class="form-group">
+        <label for="data">Data *</label>
+        <input
+          id="data"
+          type="date"
+          formControlName="data"
+          class="form-control"
+        />
+        <span class="error" *ngIf="form.get('data')?.touched && form.get('data')?.invalid">
+          Data é obrigatória
+        </span>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary" [disabled]="salvando">
+          <span *ngIf="!salvando">{{ pagamentoId ? 'Atualizar' : 'Criar' }} Pagamento</span>
+          <span *ngIf="salvando">Salvando...</span>
+        </button>
+        <button type="button" class="btn btn-secondary" (click)="cancelar()">
+          Cancelar
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <div class="loading" *ngIf="loading">
+    <div class="spinner"></div>
+    <p>Carregando...</p>
+  </div>
+</div>

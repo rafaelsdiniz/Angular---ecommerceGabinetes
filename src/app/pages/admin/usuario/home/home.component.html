@@ -1,0 +1,323 @@
+<header class="kabum-header">
+  <div class="top-banner">
+    <span class="banner-text">⚡ Oferta Relâmpago em Gabinetes</span>
+    <button class="banner-btn">APROVEITAR</button>
+  </div>
+
+  <div class="main-header">
+    <div class="header-container">
+      <div class="logo-section">
+        <span class="logo-icon"></span>
+        <h1 class="brand-name">RD GABINETES</h1>
+      </div>
+
+      <div class="search-section">
+        <mat-form-field appearance="outline" class="search-field">
+          <input 
+            matInput 
+            placeholder="  Busque por gabinetes" 
+            [(ngModel)]="search" 
+            aria-label="Pesquisar gabinetes">
+          <button mat-icon-button matSuffix>
+            <mat-icon>search</mat-icon>
+          </button>
+        </mat-form-field>
+      </div>
+
+      <div class="actions-section">
+        <button mat-icon-button class="header-btn">
+          <mat-icon>person_outline</mat-icon>
+          <span class="btn-label">Entre ou<br>cadastre-se</span>
+        </button>
+        <button mat-icon-button class="header-btn">
+          <mat-icon>notifications_none</mat-icon>
+        </button>
+        <button mat-icon-button class="header-btn">
+          <mat-icon>favorite_border</mat-icon>
+        </button>
+        <button mat-icon-button class="header-btn" [matBadge]="3" matBadgeColor="warn">
+          <mat-icon>shopping_cart</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <nav class="nav-menu">
+    <div class="nav-container">
+      <button mat-button class="nav-item departments">
+        <mat-icon>menu</mat-icon>
+        CATEGORIAS
+      </button>
+      <button mat-button class="nav-item highlight">OFERTAS</button>
+      <button mat-button class="nav-item">Mais Vendidos</button>
+      <button mat-button class="nav-item">Mid Tower</button>
+      <button mat-button class="nav-item">Full Tower</button>
+      <button mat-button class="nav-item">RGB</button>
+      <button mat-button class="nav-item">Airflow</button>
+      <button mat-button class="nav-item">Compactos</button>
+      <button mat-button class="nav-item">Blog</button>
+    </div>
+  </nav>
+</header>
+
+<section class="hero-carousel">
+  <button class="carousel-btn prev" (click)="prevSlide()" aria-label="Anterior">
+    <mat-icon>chevron_left</mat-icon>
+  </button>
+  
+  <div class="carousel-track" [style.transform]="'translateX(-' + (currentSlide * 100) + '%)'">
+    <div class="carousel-slide slide-1">
+      <div class="slide-content">
+        <div class="slide-text">
+          <span class="slide-label">OFERTAS ESPECIAIS</span>
+          <h2 class="slide-title">
+            <span class="black">MEGA</span>
+            <span class="ninja">CASES</span>
+          </h2>
+          <p class="slide-subtitle">ATÉ <span class="discount">65%</span> OFF</p>
+          <p class="slide-info">GABINETES PREMIUM COM DESCONTO ⭐</p>
+          <button mat-flat-button color="primary" class="slide-cta">Compre agora ➜</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="carousel-slide slide-2">
+      <div class="slide-content">
+        <div class="slide-text">
+          <span class="slide-label">ILUMINAÇÃO RGB</span>
+          <h2 class="slide-title-alt">Gabinetes<br>RGB Premium</h2>
+          <p class="slide-subtitle">ATÉ <span class="discount">50%</span> OFF</p>
+          <button mat-flat-button color="accent" class="slide-cta">Ver ofertas ➜</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="carousel-slide slide-3">
+      <div class="slide-content">
+        <div class="slide-text">
+          <h2 class="slide-title-alt">Máximo<br>Airflow</h2>
+          <p class="slide-subtitle">ATÉ <span class="discount">40%</span> OFF</p>
+          <button mat-flat-button class="slide-cta slide-cta-light">Aproveitar ➜</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button class="carousel-btn next" (click)="nextSlide()" aria-label="Próximo">
+    <mat-icon>chevron_right</mat-icon>
+  </button>
+
+  <div class="carousel-indicators">
+    <button 
+      *ngFor="let slide of [0, 1, 2]; let i = index" 
+      class="indicator" 
+      [class.active]="currentSlide === i"
+      (click)="goToSlide(i)"
+      [attr.aria-label]="'Ir para slide ' + (i + 1)">
+    </button>
+  </div>
+</section>
+
+<section class="hot-deals-section">
+  <div class="section-header">
+    <h3 class="section-title">
+      <span class="fire-icon">🔥</span>
+      SUPER OFERTAS
+    </h3>
+    <div class="countdown">
+      <span class="countdown-label">TERMINA EM:</span>
+      <div class="countdown-timer">
+        <span class="time-block">{{ countdownHours.toString().padStart(2, '0') }}</span>
+        <span class="separator">:</span>
+        <span class="time-block">{{ countdownMinutes.toString().padStart(2, '0') }}</span>
+        <span class="separator">:</span>
+        <span class="time-block">{{ countdownSeconds.toString().padStart(2, '0') }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="products-scroll">
+    <div class="product-card" *ngFor="let product of hotDeals">
+      <div class="card-badge" *ngIf="product.badge">{{ product.badge }}</div>
+      <div class="card-rating" *ngIf="product.rating">
+        <span class="stars">{{ '⭐'.repeat(product.rating) }}</span>
+        <span class="rating-count">({{ product.rating * 234 }})</span>
+      </div>
+      
+      <div class="card-image">
+        <img [src]="product.img" [alt]="product.title">
+      </div>
+
+      <div class="card-content">
+        <h4 class="card-title">{{ product.title }}</h4>
+        <p class="card-subtitle">{{ product.subtitle }}</p>
+        
+        <div class="card-pricing">
+          <div class="old-price" *ngIf="product.oldPrice">R$ {{ formatPrice(product.oldPrice) }}</div>
+          <div class="current-price">
+            R$ <span class="price-value">{{ formatPrice(product.price) }}</span>
+            <span class="prime-badge" *ngIf="product.badge === 'PRIME'">PRIME</span>
+          </div>
+          <div class="installments" *ngIf="product.installments">
+            ou em até {{ product.installments }}x de R$ {{ calculateInstallment(product.price, product.installments) }}
+          </div>
+        </div>
+      </div>
+
+      <button mat-flat-button class="add-to-cart-btn" (click)="onAddToCart(product)">
+        <mat-icon>shopping_cart</mat-icon>
+        <span class="btn-countdown">040:22:46:10</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="see-all">
+    <a class="see-all-link">VER TODOS ➜</a>
+  </div>
+</section>
+
+<section class="promo-banners">
+  <div class="banner-grid">
+    <div class="promo-banner banner-smartphones">
+      <h3>Gabinetes<br>Compactos</h3>
+      <p class="banner-discount">-40% OFF</p>
+    </div>
+    <div class="promo-banner banner-gamer">
+      <h3>Gabinetes<br>Full Tower</h3>
+      <p class="banner-discount">ATÉ 50% OFF</p>
+    </div>
+  </div>
+</section>
+
+<section class="featured-section">
+  <div class="section-header">
+    <h3 class="section-title">
+      <span class="fire-icon">🔥</span>
+      DESTAQUES
+    </h3>
+    <a class="see-all-link">VER TODOS ➜</a>
+  </div>
+
+  <div class="filter-tabs">
+    <button 
+      *ngFor="let filter of filters" 
+      class="filter-tab"
+      [class.active]="activeFilter === filter"
+      (click)="setFilter(filter)">
+      {{ filter }}
+    </button>
+  </div>
+
+  <div class="products-grid">
+    <div class="product-card-featured" *ngFor="let product of featuredProducts">
+      <div class="card-badge" *ngIf="product.badge">{{ product.badge }}</div>
+      <div class="card-rating" *ngIf="product.rating">
+        <span class="stars">{{ '⭐'.repeat(product.rating) }}</span>
+        <span class="rating-count">({{ product.rating * 156 }})</span>
+      </div>
+      
+      <div class="card-image">
+        <img [src]="product.img" [alt]="product.title">
+      </div>
+
+      <div class="card-content">
+        <h4 class="card-title">{{ product.title }}</h4>
+        <p class="card-subtitle">{{ product.subtitle }}</p>
+        
+        <div class="card-pricing">
+          <div class="old-price" *ngIf="product.oldPrice">R$ {{ formatPrice(product.oldPrice) }}</div>
+          <div class="current-price">
+            R$ <span class="price-value">{{ formatPrice(product.price) }}</span>
+          </div>
+          <div class="installments" *ngIf="product.installments">
+            ou em até {{ product.installments }}x de R$ {{ calculateInstallment(product.price, product.installments) }}
+          </div>
+        </div>
+      </div>
+
+      <button mat-flat-button class="buy-btn" (click)="onAddToCart(product)">
+        COMPRAR
+      </button>
+    </div>
+  </div>
+</section>
+
+<section class="departments-section">
+  <div class="section-header">
+    <h3 class="section-title">
+      <span class="icon">📦</span>
+      CATEGORIAS
+    </h3>
+  </div>
+
+  <div class="departments-grid">
+    <a *ngFor="let category of categories" class="department-card" [href]="category.link">
+      <div class="dept-icon">
+        <mat-icon>{{ category.icon }}</mat-icon>
+      </div>
+      <span class="dept-name">{{ category.name }}</span>
+    </a>
+  </div>
+</section>
+
+<section class="brands-section">
+  <div class="section-header">
+    <h3 class="section-title">
+      <span class="icon">⭐</span>
+      MARCAS RECOMENDADAS
+    </h3>
+    <a class="see-all-link">VER TODOS ➜</a>
+  </div>
+
+  <div class="brands-grid">
+    <a *ngFor="let brand of brands" class="brand-card" [href]="brand.link">
+      <div class="brand-image">
+        <img [src]="brand.img" [alt]="brand.name">
+      </div>
+      <div class="brand-footer">
+        <strong>{{ brand.name }}</strong>
+        <span class="brand-link-text">VER PRODUTOS ➜</span>
+      </div>
+    </a>
+  </div>
+</section>
+
+<section class="large-banner">
+  <img src="/placeholder.svg?height=300&width=1200" alt="Promoção Gabinetes Gaming">
+</section>
+
+<footer class="kabum-footer">
+  <div class="footer-container">
+    <div class="footer-column">
+      <h4>ATENDIMENTO</h4>
+      <a>Central de Ajuda</a>
+      <a>Trocas e Devoluções</a>
+      <a>Rastreamento</a>
+    </div>
+    <div class="footer-column">
+      <h4>SOBRE</h4>
+      <a>Quem Somos</a>
+      <a>Trabalhe Conosco</a>
+      <a>Blog</a>
+    </div>
+    <div class="footer-column">
+      <h4>FORMAS DE PAGAMENTO</h4>
+      <div class="payment-icons">
+        <mat-icon>credit_card</mat-icon>
+        <mat-icon>pix</mat-icon>
+        <mat-icon>account_balance</mat-icon>
+      </div>
+    </div>
+    <div class="footer-column">
+      <h4>REDES SOCIAIS</h4>
+      <div class="social-icons">
+        <button mat-icon-button><mat-icon>facebook</mat-icon></button>
+        <button mat-icon-button><mat-icon>instagram</mat-icon></button>
+        <button mat-icon-button><mat-icon>youtube</mat-icon></button>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© {{ currentYear }} CaseHub Comércio de Gabinetes S.A. - Todos os direitos reservados</p>
+  </div>
+</footer>

@@ -1,0 +1,153 @@
+.page-container {
+  min-height: 100vh;
+  background: #f5f5f5;
+  padding: 2rem;
+}
+
+.toolbar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1.5rem;
+}
+
+.btn-add {
+  background: #ff6500;
+  color: white;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(255, 101, 0, 0.25);
+  transition: all 0.2s ease;
+}
+
+.btn-add:hover {
+  background: #ff7a1a;
+  transform: translateY(-2px);
+}
+
+.content-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.search-bar {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.search-input {
+  width: 100%;
+  max-width: 400px;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.data-table th {
+  background: #fafafa;
+  font-weight: 600;
+  color: #333;
+  padding: 1rem 1.5rem;
+  border-bottom: 2px solid #e5e5e5;
+}
+
+.data-table td {
+  padding: 1rem 1.5rem;
+  color: #666;
+  border-bottom: 1px solid #f0f0f0;
+  vertical-align: top;
+}
+
+.id-chip {
+  display: inline-block;
+  background: #ff6500;
+  color: white;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.8rem;
+}
+
+.no-endereco {
+  color: #999;
+  font-size: 0.85rem;
+  font-style: italic;
+}
+
+.actions {
+  display: flex;
+  gap: 4px;
+}
+
+.edit-btn {
+  color: #ff6500;
+  transition: background 0.2s;
+}
+
+.edit-btn:hover {
+  background: #fff5ed;
+}
+
+.delete-btn {
+  color: #dc2626;
+  transition: background 0.2s;
+}
+
+.delete-btn:hover {
+  background: #fef2f2;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 3rem 0;
+  color: #999;
+}
+
+.empty-state mat-icon {
+  font-size: 40px;
+  margin-bottom: 1rem;
+}
+
+.loading-state {
+  display: flex;
+  justify-content: center;
+  padding: 3rem;
+}
+
+::ng-deep .mat-mdc-progress-spinner circle {
+  stroke: #ff6500;
+}
+
+::ng-deep .mat-mdc-paginator {
+  background: #fafafa;
+  border-top: 1px solid #e5e5e5;
+  padding: 1rem 1.5rem;
+}
+
+::ng-deep .mat-mdc-icon-button {
+  color: #ff6500;
+}
+
+::ng-deep .mat-mdc-icon-button:hover:not([disabled]) {
+  background: #fff5ed;
+}
+
+@media (max-width: 768px) {
+  .page-container {
+    padding: 1rem;
+  }
+
+  .btn-add {
+    width: 100%;
+  }
+
+  .search-input {
+    max-width: 100%;
+  }
+}
