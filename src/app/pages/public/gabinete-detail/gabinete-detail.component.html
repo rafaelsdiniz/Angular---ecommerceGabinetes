@@ -1,0 +1,105 @@
+<div class="detail-container">
+  <button (click)="voltar()" class="back-btn">← Voltar</button>
+
+  <div class="loading-state" *ngIf="loading">
+    <div class="spinner"></div>
+    <p>Carregando detalhes...</p>
+  </div>
+
+  <div class="error-state" *ngIf="erro && !loading">
+    <p>{{ erro }}</p>
+    <button (click)="voltar()" class="back-btn">Voltar</button>
+  </div>
+
+  <div class="detail-grid" *ngIf="!loading && gabinete">
+    <!-- Imagem -->
+    <div class="detail-image">
+      <img 
+        *ngIf="gabinete.imagemUrl; else semImagem"
+        [src]="gabinete.imagemUrl"
+        [alt]="gabinete.nomeExibicao"
+        class="detail-img"
+      />
+      <ng-template #semImagem>
+        <div class="image-placeholder">
+          <span>{{ gabinete.marca }}</span>
+        </div>
+      </ng-template>
+    </div>
+
+    <!-- Informações -->
+    <div class="detail-info">
+      <h1>{{ gabinete.nomeExibicao }}</h1>
+      <p class="brand">{{ gabinete.marca }}</p>
+
+      <div class="detail-price">
+        <span class="price">R$ {{ gabinete.preco | number: '1.2-2' }}</span>
+      </div>
+
+      <!-- Especificações gerais -->
+      <section class="specs-section">
+        <h2>Especificações</h2>
+        <div class="specs-grid">
+          <div class="spec-row" *ngIf="gabinete.cor">
+            <span class="label">Cor:</span>
+            <span class="value">{{ gabinete.cor }}</span>
+          </div>
+          <div class="spec-row" *ngIf="gabinete.formato">
+            <span class="label">Formato:</span>
+            <span class="value">{{ gabinete.formato }}</span>
+          </div>
+          <div class="spec-row" *ngIf="gabinete.altura">
+            <span class="label">Altura:</span>
+            <span class="value">{{ gabinete.altura }} mm</span>
+          </div>
+          <div class="spec-row" *ngIf="gabinete.largura">
+            <span class="label">Largura:</span>
+            <span class="value">{{ gabinete.largura }} mm</span>
+          </div>
+          <div class="spec-row" *ngIf="gabinete.peso">
+            <span class="label">Peso:</span>
+            <span class="value">{{ gabinete.peso }} kg</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Compatibilidades -->
+      <section class="compat-section" *ngIf="gabinete.tamanhoMaxGpu || gabinete.alturaMaxCooler || gabinete.qtdRgb || gabinete.usb || gabinete.usbc">
+        <h2>Compatibilidades</h2>
+        <div class="compat-grid">
+          <div class="compat-item" *ngIf="gabinete.tamanhoMaxGpu">
+            <span class="label">GPU Máxima:</span>
+            <span class="value">{{ gabinete.tamanhoMaxGpu }} mm</span>
+          </div>
+          <div class="compat-item" *ngIf="gabinete.alturaMaxCooler">
+            <span class="label">Cooler Máximo:</span>
+            <span class="value">{{ gabinete.alturaMaxCooler }} mm</span>
+          </div>
+          <div class="compat-item" *ngIf="gabinete.qtdRgb">
+            <span class="label">Ventiladores RGB:</span>
+            <span class="value">{{ gabinete.qtdRgb }}</span>
+          </div>
+          <div class="compat-item" *ngIf="gabinete.usb">
+            <span class="label">Portas USB:</span>
+            <span class="value">{{ gabinete.usb }}</span>
+          </div>
+          <div class="compat-item" *ngIf="gabinete.usbc">
+            <span class="label">Portas USB-C:</span>
+            <span class="value">{{ gabinete.usbc }}</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Descrição -->
+      <section class="description-section" *ngIf="gabinete.descricao">
+        <h2>Descrição</h2>
+        <p>{{ gabinete.descricao }}</p>
+      </section>
+
+      <!-- Botões de ação -->
+      <div class="action-buttons">
+        <button class="btn-primary" (click)="adicionarAoCarrinho()">Adicionar ao Carrinho</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,104 +1,347 @@
-<mat-toolbar class="topbar" color="primary">
-  <div class="left">
-    <span class="logo" role="img" aria-hidden="true">🖥️</span>
-    <h1 class="brand">Ecommerce Gabinetes</h1>
-  </div>
-
-  <div class="center">
-    <mat-form-field appearance="outline" class="search">
-      <mat-icon matPrefix>search</mat-icon>
-      <input matInput placeholder="Buscar por modelo, tipo ou preço" [(ngModel)]="search" aria-label="Pesquisar produtos">
-      <button mat-icon-button matSuffix *ngIf="search" (click)="search = ''" aria-label="Limpar busca">
-        <mat-icon>close</mat-icon>
-      </button>
-    </mat-form-field>
-  </div>
-
-  <div class="right">
-    <button mat-icon-button aria-label="Favoritos"><mat-icon>favorite_border</mat-icon></button>
-    <button mat-icon-button aria-label="Carrinho"><mat-icon>shopping_cart</mat-icon></button>
-    <button mat-flat-button color="accent" class="cta">Entrar / Cadastrar</button>
-  </div>
-</mat-toolbar>
-
-<!-- Hero -->
-<section class="hero" role="region" aria-label="Promoção principal">
-  <div class="hero-content">
-    <h2>Monte o PC dos seus sonhos</h2>
-    <p>Gabinetes com design moderno, ventilação otimizada e compatibilidade com os melhores componentes.</p>
-    <div class="hero-actions">
-      <button mat-flat-button color="primary">Ver ofertas</button>
-      <button mat-stroked-button (click)="search='rgb'">Ver RGB</button>
+<div class="home-container">
+  <!-- Hero Section - Redesigned -->
+  <section class="hero-modern">
+    <div class="hero-overlay"></div>
+    <div class="hero-content-wrapper">
+      <div class="hero-text-content">
+        <span class="hero-badge">🔥 Lançamento 2025</span>
+        <h1 class="hero-main-title">Gabinetes Premium para seu Setup</h1>
+        <p class="hero-main-description">
+          Descubra os melhores gabinetes do mercado com até <strong>30% OFF</strong> e frete grátis para todo Brasil
+        </p>
+        <div class="hero-cta-group">
+          <button class="hero-btn-primary" (click)="irParaProdutos()">
+            <span>Ver Coleção Completa</span>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <button class="hero-btn-secondary" (click)="scrollToDestaques()">
+            Ver Destaques
+          </button>
+        </div>
+        <div class="hero-stats">
+          <div class="stat-item">
+            <span class="stat-number">500+</span>
+            <span class="stat-label">Produtos</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <span class="stat-number">10k+</span>
+            <span class="stat-label">Clientes</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <span class="stat-number">4.9★</span>
+            <span class="stat-label">Avaliação</span>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- Features / Benefits -->
-<section class="features" aria-label="Vantagens">
-  <div class="feature">
-    <mat-icon>local_shipping</mat-icon>
-    <div>
-      <strong>Frete rápido</strong>
-      <span> Envio em 24-48h (regiões selecionadas)</span>
+  <!-- Categories Section - NEW -->
+  <section class="categories-section">
+    <div class="container">
+      <h2 class="section-title-center">Navegue por Categoria</h2>
+      <div class="categories-grid">
+        <div class="category-card" (click)="filtrarPorCategoria('gaming')">
+          <div class="category-icon">🎮</div>
+          <h3>Gaming</h3>
+          <p>RGB & Performance</p>
+        </div>
+        <div class="category-card" (click)="filtrarPorCategoria('profissional')">
+          <div class="category-icon">💼</div>
+          <h3>Profissional</h3>
+          <p>Elegante & Discreto</p>
+        </div>
+        <div class="category-card" (click)="filtrarPorCategoria('compacto')">
+          <div class="category-icon">📦</div>
+          <h3>Compacto</h3>
+          <p>Mini & ITX</p>
+        </div>
+        <div class="category-card" (click)="filtrarPorCategoria('premium')">
+          <div class="category-icon">⭐</div>
+          <h3>Premium</h3>
+          <p>Alto Padrão</p>
+        </div>
+      </div>
     </div>
-  </div>
-  <div class="feature">
-    <mat-icon>verified</mat-icon>
-    <div>
-      <strong>Garantia autorizada</strong>
-      <span> Assistência em todo o Brasil</span>
-    </div>
-  </div>
-  <div class="feature">
-    <mat-icon>support_agent</mat-icon>
-    <div>
-      <strong>Suporte especializado</strong>
-      <span> Ajuda para escolher o gabinete ideal</span>
-    </div>
-  </div>
-</section>
+  </section>
 
-<!-- Product grid -->
-<section class="catalog" aria-label="Lista de produtos">
-  <header class="catalog-header">
-    <h3>Produtos populares</h3>
-    <span class="catalog-meta">{{ filtered.length }} resultados</span>
-  </header>
+  <!-- Benefits Section - Improved -->
+  <section class="benefits-modern">
+    <div class="container">
+      <div class="benefits-grid-modern">
+        <div class="benefit-card-modern">
+          <div class="benefit-icon-modern">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20 7h-4V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v3H4a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/>
+            </svg>
+          </div>
+          <h3>Frete Grátis</h3>
+          <p>Em compras acima de R$ 299</p>
+        </div>
+        <div class="benefit-card-modern">
+          <div class="benefit-icon-modern">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            </svg>
+          </div>
+          <h3>Garantia Estendida</h3>
+          <p>Até 3 anos de cobertura</p>
+        </div>
+        <div class="benefit-card-modern">
+          <div class="benefit-icon-modern">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+              <polyline points="9 22 9 12 15 12 15 22"/>
+            </svg>
+          </div>
+          <h3>Entrega Rápida</h3>
+          <p>Receba em até 48h úteis</p>
+        </div>
+        <div class="benefit-card-modern">
+          <div class="benefit-icon-modern">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+          </div>
+          <h3>Suporte 24/7</h3>
+          <p>Atendimento sempre disponível</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-  <div class="grid">
-    <mat-card *ngFor="let p of filtered" class="product-card" id="product-{{p.id}}">
-      <div class="card-media">
-        <img mat-card-image [src]="p.img" [alt]="p.title">
-        <span class="badge" *ngIf="p.badge">{{ p.badge }}</span>
+  <!-- Featured Products Section - Improved -->
+  <section class="destaques-modern" #destaquesSection>
+    <div class="container">
+      <div class="section-header-modern">
+        <div>
+          <span class="section-badge">🔥 Mais Vendidos</span>
+          <h2 class="section-title">Gabinetes em Destaque</h2>
+          <p class="section-subtitle">Os favoritos dos nossos clientes</p>
+        </div>
+        <button class="view-all-btn" (click)="irParaProdutos()">
+          Ver Todos
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
       </div>
 
-      <mat-card-content>
-        <h4 class="product-title">{{ p.title }}</h4>
-        <p class="product-subtitle">{{ p.subtitle }}</p>
-        <p class="product-desc">{{ p.description }}</p>
-      </mat-card-content>
+      <div *ngIf="loading" class="loading-modern">
+        <div class="spinner-modern"></div>
+        <p>Carregando produtos incríveis...</p>
+      </div>
 
-      <mat-card-actions class="card-actions">
-        <div class="price">{{ p.price }}</div>
-        <div class="actions-right">
-          <button mat-icon-button aria-label="Curtir" (click)="onLike(p)"><mat-icon>thumb_up_off_alt</mat-icon></button>
-          <button mat-icon-button aria-label="Compartilhar" (click)="onShare(p)"><mat-icon>share</mat-icon></button>
-          <button mat-flat-button color="primary">Comprar</button>
+      <div *ngIf="erro && !loading" class="error-modern">
+        <p>{{ erro }}</p>
+        <button (click)="carregarGabinetes()" class="retry-btn-modern">Tentar Novamente</button>
+      </div>
+
+      <div class="products-grid-modern" *ngIf="!loading && destaquesGabinetes.length > 0">
+        <div class="product-card-modern" *ngFor="let gabinete of destaquesGabinetes.slice(0, 4)">
+          <div class="product-badges">
+            <span class="badge-destaque">Destaque</span>
+            <span class="badge-frete" *ngIf="gabinete.preco > 299">Frete Grátis</span>
+          </div>
+          <div class="product-image-wrapper">
+            <img 
+              *ngIf="gabinete.imagemUrl; else semImagemModern"
+              [src]="gabinete.imagemUrl"
+              [alt]="gabinete.nomeExibicao"
+              class="product-image-modern"
+            />
+            <ng-template #semImagemModern>
+              <div class="image-placeholder-modern">
+                <span>{{ gabinete.marca }}</span>
+              </div>
+            </ng-template>
+            <button class="quick-view-btn" (click)="verDetalhes(gabinete.id)">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+              Visualizar
+            </button>
+          </div>
+          <div class="product-info-modern">
+            <p class="product-brand">{{ gabinete.marca }}</p>
+            <h3 class="product-name">{{ gabinete.nomeExibicao }}</h3>
+            <div class="product-rating">
+              <span class="stars">★★★★★</span>
+              <span class="rating-count">(4.8)</span>
+            </div>
+            <div class="product-specs-modern">
+              <span *ngIf="gabinete.cor" class="spec-tag">{{ gabinete.cor }}</span>
+              <span *ngIf="gabinete.formato" class="spec-tag">{{ gabinete.formato }}</span>
+            </div>
+            <div class="product-footer-modern">
+              <div class="price-section-modern">
+                <span class="price-modern">R$ {{ gabinete.preco | number: '1.2-2' }}</span>
+                <span class="price-installment">ou 12x de R$ {{ (gabinete.preco / 12) | number: '1.2-2' }}</span>
+              </div>
+              <button class="add-to-cart-btn" (click)="verDetalhes(gabinete.id)">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="9" cy="21" r="1"/>
+                  <circle cx="20" cy="21" r="1"/>
+                  <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+                </svg>
+              </button>
+            </div>
+          </div>
         </div>
-      </mat-card-actions>
-    </mat-card>
-  </div>
-</section>
+      </div>
+    </div>
+  </section>
 
-<!-- Footer -->
-<footer class="site-footer" aria-label="Rodapé do site">
-  <div class="footer-left">
-    <strong>Ecommerce Gabinetes</strong>
-    <small>© {{ currentYear }} • Todos os direitos reservados</small>
-  </div>
-  <div class="footer-right">
-    <a class="footer-link">Sobre</a>
-    <a class="footer-link">Ajuda</a>
-    <a class="footer-link">Contato</a>
-  </div>
-</footer>
+  <!-- Brands Section - NEW -->
+  <section class="brands-section">
+    <div class="container">
+      <h3 class="brands-title">Marcas Parceiras</h3>
+      <div class="brands-grid">
+        <div class="brand-item">Corsair</div>
+        <div class="brand-item">NZXT</div>
+        <div class="brand-item">Cooler Master</div>
+        <div class="brand-item">Lian Li</div>
+        <div class="brand-item">Thermaltake</div>
+        <div class="brand-item">Fractal Design</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Newsletter Section - NEW -->
+  <section class="newsletter-section">
+    <div class="container">
+      <div class="newsletter-content">
+        <div class="newsletter-text">
+          <h2>Fique por dentro das novidades</h2>
+          <p>Receba ofertas exclusivas, lançamentos e dicas para seu setup</p>
+        </div>
+        <div class="newsletter-form">
+          <input type="email" placeholder="Seu melhor e-mail" class="newsletter-input" />
+          <button class="newsletter-btn">Inscrever-se</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- All Products Grid - Improved -->
+  <section class="all-products-modern">
+    <div class="container">
+      <div class="section-header-modern">
+        <div>
+          <h2 class="section-title">Todos os Gabinetes</h2>
+          <p class="section-subtitle">Explore nossa coleção completa com {{ todosGabinetes.length }} modelos</p>
+        </div>
+      </div>
+
+      <div class="products-grid-compact" *ngIf="!loading && todosGabinetes.length > 0">
+        <div class="product-card-compact" *ngFor="let gabinete of todosGabinetes.slice(0, 8)">
+          <div class="product-image-compact">
+            <img 
+              *ngIf="gabinete.imagemUrl; else semImagemCompact"
+              [src]="gabinete.imagemUrl"
+              [alt]="gabinete.nomeExibicao"
+            />
+            <ng-template #semImagemCompact>
+              <div class="placeholder-compact">{{ gabinete.marca }}</div>
+            </ng-template>
+          </div>
+          <div class="product-info-compact">
+            <h4>{{ gabinete.nomeExibicao }}</h4>
+            <p class="price-compact">R$ {{ gabinete.preco | number: '1.2-2' }}</p>
+            <button (click)="verDetalhes(gabinete.id)" class="btn-compact">Ver Detalhes</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="view-more-section" *ngIf="todosGabinetes.length > 8">
+        <button class="view-more-btn" (click)="irParaProdutos()">
+          Ver Todos os {{ todosGabinetes.length }} Produtos
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer - Improved -->
+  <footer class="footer-modern">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-column-main">
+          <h3 class="footer-logo">CabinetHub</h3>
+          <p class="footer-description">
+            Sua loja especializada em gabinetes premium para PC. Qualidade, performance e estilo para seu setup dos sonhos.
+          </p>
+          <div class="social-links-modern">
+            <a href="#" class="social-btn" aria-label="Facebook">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+              </svg>
+            </a>
+            <a href="#" class="social-btn" aria-label="Instagram">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073z"/>
+                <path d="M12 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+              </svg>
+            </a>
+            <a href="#" class="social-btn" aria-label="Twitter">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+              </svg>
+            </a>
+            <a href="#" class="social-btn" aria-label="YouTube">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="footer-column">
+          <h4>Produtos</h4>
+          <ul>
+            <li><a href="#gabinetes">Gabinetes Gaming</a></li>
+            <li><a href="#promocoes">Promoções</a></li>
+            <li><a href="#lancamentos">Lançamentos</a></li>
+            <li><a href="#marcas">Marcas</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-column">
+          <h4>Suporte</h4>
+          <ul>
+            <li><a href="#faq">Perguntas Frequentes</a></li>
+            <li><a href="#contato">Fale Conosco</a></li>
+            <li><a href="#rastreamento">Rastrear Pedido</a></li>
+            <li><a href="#garantia">Garantia</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-column">
+          <h4>Empresa</h4>
+          <ul>
+            <li><a href="#sobre">Sobre Nós</a></li>
+            <li><a href="#blog">Blog</a></li>
+            <li><a href="#carreiras">Carreiras</a></li>
+            <li><a href="#parceiros">Seja Parceiro</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom-modern">
+        <p>&copy; 2025 CabinetHub. Todos os direitos reservados.</p>
+        <div class="footer-links-modern">
+          <a href="#privacidade">Privacidade</a>
+          <span>•</span>
+          <a href="#termos">Termos</a>
+          <span>•</span>
+          <a href="#cookies">Cookies</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>

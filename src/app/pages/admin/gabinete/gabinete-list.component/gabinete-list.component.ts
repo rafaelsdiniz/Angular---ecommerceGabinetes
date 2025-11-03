@@ -104,11 +104,11 @@ export class GabineteListComponent implements OnInit, AfterViewInit {
   }
 
   novoGabinete(): void {
-    this.router.navigate(["/gabinetes/form"])
+    this.router.navigate(["admin/gabinetes/form"])
   }
 
   editarGabinete(id: number): void {
-    this.router.navigate(["/gabinetes/form", id])
+    this.router.navigate(["admin/gabinetes/form", id])
   }
 
   excluirGabinete(id: number): void {

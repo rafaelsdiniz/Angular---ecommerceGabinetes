@@ -1,259 +1,131 @@
 <div class="page-container">
   <div class="form-container">
-    <!-- Simplified header without large title -->
+
+    <!-- Header -->
     <div class="form-header">
       <button mat-icon-button class="back-btn" (click)="cancelar()">
         <mat-icon>arrow_back</mat-icon>
       </button>
-      <h2 class="form-title">{{ isEdicao ? 'Editar Gabinete' : 'Novo Gabinete' }}</h2>
+      <h2 class="form-title">{{ isEdicao ? "Editar Gabinete" : "Novo Gabinete" }}</h2>
     </div>
 
     <!-- Loading State -->
     <div *ngIf="carregando" class="loading-state">
       <mat-spinner diameter="48"></mat-spinner>
+      <p>Carregando...</p>
     </div>
 
     <!-- Form -->
     <div *ngIf="!carregando" class="form-card">
       <form (ngSubmit)="salvar()" #gabineteForm="ngForm" novalidate>
-        
-        <!-- Informações Básicas -->
+
+        <!-- ===== IMAGEM (URL) ===== -->
+        <div class="form-section">
+          <h3 class="section-title">Imagem do Gabinete (URL)</h3>
+
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>URL da Imagem</mat-label>
+            <input
+              matInput
+              type="url"
+              [(ngModel)]="gabinete.imagemUrl"
+              name="imagemUrl"
+              placeholder="https://exemplo.com/imagem.jpg" />
+            <mat-icon matPrefix>link</mat-icon>
+          </mat-form-field>
+
+          <div class="image-preview" *ngIf="gabinete.imagemUrl">
+            <img [src]="gabinete.imagemUrl" [alt]="gabinete.nomeExibicao" />
+            <button type="button" class="remove-btn" (click)="removerImagem()">
+              <mat-icon>close</mat-icon>
+            </button>
+          </div>
+        </div>
+
+        <!-- ===== INFORMAÇÕES BÁSICAS ===== -->
         <div class="form-section">
           <h3 class="section-title">Informações Básicas</h3>
-          
-          <!-- Nome Exibição -->
           <mat-form-field appearance="outline" class="form-field">
             <mat-label>Nome de Exibição</mat-label>
-            <input 
-              matInput 
-              type="text" 
-              [(ngModel)]="gabinete.nomeExibicao" 
-              name="nomeExibicao" 
-              required
-              placeholder="Ex: Gabinete Gamer RGB">
+            <input matInput type="text" [(ngModel)]="gabinete.nomeExibicao" name="nomeExibicao" required />
             <mat-icon matPrefix>computer</mat-icon>
-            <mat-error *ngIf="gabineteForm.submitted && !gabinete.nomeExibicao">
-              Campo obrigatório
-            </mat-error>
           </mat-form-field>
 
-          <!-- Preço -->
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Marca</mat-label>
+            <input matInput type="text" [(ngModel)]="gabinete.marca" name="marca" required />
+            <mat-icon matPrefix>business</mat-icon>
+          </mat-form-field>
+
           <mat-form-field appearance="outline" class="form-field">
             <mat-label>Preço</mat-label>
-            <input 
-              matInput 
-              type="number" 
-              [(ngModel)]="gabinete.preco" 
-              name="preco" 
-              required
-              min="0"
-              step="0.01"
-              placeholder="0.00">
+            <input matInput type="number" [(ngModel)]="gabinete.preco" name="preco" required min="0" step="0.01" />
             <mat-icon matPrefix>attach_money</mat-icon>
-            <mat-error *ngIf="gabineteForm.submitted && !gabinete.preco">
-              Campo obrigatório
-            </mat-error>
           </mat-form-field>
 
-          <!-- Cor -->
           <mat-form-field appearance="outline" class="form-field">
             <mat-label>Cor</mat-label>
-            <input 
-              matInput 
-              type="text" 
-              [(ngModel)]="gabinete.cor" 
-              name="cor" 
-              required
-              placeholder="Ex: Preto, Branco, RGB">
+            <input matInput type="text" [(ngModel)]="gabinete.cor" name="cor" required />
             <mat-icon matPrefix>palette</mat-icon>
-            <mat-error *ngIf="gabineteForm.submitted && !gabinete.cor">
-              Campo obrigatório
-            </mat-error>
           </mat-form-field>
 
-          <!-- Formato -->
           <mat-form-field appearance="outline" class="form-field">
             <mat-label>Formato</mat-label>
-            <input 
-              matInput 
-              type="text" 
-              [(ngModel)]="gabinete.formato" 
-              name="formato"
-              placeholder="Ex: ATX, Mid Tower, Full Tower">
+            <input matInput type="text" [(ngModel)]="gabinete.formato" name="formato" />
             <mat-icon matPrefix>view_in_ar</mat-icon>
           </mat-form-field>
         </div>
 
-        <!-- Dimensões e Peso -->
+        <!-- ===== DIMENSÕES E PESO ===== -->
         <div class="form-section">
           <h3 class="section-title">Dimensões e Peso</h3>
-          
-          <div class="form-row">
-            <!-- Altura -->
-            <mat-form-field appearance="outline" class="form-field half-width">
-              <mat-label>Altura (mm)</mat-label>
-              <input 
-                matInput 
-                type="number" 
-                [(ngModel)]="gabinete.altura" 
-                name="altura"
-                min="0"
-                placeholder="0">
-              <mat-icon matPrefix>height</mat-icon>
-            </mat-form-field>
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Altura (mm)</mat-label>
+            <input matInput type="number" [(ngModel)]="gabinete.altura" name="altura" min="0" />
+            <mat-icon matPrefix>height</mat-icon>
+          </mat-form-field>
 
-            <!-- Largura -->
-            <mat-form-field appearance="outline" class="form-field half-width">
-              <mat-label>Largura (mm)</mat-label>
-              <input 
-                matInput 
-                type="number" 
-                [(ngModel)]="gabinete.largura" 
-                name="largura"
-                min="0"
-                placeholder="0">
-              <mat-icon matPrefix>straighten</mat-icon>
-            </mat-form-field>
-          </div>
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Largura (mm)</mat-label>
+            <input matInput type="number" [(ngModel)]="gabinete.largura" name="largura" min="0" />
+            <mat-icon matPrefix>straighten</mat-icon>
+          </mat-form-field>
 
-          <!-- Peso -->
           <mat-form-field appearance="outline" class="form-field">
             <mat-label>Peso (kg)</mat-label>
-            <input 
-              matInput 
-              type="number" 
-              [(ngModel)]="gabinete.peso" 
-              name="peso"
-              min="0"
-              step="0.1"
-              placeholder="0.0">
+            <input matInput type="number" [(ngModel)]="gabinete.peso" name="peso" min="0" step="0.1" />
             <mat-icon matPrefix>scale</mat-icon>
           </mat-form-field>
         </div>
 
-        <!-- Compatibilidade -->
+        <!-- ===== OUTROS CAMPOS ===== -->
         <div class="form-section">
-          <h3 class="section-title">Compatibilidade</h3>
-          
-          <div class="form-row">
-            <!-- Tamanho Máximo GPU -->
-            <mat-form-field appearance="outline" class="form-field half-width">
-              <mat-label>Tamanho Máx. GPU (mm)</mat-label>
-              <input 
-                matInput 
-                type="number" 
-                [(ngModel)]="gabinete.tamanhoMaxGpu" 
-                name="tamanhoMaxGpu"
-                min="0"
-                placeholder="0">
-              <mat-icon matPrefix>memory</mat-icon>
-            </mat-form-field>
+          <h3 class="section-title">Outras Informações</h3>
 
-            <!-- Altura Máxima Cooler -->
-            <mat-form-field appearance="outline" class="form-field half-width">
-              <mat-label>Altura Máx. Cooler (mm)</mat-label>
-              <input 
-                matInput 
-                type="number" 
-                [(ngModel)]="gabinete.alturaMaxCooler" 
-                name="alturaMaxCooler"
-                min="0"
-                placeholder="0">
-              <mat-icon matPrefix>ac_unit</mat-icon>
-            </mat-form-field>
-          </div>
-        </div>
-
-        <!-- Conectividade -->
-        <div class="form-section">
-          <h3 class="section-title">Conectividade e Recursos</h3>
-          
-          <div class="form-row">
-            <!-- Quantidade RGB -->
-            <mat-form-field appearance="outline" class="form-field third-width">
-              <mat-label>Qtd. RGB</mat-label>
-              <input 
-                matInput 
-                type="number" 
-                [(ngModel)]="gabinete.qtdRgb" 
-                name="qtdRgb"
-                min="0"
-                placeholder="0">
-              <mat-icon matPrefix>lightbulb</mat-icon>
-            </mat-form-field>
-
-            <!-- USB -->
-            <mat-form-field appearance="outline" class="form-field third-width">
-              <mat-label>Portas USB</mat-label>
-              <input 
-                matInput 
-                type="number" 
-                [(ngModel)]="gabinete.usb" 
-                name="usb"
-                min="0"
-                placeholder="0">
-              <mat-icon matPrefix>usb</mat-icon>
-            </mat-form-field>
-
-            <!-- USB-C -->
-            <mat-form-field appearance="outline" class="form-field third-width">
-              <mat-label>Portas USB-C</mat-label>
-              <input 
-                matInput 
-                type="number" 
-                [(ngModel)]="gabinete.usbc" 
-                name="usbc"
-                min="0"
-                placeholder="0">
-              <mat-icon matPrefix>cable</mat-icon>
-            </mat-form-field>
-          </div>
-        </div>
-
-        <!-- Descrição -->
-        <div class="form-section">
-          <h3 class="section-title">Descrição</h3>
-          
           <mat-form-field appearance="outline" class="form-field">
             <mat-label>Descrição</mat-label>
-            <textarea 
-              matInput 
-              [(ngModel)]="gabinete.descricao" 
-              name="descricao" 
-              rows="4"
-              placeholder="Descreva as características do gabinete...">
-            </textarea>
+            <textarea matInput [(ngModel)]="gabinete.descricao" name="descricao" rows="4"></textarea>
             <mat-icon matPrefix>notes</mat-icon>
           </mat-form-field>
         </div>
 
-        <!-- Error message -->
+        <!-- ===== ERRO ===== -->
         <div *ngIf="erro" class="error-alert">
           <mat-icon>error_outline</mat-icon>
           <span>{{ erro }}</span>
         </div>
 
-        <!-- Actions -->
+        <!-- ===== AÇÕES ===== -->
         <div class="form-actions">
-          <button 
-            mat-stroked-button 
-            type="button" 
-            class="cancel-btn" 
-            (click)="cancelar()"
-            [disabled]="salvando">
+          <button mat-stroked-button type="button" class="cancel-btn" (click)="cancelar()" [disabled]="salvando">
             Cancelar
           </button>
-          <button 
-            mat-flat-button 
-            type="submit" 
-            class="save-btn"
-            [disabled]="salvando">
+          <button mat-flat-button type="submit" class="save-btn" [disabled]="salvando">
             <mat-spinner *ngIf="salvando" diameter="20" class="btn-spinner"></mat-spinner>
-            <span *ngIf="!salvando">{{ isEdicao ? 'Salvar' : 'Criar' }}</span>
+            <span *ngIf="!salvando">{{ isEdicao ? "Salvar" : "Criar" }}</span>
             <span *ngIf="salvando">Salvando...</span>
           </button>
         </div>
-
       </form>
     </div>
   </div>

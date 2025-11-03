@@ -1,0 +1,89 @@
+<div class="cart-container">
+  <!-- Hero Section -->
+  <section class="cart-hero">
+    <div class="cart-hero-content">
+      <h1 class="cart-title">Meu Carrinho</h1>
+      <p class="cart-subtitle">{{ totalItens }} item(ns) no carrinho</p>
+    </div>
+  </section>
+
+  <!-- Cart Content -->
+  <section class="cart-section">
+    <div class="cart-wrapper">
+      <!-- Cart Items -->
+      <div class="cart-items">
+        <div *ngIf="cartItems.length === 0" class="empty-cart">
+          <div class="empty-icon">🛒</div>
+          <h2>Carrinho Vazio</h2>
+          <p>Parece que você ainda não adicionou nenhum item ao carrinho</p>
+          <a routerLink="/produtos" class="empty-btn">Continuar Comprando</a>
+        </div>
+
+        <div *ngIf="cartItems.length > 0" class="items-list">
+          <div class="cart-item" *ngFor="let item of cartItems">
+            <div class="item-image">
+              <span>{{ item.imagem }}</span>
+            </div>
+
+            <div class="item-details">
+              <h3>{{ item.nome }}</h3>
+              <p class="item-price">R$ {{ item.preco | number: '1.2-2' }}</p>
+            </div>
+
+            <div class="item-quantity">
+              <button (click)="diminuirQuantidade(item.id)" class="qty-btn">−</button>
+              <span class="qty-value">{{ item.quantidade }}</span>
+              <button (click)="aumentarQuantidade(item.id)" class="qty-btn">+</button>
+            </div>
+
+            <div class="item-subtotal">
+              <p>R$ {{ (item.preco * item.quantidade) | number: '1.2-2' }}</p>
+            </div>
+
+            <button (click)="removerItem(item.id)" class="remove-btn">✕</button>
+          </div>
+
+          <button (click)="limparCarrinho()" class="clear-cart-btn">Limpar Carrinho</button>
+        </div>
+      </div>
+
+      <!-- Cart Summary -->
+      <div class="cart-summary" *ngIf="cartItems.length > 0">
+        <h2>Resumo do Pedido</h2>
+
+        <div class="summary-row">
+          <span>Subtotal:</span>
+          <span>R$ {{ total | number: '1.2-2' }}</span>
+        </div>
+
+        <div class="summary-row">
+          <span>Frete:</span>
+          <span class="frete">Grátis</span>
+        </div>
+
+        <div class="summary-row discount">
+          <span>Desconto:</span>
+          <span>R$ 0,00</span>
+        </div>
+
+        <div class="summary-row total">
+          <span>Total:</span>
+          <span>R$ {{ total | number: '1.2-2' }}</span>
+        </div>
+
+        <button routerLink="/pagamento" class="checkout-btn">Ir para Pagamento</button>
+
+        <a routerLink="/produtos" class="continue-shopping">Continuar Comprando</a>
+
+        <div class="payment-methods">
+          <h3>Formas de Pagamento</h3>
+          <div class="methods">
+            <span class="method">💳 Cartão de Crédito</span>
+            <span class="method">💰 PIX</span>
+            <span class="method">🏦 Boleto</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

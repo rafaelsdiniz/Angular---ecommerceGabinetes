@@ -1,0 +1,258 @@
+.navbar {
+  background-color: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  height: 80px;
+  width: 100%;
+}
+
+.navbar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  height: 100%;
+  width: 100%;
+}
+
+.navbar-logo {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+}
+
+.logo-link {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  height: 70px;
+}
+
+.logo-image {
+  height: 70px;
+  width: auto;
+}
+
+.hamburger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  gap: 5px;
+}
+
+.hamburger span {
+  width: 25px;
+  height: 3px;
+  background-color: #2c3e50;
+  border-radius: 3px;
+  transition: all 0.3s ease;
+}
+
+.hamburger.ativo span:nth-child(1) {
+  transform: rotate(45deg) translate(8px, 8px);
+}
+
+.hamburger.ativo span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.ativo span:nth-child(3) {
+  transform: rotate(-45deg) translate(7px, -7px);
+}
+
+.navbar-menu {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 4px;
+  align-items: center;
+}
+
+.navbar-item {
+  margin: 0;
+}
+
+.navbar-link,
+.navbar-link-icon,
+.navbar-link-perfil {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #2c3e50;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 8px 12px;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.navbar-link:hover,
+.navbar-link-icon:hover,
+.navbar-link-perfil:hover {
+  background-color: #f5f5f5;
+  color: #ff6b35;
+}
+
+.navbar-link.ativo,
+.navbar-link-icon.ativo,
+.navbar-link-perfil.ativo {
+  background-color: #fff5f0;
+  color: #ff6b35;
+}
+
+.navbar-link-icon {
+  padding: 8px 10px;
+}
+
+.icon-label {
+  display: none;
+}
+
+.navbar-btn-login {
+  color: #2c3e50;
+  background-color: #f0f0f0;
+  text-decoration: none;
+  padding: 8px 18px;
+  border-radius: 6px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  font-size: 14px;
+}
+
+.navbar-btn-login:hover {
+  background-color: #e0e0e0;
+}
+
+.navbar-btn-register {
+  background: linear-gradient(135deg, #ff6b35 0%, #ff8555 100%);
+  color: #ffffff;
+  text-decoration: none;
+  padding: 8px 18px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(255, 107, 53, 0.2);
+}
+
+.navbar-btn-register:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 107, 53, 0.3);
+}
+
+.navbar-link-perfil {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #2c3e50;
+  padding: 8px 12px;
+}
+
+.navbar-link-perfil:hover {
+  background-color: #fff5f0;
+  color: #ff6b35;
+}
+
+.navbar-link-perfil.ativo {
+  background-color: #fff5f0;
+  color: #ff6b35;
+}
+
+.navbar-btn-logout {
+  background: linear-gradient(135deg, #ff6b35 0%, #ff8555 100%);
+  color: #ffffff;
+  padding: 8px 18px;
+  border-radius: 6px;
+  border: none;
+  font-weight: 700;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  display: inline-block;
+  box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+}
+
+.navbar-btn-logout:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
+}
+
+.navbar-divider {
+  display: none;
+}
+
+/* Mobile responsivo */
+@media (max-width: 768px) {
+  .navbar {
+    height: 70px;
+  }
+
+  .navbar-container {
+    height: 70px;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+
+  .navbar-menu {
+    position: absolute;
+    top: 70px;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    background-color: #ffffff;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    gap: 0;
+    padding: 0;
+  }
+
+  .navbar-menu.ativo {
+    max-height: 500px;
+    padding: 16px 0;
+  }
+
+  .navbar-item {
+    width: 100%;
+  }
+
+  .navbar-link,
+  .navbar-link-icon,
+  .navbar-link-perfil,
+  .navbar-btn-login,
+  .navbar-btn-register {
+    width: calc(100% - 32px);
+    margin: 0 16px;
+    padding: 12px 16px;
+    border-radius: 6px;
+  }
+
+  .icon-label {
+    display: inline;
+  }
+
+  .navbar-divider {
+    display: block;
+    height: 1px;
+    background-color: #e0e0e0;
+    margin: 12px 0;
+    width: 100%;
+  }
+
+  .navbar-btn-logout {
+    width: calc(100% - 48px);
+    margin: 12px 24px;
+    text-align: center;
+    display: block;
+  }
+}

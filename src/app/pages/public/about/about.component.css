@@ -1,0 +1,264 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.about-container {
+  width: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: #ffffff;
+}
+
+/* Hero Section */
+.about-hero {
+  width: 100%;
+  height: 400px;
+  background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.about-hero::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+  z-index: 1;
+}
+
+.about-hero-content {
+  text-align: center;
+  z-index: 2;
+  color: white;
+}
+
+.about-title {
+  font-size: 3rem;
+  font-weight: 800;
+  margin-bottom: 20px;
+  letter-spacing: -1px;
+}
+
+.about-subtitle {
+  font-size: 1.3rem;
+  opacity: 0.95;
+  font-weight: 300;
+}
+
+/* About Sections */
+.about-section {
+  padding: 80px 20px;
+  background: #ffffff;
+}
+
+.about-section.dark {
+  background: linear-gradient(135deg, #f5f5f5 0%, #ffffff 100%);
+}
+
+.section-title {
+  font-size: 2.5rem;
+  color: #1a1a1a;
+  text-align: center;
+  margin-bottom: 60px;
+  font-weight: 700;
+}
+
+.about-content {
+  display: flex;
+  align-items: center;
+  gap: 60px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.about-text {
+  flex: 1;
+}
+
+.about-text h2 {
+  font-size: 2.2rem;
+  color: #1a1a1a;
+  margin-bottom: 25px;
+  font-weight: 700;
+}
+
+.about-text p {
+  font-size: 1.1rem;
+  color: #666;
+  line-height: 1.8;
+  margin-bottom: 15px;
+}
+
+.about-icon {
+  font-size: 5rem;
+  flex-shrink: 0;
+}
+
+/* Values List */
+.values-list {
+  list-style: none;
+  font-size: 1.1rem;
+  color: #666;
+  line-height: 2;
+}
+
+.values-list li {
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(255, 107, 53, 0.2);
+}
+
+.values-list li:last-child {
+  border-bottom: none;
+}
+
+/* Team Grid */
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.team-card {
+  background: white;
+  border-radius: 12px;
+  padding: 40px 30px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+.team-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+}
+
+.team-avatar {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0 auto 20px;
+}
+
+.team-card h3 {
+  font-size: 1.3rem;
+  color: #1a1a1a;
+  margin-bottom: 5px;
+  font-weight: 700;
+}
+
+.team-card p {
+  color: #666;
+  font-size: 0.95rem;
+  margin-bottom: 10px;
+}
+
+.team-bio {
+  color: #999;
+  font-size: 0.9rem;
+  font-style: italic;
+}
+
+/* Stats Grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-number {
+  font-size: 3.5rem;
+  color: #ff6b35;
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+
+.stat-label {
+  font-size: 1.1rem;
+  color: #666;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .about-hero {
+    height: 300px;
+  }
+
+  .about-title {
+    font-size: 2rem;
+  }
+
+  .about-subtitle {
+    font-size: 1.1rem;
+  }
+
+  .about-content {
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  .about-icon {
+    font-size: 4rem;
+  }
+
+  .about-text h2 {
+    font-size: 1.8rem;
+  }
+
+  .about-text p {
+    font-size: 1rem;
+  }
+
+  .section-title {
+    font-size: 2rem;
+  }
+
+  .stat-number {
+    font-size: 2.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .about-section {
+    padding: 60px 15px;
+  }
+
+  .about-title {
+    font-size: 1.6rem;
+  }
+
+  .section-title {
+    font-size: 1.5rem;
+    margin-bottom: 40px;
+  }
+
+  .team-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+}

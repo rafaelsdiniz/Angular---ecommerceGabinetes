@@ -1,0 +1,80 @@
+<div class="products-container">
+  <!-- Header -->
+  <header class="products-header">
+    <div class="header-content">
+      <h1>Nossos Gabinetes</h1>
+      <p>Escolha o gabinete perfeito para seu build</p>
+    </div>
+  </header>
+
+  <!-- Filtros -->
+  <div class="filters-section">
+    <div class="search-box">
+      <input
+        type="text"
+        [(ngModel)]="filtroMarca"
+        (keyup)="buscarPorMarca()"
+        placeholder="Buscar por marca..."
+        class="search-input"
+      />
+    </div>
+  </div>
+
+  <!-- Loading e Erro -->
+  <div *ngIf="loading" class="loading-container">
+    <div class="spinner"></div>
+    <p>Carregando gabinetes...</p>
+  </div>
+
+  <div *ngIf="erro && !loading" class="error-container">
+    <p>{{ erro }}</p>
+    <button (click)="carregarTodos()" class="retry-btn">Tentar novamente</button>
+  </div>
+
+  <!-- Grid de Produtos -->
+  <div class="products-grid" *ngIf="!loading && gabinetes.length > 0">
+    <div class="product-card" *ngFor="let gabinete of gabinetes">
+      <!-- Imagem do Produto -->
+      <div class="product-image">
+        <img
+          *ngIf="gabinete.imagemUrl; else semImagem"
+          [src]="gabinete.imagemUrl"
+          [alt]="gabinete.nomeExibicao"
+          class="product-img"
+        />
+        <ng-template #semImagem>
+          <div class="image-placeholder">
+            <span>{{ gabinete.marca }}</span>
+          </div>
+        </ng-template>
+      </div>
+
+      <!-- Info do Produto - Apenas informações principais -->
+      <div class="product-info">
+        <h3 class="product-name">{{ gabinete.nomeExibicao }}</h3>
+        <p class="product-brand">{{ gabinete.marca }}</p>
+
+        <!-- Especificações principais -->
+        <div class="specs-mini">
+          <span *ngIf="gabinete.cor" class="spec-badge">{{ gabinete.cor }}</span>
+          <span *ngIf="gabinete.formato" class="spec-badge">{{ gabinete.formato }}</span>
+        </div>
+
+        <!-- Preço -->
+        <div class="price-section">
+          <span class="price">R$ {{ gabinete.preco | number: "1.2-2" }}</span>
+        </div>
+
+        <!-- Botão de Detalhes -->
+        <button class="add-to-cart-btn" (click)="verDetalhes(gabinete.id)">
+          Ver Detalhes
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mensagem vazia -->
+  <div *ngIf="!loading && gabinetes.length === 0" class="empty-state">
+    <p>Nenhum gabinete encontrado</p>
+  </div>
+</div>

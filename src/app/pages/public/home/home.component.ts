@@ -1,70 +1,201 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatInputModule } from '@angular/material/input';
-import { FormsModule } from '@angular/forms';
-
-interface Product {
-  id: number;
-  title: string;
-  subtitle: string;
-  img: string;
-  price: string;
-  badge?: string;
-  description?: string;
-}
+import { Component, OnInit, OnDestroy } from "@angular/core"
+import { Router } from "@angular/router"
+import { CommonModule } from "@angular/common"
+import { FormsModule } from "@angular/forms"
+import { GabineteService } from "../../../services/gabinete.service"
+import { Gabinete } from "../../../models/gabinete.model"
+import { CarrinhoService, ItemCarrinho } from "../../../services/carrinho.service"
 
 @Component({
-  selector: 'app-home',
+  selector: "app-home",
+  templateUrl: "./home.component.html",
+  styleUrls: ["./home.component.css"],
   standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    MatToolbarModule,
-    MatIconModule,
-    MatButtonModule,
-    MatCardModule,
-    MatInputModule
-  ],
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  imports: [CommonModule, FormsModule],
 })
-export class HomeComponent {
-  search = '';
+export class HomeComponent implements OnInit, OnDestroy {
+  benefitCards = [
+    {
+      id: 1,
+      title: "Performance Máxima",
+      subtitle: "Dissipação Térmica",
+      description:
+        "Gabinetes com fluxo de ar otimizado garantem temperatura ideal para seus componentes, mantendo a performance em pico durante longas sessões.",
+      color: "#ff6b35",
+      icon: "⚡",
+    },
+    {
+      id: 2,
+      title: "Qualidade Premium",
+      subtitle: "Materiais Superiores",
+      description:
+        "Construção robusta em aço e alumínio com acabamento impecável. Cada detalhe pensado para durabilidade e estética profissional.",
+      color: "#f7931e",
+      icon: "✓",
+    },
+    {
+      id: 3,
+      title: "Design Inovador",
+      subtitle: "RGB & Estilo",
+      description:
+        "Gabinetes modernos com suporte a RGB, vidro temperado e designs exclusivos que transformam seu setup em obra de arte.",
+      color: "#ff8c42",
+      icon: "✨",
+    },
+  ]
 
-  // ano atual para exibir no footer
-  currentYear: number = new Date().getFullYear();
+  destaquesGabinetes: Gabinete[] = []
+  todosGabinetes: Gabinete[] = []
+  loading = true
+  erro = ""
+  carouselIndex = 0
+  autoPlayInterval: any
 
-  // exemplo de produtos
-  products: Product[] = [
-    { id: 1, title: 'Gabinete Gamer Alpha', subtitle: 'Mid-Tower | RGB', img: 'assets/gabinete1.png', price: 'R$ 599,00', badge: 'Novo', description: 'Fluxo de ar otimizado e painéis em vidro temperado.' },
-    { id: 2, title: 'Gabinete Thunder', subtitle: 'Full-Tower | Silence', img: 'assets/gabinete2.png', price: 'R$ 749,00', badge: 'Promo', description: 'Isolamento acústico e suporte a placas E-ATX.' },
-    { id: 3, title: 'Gabinete Compact', subtitle: 'Mini-ITX | Premium', img: 'assets/gabinete3.png', price: 'R$ 499,00', description: 'Design compacto com ótimo aproveitamento interno.' },
-    { id: 4, title: 'Gabinete Phantom', subtitle: 'Mid-Tower | RGB', img: 'assets/gabinete1.png', price: 'R$ 649,00', description: 'Painel frontal ventilado e suporte para 360mm.' },
-  ];
+  categorias = [
+    { nome: "Gabinetes", icone: "🖥️" },
+    { nome: "Placas de Vídeo", icone: "🎮" },
+    { nome: "Processadores", icone: "⚡" },
+    { nome: "Memórias RAM", icone: "💾" },
+    { nome: "Armazenamento", icone: "💿" },
+    { nome: "Periféricos", icone: "⌨️" },
+  ]
+  categoriaSelecionada = "Todos"
 
-  get filtered() {
-    const q = this.search.trim().toLowerCase();
-    return q ? this.products.filter(p => (p.title + ' ' + p.subtitle).toLowerCase().includes(q)) : this.products;
+  emailNewsletter = ""
+
+  marcas = [
+    { nome: "Corsair", logo: "/corsair-logo.jpg" },
+    { nome: "NZXT", logo: "/nzxt-logo.jpg" },
+    { nome: "Cooler Master", logo: "/cooler-master-logo.jpg" },
+    { nome: "Thermaltake", logo: "/thermaltake-logo.jpg" },
+    { nome: "Lian Li", logo: "/lian-li-logo.jpg" },
+  ]
+
+  estatisticas = [
+    { valor: "50k+", label: "Clientes Satisfeitos" },
+    { valor: "500+", label: "Produtos" },
+    { valor: "98%", label: "Satisfação" },
+  ]
+
+  constructor(
+    private router: Router,
+    private gabineteService: GabineteService,
+    private carrinhoService: CarrinhoService,
+  ) {}
+
+  ngOnInit(): void {
+    this.carregarGabinetes()
   }
 
-  onLike(product: Product) {
-    console.log('Liked', product.id);
-  }
-
-  onShare(product: Product) {
-    if ((navigator as any).share) {
-      (navigator as any).share({
-        title: product.title,
-        text: product.subtitle,
-        url: location.href
-      }).catch(() => {});
-    } else {
-      navigator.clipboard?.writeText(location.href + `#product-${product.id}`);
+  ngOnDestroy(): void {
+    if (this.autoPlayInterval) {
+      clearInterval(this.autoPlayInterval)
     }
+  }
+
+  carregarGabinetes(): void {
+    this.loading = true
+    this.erro = ""
+
+    this.gabineteService.listarTodos().subscribe({
+      next: (gabinetes) => {
+        this.todosGabinetes = gabinetes
+        this.destaquesGabinetes = gabinetes.slice(0, 4)
+        this.iniciarAutoPlay()
+        this.loading = false
+      },
+      error: (error) => {
+        console.error("[v0] Error loading gabinetes:", error)
+        this.erro = "Erro ao carregar produtos. Tente novamente mais tarde."
+        this.loading = false
+      },
+    })
+  }
+
+  iniciarAutoPlay(): void {
+    if (this.autoPlayInterval) {
+      clearInterval(this.autoPlayInterval)
+    }
+    this.autoPlayInterval = setInterval(() => {
+      this.proximoBeneficio()
+    }, 5000)
+  }
+
+  proximoBeneficio(): void {
+    this.carouselIndex = (this.carouselIndex + 1) % this.benefitCards.length
+    this.resetarAutoPlay()
+  }
+
+  beneficioAnterior(): void {
+    this.carouselIndex = (this.carouselIndex - 1 + this.benefitCards.length) % this.benefitCards.length
+    this.resetarAutoPlay()
+  }
+
+  irParaBeneficio(index: number): void {
+    this.carouselIndex = index
+    this.resetarAutoPlay()
+  }
+
+  resetarAutoPlay(): void {
+    if (this.autoPlayInterval) {
+      clearInterval(this.autoPlayInterval)
+    }
+    this.iniciarAutoPlay()
+  }
+
+  verDetalhes(produtoId: number | undefined): void {
+    if (produtoId) {
+      this.router.navigate(["/produto", produtoId])
+    }
+  }
+
+  adicionarAoCarrinho(produto: Gabinete): void {
+    if (!produto.id) {
+      alert("Erro: Produto inválido.")
+      return
+    }
+
+    const itemCarrinho: ItemCarrinho = {
+      id: produto.id,
+      produto: produto,
+      quantidade: 1,
+    }
+
+    this.carrinhoService.adicionarItem(itemCarrinho)
+
+    // Feedback visual
+    alert(`${produto.nomeExibicao} adicionado ao carrinho!`)
+  }
+
+  selecionarCategoria(categoria: string): void {
+    this.categoriaSelecionada = categoria
+    console.log("[v0] Category selected:", categoria)
+    this.router.navigate(["/produtos"], { queryParams: { categoria } })
+  }
+
+  inscreverNewsletter(): void {
+    if (this.emailNewsletter && this.emailNewsletter.includes("@")) {
+      console.log("[v0] Newsletter subscription:", this.emailNewsletter)
+      alert("Obrigado por se inscrever! Você receberá nossas novidades em breve.")
+      this.emailNewsletter = ""
+    } else {
+      alert("Por favor, insira um email válido.")
+    }
+  }
+
+  irParaProdutos(): void {
+    this.router.navigate(["/produtos"])
+  }
+
+  scrollToDestaques(): void {
+    const element = document.querySelector(".destaques-modern")
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth", block: "start" })
+    }
+  }
+
+  filtrarPorCategoria(categoria: string): void {
+    console.log("[v0] Filtering by category:", categoria)
+    this.router.navigate(["/produtos"], { queryParams: { categoria } })
   }
 }
