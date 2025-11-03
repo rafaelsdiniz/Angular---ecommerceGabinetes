@@ -4,7 +4,7 @@
     <div class="navbar-brand">
       <a routerLink="/admin/home" class="brand-link">
         <div class="brand-icon-wrapper">
-          <span class="brand-icon">A</span>
+          <span class="brand-icon">⚙️</span>
         </div>
         <span class="brand-text">Admin</span>
       </a>
@@ -24,6 +24,7 @@
           [routerLinkActiveOptions]="{ exact: false }"
           class="nav-link"
           (click)="closeMenu()">
+          <mat-icon class="nav-icon">{{ item.icon }}</mat-icon>
           <span class="nav-label">{{ item.label }}</span>
         </a>
       </li>
@@ -31,9 +32,9 @@
 
     <!-- User Section -->
     <div class="navbar-user">
-      <button class="user-btn" (click)="closeMenu()" title="Perfil do usuário">
-        <span class="user-avatar">U</span>
-        <span class="user-text">Usuário</span>
+      <button class="user-btn" title="Perfil do usuário">
+        <span class="user-avatar">👤</span>
+        <span class="user-text">Admin</span>
       </button>
     </div>
   </div>

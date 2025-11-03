@@ -1,5 +1,5 @@
-/* Clean white design with minimal orange accents */
-.page-container {
+/* Padronizando estoque com Material Design consistente */
+.category-form {
   min-height: 100vh;
   background: #f5f5f5;
   padding: 2rem;
@@ -7,96 +7,75 @@
   justify-content: center;
 }
 
-.form-container {
+.container {
   width: 100%;
-  max-width: 600px;
-}
-
-.form-header {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 2rem;
-}
-
-.back-btn {
-  color: #666;
-  transition: all 0.2s ease;
-}
-
-.back-btn:hover {
-  color: #ff6500;
-  background: #fff5ed;
-}
-
-.form-title {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #1a1a1a;
-  margin: 0;
-}
-
-.loading-state {
-  display: flex;
-  justify-content: center;
-  padding: 4rem 2rem;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-::ng-deep .loading-state .mat-mdc-progress-spinner circle {
-  stroke: #ff6500;
+  max-width: 700px;
 }
 
 .form-card {
   background: white;
   border-radius: 12px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.form-header {
+  background: white;
+  padding: 2rem;
+  border-bottom: 2px solid #ff6500;
+}
+
+.form-header h2 {
+  margin: 0;
+  color: #1a1a1a;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.form-body {
   padding: 2rem;
 }
 
-.form-field {
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #333;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.form-control {
   width: 100%;
-  margin-bottom: 1.5rem;
-}
-
-::ng-deep .form-field .mat-mdc-text-field-wrapper {
-  background: #fafafa;
-}
-
-::ng-deep .form-field.mat-focused .mdc-notched-outline__leading,
-::ng-deep .form-field.mat-focused .mdc-notched-outline__notch,
-::ng-deep .form-field.mat-focused .mdc-notched-outline__trailing {
-  border-color: #ff6500 !important;
-}
-
-::ng-deep .form-field.mat-focused .mat-mdc-floating-label {
-  color: #ff6500 !important;
-}
-
-::ng-deep .form-field .mat-mdc-form-field-icon-prefix {
-  color: #999;
-  margin-right: 12px;
-}
-
-.error-alert {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 1rem;
-  background: #fef2f2;
-  border: 1px solid #fecaca;
+  padding: 0.75rem 1rem;
+  border: 1px solid #e5e5e5;
   border-radius: 8px;
-  color: #dc2626;
-  margin-bottom: 1.5rem;
-  font-size: 0.875rem;
+  background: #fafafa;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  font-family: inherit;
 }
 
-.error-alert mat-icon {
-  font-size: 20px;
-  width: 20px;
-  height: 20px;
+.form-control:focus {
+  outline: none;
+  border-color: #ff6500;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(255, 101, 0, 0.1);
+}
+
+.form-control.is-invalid {
+  border-color: #dc2626;
+  background: #fef2f2;
+}
+
+.invalid-feedback {
+  display: block;
+  color: #dc2626;
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
 }
 
 .form-actions {
@@ -108,64 +87,56 @@
   border-top: 1px solid #e5e5e5;
 }
 
-.cancel-btn,
-.save-btn {
+.btn {
   height: 44px;
   padding: 0 24px;
-  font-weight: 600;
+  border: none;
   border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
   transition: all 0.2s ease;
+  font-size: 1rem;
+  min-width: 120px;
 }
 
-.cancel-btn {
+.btn-save {
+  background: #ff6500;
+  color: white;
+}
+
+.btn-save:hover {
+  background: #ff7a1a;
+  box-shadow: 0 2px 8px rgba(255, 101, 0, 0.25);
+}
+
+.btn-cancel {
   border: 1px solid #e5e5e5;
   color: #666;
+  background: white;
 }
 
-.cancel-btn:hover:not([disabled]) {
+.btn-cancel:hover {
   border-color: #ff6500;
   color: #ff6500;
   background: #fff5ed;
 }
 
-.save-btn {
-  background: #ff6500;
-  color: white;
-}
-
-.save-btn:hover:not([disabled]) {
-  background: #ff7a1a;
-  box-shadow: 0 2px 8px rgba(255, 101, 0, 0.25);
-}
-
-.save-btn[disabled] {
-  opacity: 0.6;
-}
-
-.btn-spinner {
-  display: inline-block;
-  margin-right: 8px;
-}
-
-::ng-deep .btn-spinner circle {
-  stroke: white;
-}
-
 @media (max-width: 768px) {
-  .page-container {
+  .category-form {
     padding: 1rem;
   }
 
-  .form-card {
+  .form-body {
     padding: 1.5rem;
   }
 
   .form-actions {
     flex-direction: column-reverse;
+    gap: 0.75rem;
   }
 
-  .cancel-btn,
-  .save-btn {
+  .btn {
     width: 100%;
+    min-width: auto;
   }
 }

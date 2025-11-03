@@ -6,7 +6,7 @@
 }
 
 .login-banner {
-  background: #003366;
+  background: linear-gradient(135deg, #ff6b35 0%, #ff8555 100%);
   color: white;
   padding: 40px 20px;
   text-align: center;
@@ -72,8 +72,8 @@
 
 .form-group input:focus {
   outline: none;
-  border-color: #003366;
-  box-shadow: 0 0 0 3px rgba(0, 51, 102, 0.1);
+  border-color: #ff6b35;
+  box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
 }
 
 .password-input-wrapper {
@@ -113,7 +113,7 @@
 .btn-submit {
   width: 100%;
   padding: 14px;
-  background: #003366;
+  background: linear-gradient(135deg, #ff6b35 0%, #ff8555 100%);
   color: white;
   border: none;
   border-radius: 6px;
@@ -126,7 +126,7 @@
 
 .btn-submit:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(0, 51, 102, 0.4);
+  box-shadow: 0 5px 15px rgba(255, 107, 53, 0.4);
 }
 
 .btn-submit:disabled {
@@ -142,14 +142,14 @@
 }
 
 .link-criar-conta a {
-  color: #003366;
+  color: #ff6b35;
   text-decoration: none;
   font-weight: 600;
   transition: color 0.2s;
 }
 
 .link-criar-conta a:hover {
-  color: #002244;
+  color: #e55a28;
   text-decoration: underline;
 }
 

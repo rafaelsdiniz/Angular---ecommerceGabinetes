@@ -97,11 +97,11 @@ export class MarcaListComponent implements OnInit {
   }
 
   novaMarca(): void {
-    this.router.navigate(["/marcas/form"]);
+    this.router.navigate(["admin/marcas/form"]);
   }
 
   editarMarca(id: number): void {
-    this.router.navigate(["/marcas/form", id]);
+    this.router.navigate(["admin/marcas/form", id]);
   }
 
   excluirMarca(id: number): void {

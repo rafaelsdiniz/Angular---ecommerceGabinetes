@@ -1,79 +1,78 @@
-import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http"
-import { Injectable } from "@angular/core"
-import { Observable } from "rxjs"
-import { Gabinete } from "../models/gabinete.model"
+// src/app/services/gabinete.service.ts
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { Gabinete } from '../models/gabinete.model';
+import { AuthService } from './auth.service';
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root'
 })
 export class GabineteService {
-  private apiUrl = "http://localhost:8080/gabinetes"
+  private apiUrl = 'http://localhost:8080/gabinetes';
 
-  private token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJ1bml0aW5zLWp3dCIsInN1YiI6InJhZmFlbCIsImdyb3VwcyI6WyJBZG0iXSwiZXhwIjoxNzY0NTI5MjA4LCJpYXQiOjE3NjE5MzcyMDgsImp0aSI6ImI4NWZiOTg2LTY1MTktNDJkMi1hZDZjLTc1ZGEyNjZmZGUzZCJ9.C2d5iGEasDXQ-JBJw6EbE6vkeOk35sf45dTx4SUXsnD0xLdflAbCcS25SJP7KDS3fHY6lQDFEewU82se6Hbi_17bf_R1F8RtPS42-aYZde-HOaEyN1gli1ZrIu4wOeRvU_vymgKGRboldJWu2qalktXE5VBrQzNXEOUjK2K9bcfHa3vEoMsPWlUTj_1fJBBp9_Qp4zgGJXx3NKa5Q22J6UPWCOwbDDzS10X47WF-8vbiRaO89fOJ1JSNzuGOALtkUhwdUMpHERAkTnZ89081kCyQL1Zw1-mo5fPYUnTuAH8-x7-nOGGDpqkoZ_vc4gErl_mvdyaivMtPrtHTUEyviA';
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
-  private httpOptions = {
-    headers: new HttpHeaders({
-      'Authorization': `Bearer ${this.token}`
-    })
-  };
-
-  constructor(private http: HttpClient) {}
+  private getHeaders(): HttpHeaders {
+    const token = this.authService.obterToken();
+    return new HttpHeaders({ 'Authorization': `Bearer ${token}` });
+  }
 
   listarTodos(): Observable<Gabinete[]> {
-    return this.http.get<Gabinete[]>(this.apiUrl)
+    return this.http.get<Gabinete[]>(this.apiUrl, { headers: this.getHeaders() });
   }
 
   salvar(gabinete: Gabinete): Observable<Gabinete> {
-    return this.http.post<Gabinete>(this.apiUrl, gabinete)
+    return this.http.post<Gabinete>(this.apiUrl, gabinete, { headers: this.getHeaders() });
   }
 
   buscarPorId(id: number): Observable<Gabinete> {
-    return this.http.get<Gabinete>(`${this.apiUrl}/${id}`)
+    return this.http.get<Gabinete>(`${this.apiUrl}/${id}`, { headers: this.getHeaders() });
   }
 
   atualizar(id: number, gabinete: Gabinete): Observable<Gabinete> {
-    return this.http.put<Gabinete>(`${this.apiUrl}/${id}`, gabinete)
+    return this.http.put<Gabinete>(`${this.apiUrl}/${id}`, gabinete, { headers: this.getHeaders() });
   }
 
   deletar(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`)
+    return this.http.delete<void>(`${this.apiUrl}/${id}`, { headers: this.getHeaders() });
   }
 
   buscarPorMarca(marca: string): Observable<Gabinete[]> {
-    const params = new HttpParams().set("marca", marca)
-    return this.http.get<Gabinete[]>(`${this.apiUrl}/marca`, { params })
+    const params = new HttpParams().set('marca', marca);
+    return this.http.get<Gabinete[]>(`${this.apiUrl}/marca`, { headers: this.getHeaders(), params });
   }
 
   buscarPorFaixaPreco(precoMin: number, precoMax: number): Observable<Gabinete[]> {
-    const params = new HttpParams().set("precoMin", precoMin.toString()).set("precoMax", precoMax.toString())
-    return this.http.get<Gabinete[]>(`${this.apiUrl}/faixa-preco`, { params })
+    const params = new HttpParams().set('precoMin', precoMin.toString()).set('precoMax', precoMax.toString());
+    return this.http.get<Gabinete[]>(`${this.apiUrl}/faixa-preco`, { headers: this.getHeaders(), params });
   }
 
   buscarPorCor(cor: string): Observable<Gabinete[]> {
-    const params = new HttpParams().set("cor", cor)
-    return this.http.get<Gabinete[]>(`${this.apiUrl}/cor`, { params })
+    const params = new HttpParams().set('cor', cor);
+    return this.http.get<Gabinete[]>(`${this.apiUrl}/cor`, { headers: this.getHeaders(), params });
   }
 
   buscarPorFormato(formato: string): Observable<Gabinete[]> {
-    const params = new HttpParams().set("formato", formato)
-    return this.http.get<Gabinete[]>(`${this.apiUrl}/formato`, { params })
+    const params = new HttpParams().set('formato', formato);
+    return this.http.get<Gabinete[]>(`${this.apiUrl}/formato`, { headers: this.getHeaders(), params });
   }
 
   buscarPorNome(nome: string): Observable<Gabinete[]> {
-    const params = new HttpParams().set("nome", nome)
-    return this.http.get<Gabinete[]>(`${this.apiUrl}/nome`, { params })
+    const params = new HttpParams().set('nome', nome);
+    return this.http.get<Gabinete[]>(`${this.apiUrl}/nome`, { headers: this.getHeaders(), params });
   }
 
   buscarPorCategoria(categoriaId: number): Observable<Gabinete[]> {
-    return this.http.get<Gabinete[]>(`${this.apiUrl}/categoria/${categoriaId}`)
+    return this.http.get<Gabinete[]>(`${this.apiUrl}/categoria/${categoriaId}`, { headers: this.getHeaders() });
   }
 
   listarOrdenadoPorPreco(crescente = true): Observable<Gabinete[]> {
-    const params = new HttpParams().set("crescente", crescente.toString())
-    return this.http.get<Gabinete[]>(`${this.apiUrl}/ordenado-preco`, { params })
+    const params = new HttpParams().set('crescente', crescente.toString());
+    return this.http.get<Gabinete[]>(`${this.apiUrl}/ordenado-preco`, { headers: this.getHeaders(), params });
   }
 
   listarOrdenadoPorNome(): Observable<Gabinete[]> {
-    return this.http.get<Gabinete[]>(`${this.apiUrl}/ordenado-nome`)
+    return this.http.get<Gabinete[]>(`${this.apiUrl}/ordenado-nome`, { headers: this.getHeaders() });
   }
 }

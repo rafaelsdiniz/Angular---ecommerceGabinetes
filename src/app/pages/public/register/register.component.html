@@ -12,53 +12,25 @@
       <!-- Nome -->
       <div class="form-group">
         <label for="nome">Nome Completo</label>
-        <input
-          id="nome"
-          type="text"
-          [(ngModel)]="nome"
-          name="nome"
-          placeholder="Digite seu nome completo"
-          required
-        />
+        <input id="nome" type="text" [(ngModel)]="nome" name="nome" placeholder="Digite seu nome completo" required />
       </div>
 
       <!-- Email -->
       <div class="form-group">
         <label for="email">Email</label>
-        <input
-          id="email"
-          type="email"
-          [(ngModel)]="email"
-          name="email"
-          placeholder="seu@email.com"
-          required
-        />
+        <input id="email" type="email" [(ngModel)]="email" name="email" placeholder="seu@email.com" required />
       </div>
 
       <!-- Telefone -->
       <div class="form-group">
         <label for="telefone">Telefone</label>
-        <input
-          id="telefone"
-          type="tel"
-          [(ngModel)]="telefone"
-          name="telefone"
-          placeholder="(11) 99999-9999"
-          required
-        />
+        <input id="telefone" type="tel" [(ngModel)]="telefone" name="telefone" placeholder="(11) 99999-9999" required />
       </div>
 
       <!-- CPF -->
       <div class="form-group">
         <label for="cpf">CPF</label>
-        <input
-          id="cpf"
-          type="text"
-          [(ngModel)]="cpf"
-          name="cpf"
-          placeholder="12345678901"
-          required
-        />
+        <input id="cpf" type="text" [(ngModel)]="cpf" name="cpf" placeholder="12345678901" required />
       </div>
 
       <!-- Senha -->
@@ -108,8 +80,8 @@
 
           <div class="form-row">
             <div class="form-group full">
-              <label>Rua</label>
-              <input type="text" [(ngModel)]="endereco.rua" [name]="'rua_' + i" required />
+              <label>Bairro</label>
+              <input type="text" [(ngModel)]="endereco.bairro" [name]="'bairro_' + i" required />
             </div>
           </div>
 
@@ -139,12 +111,7 @@
             </div>
           </div>
 
-          <button
-            type="button"
-            *ngIf="enderecos.length > 1"
-            (click)="removerEndereco(i)"
-            class="btn-remover-endereco"
-          >
+          <button type="button" *ngIf="enderecos.length > 1" (click)="removerEndereco(i)" class="btn-remover-endereco">
             Remover Endereço
           </button>
         </div>

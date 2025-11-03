@@ -69,12 +69,12 @@ export class MarcaFormComponent implements OnInit {
         : this.marcaService.salvar(this.marca)
 
     req$.pipe(finalize(() => (this.salvando = false))).subscribe({
-      next: () => this.router.navigate(["/marcas"]),
+      next: () => this.router.navigate(["admin/marcas"]),
       error: () => (this.erro = "Não foi possível salvar a marca."),
     })
   }
 
   cancelar(): void {
-    this.router.navigate(["/marcas"])
+    this.router.navigate(["admin/marcas"])
   }
 }

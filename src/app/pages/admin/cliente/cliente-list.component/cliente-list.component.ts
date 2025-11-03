@@ -57,7 +57,7 @@ export class CustomPaginatorIntl extends MatPaginatorIntl {
   styleUrls: ["./cliente-list.component.css"],
 })
 export class ClienteListComponent implements OnInit, AfterViewInit {
-  displayedColumns: string[] = ["id", "nome", "email", "telefone", "cpf", "acoes"]
+  displayedColumns: string[] = ["id", "nome", "email", "telefone", "cpf", "perfil", "acoes"]
   dataSource = new MatTableDataSource<Cliente>()
   carregando = true
 
@@ -85,7 +85,7 @@ export class ClienteListComponent implements OnInit, AfterViewInit {
         this.dataSource.data = data
         this.carregando = false
         this.dataSource.filterPredicate = (data: Cliente, filter: string) => {
-          const dataStr = data.nome + " " + data.email + " " + data.telefone + " " + data.cpf
+          const dataStr = data.nome + " " + data.email + " " + data.telefone + " " + data.cpf + " " + data.perfil
           return dataStr.toLowerCase().includes(filter)
         }
       },
@@ -108,7 +108,7 @@ export class ClienteListComponent implements OnInit, AfterViewInit {
 
   editarCliente(id?: number): void {
     if (id) {
-      this.router.navigate(["/clientes/form", id])
+      this.router.navigate(["admin/clientes/form", id])
     }
   }
 

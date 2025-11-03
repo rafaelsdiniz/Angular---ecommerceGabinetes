@@ -1,8 +1,9 @@
 // src/app/services/estoque.service.ts
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import type { Estoque } from '../models/estoque.model';
+import { Estoque } from '../models/estoque.model';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,53 +11,50 @@ import type { Estoque } from '../models/estoque.model';
 export class EstoqueService {
   private apiUrl = 'http://localhost:8080/estoques';
 
-  private token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJ1bml0aW5zLWp3dCIsInN1YiI6InJhZmFlbCIsImdyb3VwcyI6WyJBZG0iXSwiZXhwIjoxNzY0NTI5MjA4LCJpYXQiOjE3NjE5MzcyMDgsImp0aSI6ImI4NWZiOTg2LTY1MTktNDJkMi1hZDZjLTc1ZGEyNjZmZGUzZCJ9.C2d5iGEasDXQ-JBJw6EbE6vkeOk35sf45dTx4SUXsnD0xLdflAbCcS25SJP7KDS3fHY6lQDFEewU82se6Hbi_17bf_R1F8RtPS42-aYZde-HOaEyN1gli1ZrIu4wOeRvU_vymgKGRboldJWu2qalktXE5VBrQzNXEOUjK2K9bcfHa3vEoMsPWlUTj_1fJBBp9_Qp4zgGJXx3NKa5Q22J6UPWCOwbDDzS10X47WF-8vbiRaO89fOJ1JSNzuGOALtkUhwdUMpHERAkTnZ89081kCyQL1Zw1-mo5fPYUnTuAH8-x7-nOGGDpqkoZ_vc4gErl_mvdyaivMtPrtHTUEyviA';
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
-  private httpOptions = {
-    headers: new HttpHeaders({
-      'Authorization': `Bearer ${this.token}`
-    })
-  };
-
-  constructor(private http: HttpClient) {}
+  private getHeaders(): HttpHeaders {
+    const token = this.authService.obterToken();
+    return new HttpHeaders({ 'Authorization': `Bearer ${token}` });
+  }
 
   listarTodos(): Observable<Estoque[]> {
-    return this.http.get<Estoque[]>(this.apiUrl);
+    return this.http.get<Estoque[]>(this.apiUrl, { headers: this.getHeaders() });
   }
 
   buscarPorId(id: number): Observable<Estoque> {
-    return this.http.get<Estoque>(`${this.apiUrl}/${id}`);
+    return this.http.get<Estoque>(`${this.apiUrl}/${id}`, { headers: this.getHeaders() });
   }
 
   buscarPorGabineteId(gabineteId: number): Observable<Estoque> {
-    return this.http.get<Estoque>(`${this.apiUrl}/gabinete/${gabineteId}`);
+    return this.http.get<Estoque>(`${this.apiUrl}/gabinete/${gabineteId}`, { headers: this.getHeaders() });
   }
 
   salvar(estoque: Estoque): Observable<Estoque> {
-    return this.http.post<Estoque>(this.apiUrl, estoque);
+    return this.http.post<Estoque>(this.apiUrl, estoque, { headers: this.getHeaders() });
   }
 
   atualizar(id: number, estoque: Estoque): Observable<Estoque> {
-    return this.http.put<Estoque>(`${this.apiUrl}/${id}`, estoque);
+    return this.http.put<Estoque>(`${this.apiUrl}/${id}`, estoque, { headers: this.getHeaders() });
   }
 
   deletar(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+    return this.http.delete<void>(`${this.apiUrl}/${id}`, { headers: this.getHeaders() });
   }
 
   adicionarEstoque(gabineteId: number, quantidade: number): Observable<Estoque> {
-    return this.http.post<Estoque>(`${this.apiUrl}/adicionar/${gabineteId}?quantidade=${quantidade}`, {});
+    return this.http.post<Estoque>(`${this.apiUrl}/adicionar/${gabineteId}?quantidade=${quantidade}`, {}, { headers: this.getHeaders() });
   }
 
   removerEstoque(gabineteId: number, quantidade: number): Observable<Estoque> {
-    return this.http.post<Estoque>(`${this.apiUrl}/remover/${gabineteId}?quantidade=${quantidade}`, {});
+    return this.http.post<Estoque>(`${this.apiUrl}/remover/${gabineteId}?quantidade=${quantidade}`, {}, { headers: this.getHeaders() });
   }
 
   verificarDisponibilidade(gabineteId: number, quantidadeDesejada: number): Observable<boolean> {
-    return this.http.get<boolean>(`${this.apiUrl}/disponivel/${gabineteId}?quantidade=${quantidadeDesejada}`);
+    return this.http.get<boolean>(`${this.apiUrl}/disponivel/${gabineteId}?quantidade=${quantidadeDesejada}`, { headers: this.getHeaders() });
   }
 
   listarEstoqueBaixo(quantidadeMinima: number): Observable<Estoque[]> {
-    return this.http.get<Estoque[]>(`${this.apiUrl}/baixo?quantidadeMinima=${quantidadeMinima}`);
+    return this.http.get<Estoque[]>(`${this.apiUrl}/baixo?quantidadeMinima=${quantidadeMinima}`, { headers: this.getHeaders() });
   }
 }

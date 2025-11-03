@@ -12,6 +12,8 @@ import { Cliente } from "../../../../models/cliente.model"
 import { finalize } from "rxjs/operators"
 import { ClienteService } from "../../../../services/cliente.service"
 import { ActivatedRoute, Router, RouterModule } from "@angular/router"
+import { MatSelectModule } from "@angular/material/select"  // <-- necessário
+import { MatOptionModule } from "@angular/material/core"
 
 @Component({
   selector: "app-cliente-form",
@@ -27,6 +29,8 @@ import { ActivatedRoute, Router, RouterModule } from "@angular/router"
     MatIconModule,
     MatProgressSpinnerModule,
     MatDividerModule,
+    MatSelectModule, // <-- adicionado
+    MatOptionModule
   ],
   templateUrl: "./cliente-form.component.html",
   styleUrls: ["./cliente-form.component.css"],
@@ -37,7 +41,8 @@ export class ClienteFormComponent implements OnInit {
     email: "",
     telefone: "",
     cpf: "",
-    endereco: [],
+    perfil: "CLIENTE",
+    enderecos: [],
   }
   carregando = false
   salvando = false
@@ -70,10 +75,10 @@ export class ClienteFormComponent implements OnInit {
   }
 
   adicionarEndereco(): void {
-    if (!this.cliente.endereco) {
-      this.cliente.endereco = []
+    if (!this.cliente.enderecos) {
+      this.cliente.enderecos = []
     }
-    this.cliente.endereco.push({
+    this.cliente.enderecos.push({
       estado: "",
       cidade: "",
       bairro: "",
@@ -84,8 +89,8 @@ export class ClienteFormComponent implements OnInit {
   }
 
   removerEndereco(index: number): void {
-    if (this.cliente.endereco) {
-      this.cliente.endereco.splice(index, 1)
+    if (this.cliente.enderecos) {
+      this.cliente.enderecos.splice(index, 1)
     }
   }
 
@@ -104,7 +109,7 @@ export class ClienteFormComponent implements OnInit {
         : this.clienteService.criar(this.cliente)
 
     req$.pipe(finalize(() => (this.salvando = false))).subscribe({
-      next: () => this.router.navigate(["/clientes"]),
+      next: () => this.router.navigate(["admin/clientes"]),
       error: () => (this.erro = "Não foi possível salvar o cliente."),
     })
   }
@@ -119,6 +124,6 @@ export class ClienteFormComponent implements OnInit {
   }
 
   cancelar(): void {
-    this.router.navigate(["/clientes"])
+    this.router.navigate(["admin/clientes"])
   }
 }

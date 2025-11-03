@@ -2,11 +2,11 @@
   display: flex;
   flex-direction: column;
   min-height: calc(100vh - 80px);
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: #f5f5f5;
 }
 
 .register-banner {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #ff6b35 0%, #ff8555 100%);
   color: white;
   padding: 40px 20px;
   text-align: center;
@@ -69,8 +69,8 @@
 
 .form-group input:focus {
   outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  border-color: #ff6b35;
+  box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
 }
 
 .form-group input:disabled {
@@ -135,7 +135,7 @@
   padding: 20px;
   background: #f9f9f9;
   border-radius: 8px;
-  border-left: 4px solid #667eea;
+  border-left: 4px solid #ff6b35;
 }
 
 .endereco-section h3 {
@@ -154,7 +154,7 @@
 
 .endereco-title {
   font-weight: 600;
-  color: #667eea;
+  color: #ff6b35;
   margin-bottom: 15px;
   font-size: 0.95rem;
 }
@@ -178,7 +178,7 @@
 .btn-adicionar-endereco {
   margin-top: 12px;
   padding: 12px;
-  background: #667eea;
+  background: #ff6b35;
   color: white;
   border: none;
   border-radius: 6px;
@@ -189,7 +189,7 @@
 }
 
 .btn-adicionar-endereco:hover {
-  background: #5568d3;
+  background: #e55a28;
 }
 
 .form-group.checkbox {
@@ -224,7 +224,7 @@
 .btn-submit {
   width: 100%;
   padding: 14px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #ff6b35 0%, #ff8555 100%);
   color: white;
   border: none;
   border-radius: 6px;
@@ -236,7 +236,7 @@
 
 .btn-submit:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 5px 15px rgba(255, 107, 53, 0.4);
 }
 
 .btn-submit:disabled {
@@ -252,14 +252,14 @@
 }
 
 .link-login a {
-  color: #667eea;
+  color: #ff6b35;
   text-decoration: none;
   font-weight: 600;
   transition: color 0.2s;
 }
 
 .link-login a:hover {
-  color: #764ba2;
+  color: #e55a28;
   text-decoration: underline;
 }
 

@@ -2,16 +2,7 @@ import { Component } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { Router, RouterModule } from "@angular/router";
-import { AuthService, Cliente } from "../../../services/auth.service";
-
-interface Endereco {
-  rua: string;
-  numero: string;
-  complemento: string;
-  cidade: string;
-  estado: string;
-  cep: string;
-}
+import { AuthService, Cliente, Endereco, DadosRegistro } from "../../../services/auth.service";
 
 @Component({
   selector: "app-register",
@@ -27,7 +18,9 @@ export class RegisterComponent {
   cpf = "";
   senha = "";
   confirmarSenha = "";
-  enderecos: Endereco[] = [{ rua: "", numero: "", complemento: "", cidade: "", estado: "", cep: "" }];
+  enderecos: Endereco[] = [
+    { estado: "", cidade: "", bairro: "", cep: "", numero: "", complemento: "" },
+  ];
 
   erro = "";
   carregando = false;
@@ -60,7 +53,7 @@ export class RegisterComponent {
       return;
     }
 
-    if (this.enderecos.length === 0 || !this.enderecos[0].rua) {
+    if (this.enderecos.length === 0) {
       this.erro = "Pelo menos um endereço é obrigatório";
       return;
     }
@@ -82,23 +75,23 @@ export class RegisterComponent {
 
     this.carregando = true;
 
-    const novoCliente: Cliente = {
+    const dadosRegistro: DadosRegistro = {
       nome: this.nome,
       email: this.email,
       telefone: this.telefone.replace(/\D/g, ""),
       cpf: this.cpf.replace(/\D/g, ""),
-      perfil: "CLIENTE", // Sempre CLIENTE
+      senha: this.senha,
       enderecos: this.enderecos,
     };
 
-    this.authService.registrar({ ...novoCliente, senha: this.senha } as any).subscribe({
+    this.authService.registrar(dadosRegistro).subscribe({
       next: () => {
         this.router.navigate(["/login"], {
           queryParams: { message: "Conta criada com sucesso! Faça login para continuar." },
         });
       },
       error: (err) => {
-        console.error("[v0] Register error:", err);
+        console.error("[Register] Error:", err);
         this.erro = err.error?.message || "Erro ao criar conta. Tente novamente.";
         this.carregando = false;
       },
@@ -109,7 +102,7 @@ export class RegisterComponent {
   }
 
   adicionarEndereco(): void {
-    this.enderecos.push({ rua: "", numero: "", complemento: "", cidade: "", estado: "", cep: "" });
+    this.enderecos.push({ estado: "", cidade: "", bairro: "", cep: "", numero: "", complemento: "" });
   }
 
   removerEndereco(index: number): void {

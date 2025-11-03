@@ -1,5 +1,4 @@
 <div class="page-container">
-  <!-- Botão de adicionar -->
   <div class="toolbar">
     <button mat-fab extended class="btn-add" (click)="novoCliente()">
       <mat-icon>add</mat-icon>
@@ -8,7 +7,6 @@
   </div>
 
   <div class="content-card">
-    <!-- Campo de busca -->
     <div class="search-bar">
       <mat-form-field appearance="outline" class="search-input">
         <mat-icon matPrefix>search</mat-icon>
@@ -16,8 +14,7 @@
       </mat-form-field>
     </div>
 
-    <!-- Tabela -->
-    <div class="table-wrapper" *ngIf="!carregando; else loading">
+    <div *ngIf="!carregando; else loading" class="table-wrapper">
       <table mat-table [dataSource]="dataSource" matSort class="data-table">
 
         <!-- ID -->
@@ -31,7 +28,9 @@
         <!-- Nome -->
         <ng-container matColumnDef="nome">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Nome</th>
-          <td mat-cell *matCellDef="let row">{{ row.nome }}</td>
+          <td mat-cell *matCellDef="let row">
+            <span class="client-name">{{ row.nome }}</span>
+          </td>
         </ng-container>
 
         <!-- Email -->
@@ -52,19 +51,13 @@
           <td mat-cell *matCellDef="let row">{{ row.cpf }}</td>
         </ng-container>
 
-        <!-- Endereço -->
-        <ng-container matColumnDef="endereco">
-          <th mat-header-cell *matHeaderCellDef>Endereço</th>
+        <!-- Adicionado coluna de Perfil para identificar admin ou cliente -->
+        <ng-container matColumnDef="perfil">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Perfil</th>
           <td mat-cell *matCellDef="let row">
-            <div *ngIf="row.endereco && row.endereco.length > 0">
-              {{ row.endereco[0].cidade }} - {{ row.endereco[0].estado }}<br>
-              {{ row.endereco[0].bairro }}, {{ row.endereco[0].numero }}
-              <span *ngIf="row.endereco[0].complemento">({{ row.endereco[0].complemento }})</span><br>
-              CEP: {{ row.endereco[0].cep }}
-            </div>
-            <div *ngIf="!row.endereco || row.endereco.length === 0" class="no-endereco">
-              <em>Sem endereço</em>
-            </div>
+            <span class="perfil-badge" [class.admin]="row.perfil === 'ADMIN'" [class.cliente]="row.perfil === 'CLIENTE'">
+              {{ row.perfil || 'CLIENTE' }}
+            </span>
           </td>
         </ng-container>
 
@@ -83,13 +76,11 @@
           </td>
         </ng-container>
 
-        <!-- Linhas -->
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
-        <!-- Nenhum dado -->
         <tr class="mat-row" *matNoDataRow>
-          <td class="mat-cell" colspan="7">
+          <td class="mat-cell" [attr.colspan]="displayedColumns.length">
             <div class="empty-state">
               <mat-icon>inbox</mat-icon>
               <p>Nenhum cliente encontrado</p>
@@ -98,10 +89,9 @@
         </tr>
       </table>
 
-      <mat-paginator [pageSizeOptions]="[5, 10, 25]" showFirstLastButtons></mat-paginator>
+      <mat-paginator [pageSizeOptions]="[5, 10, 25, 50]" showFirstLastButtons></mat-paginator>
     </div>
 
-    <!-- Carregando -->
     <ng-template #loading>
       <div class="loading-state">
         <mat-spinner diameter="48"></mat-spinner>

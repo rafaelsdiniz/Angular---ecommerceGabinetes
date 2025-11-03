@@ -101,7 +101,7 @@ export class PagamentoFormComponent implements OnInit {
     requisicao.subscribe({
       next: () => {
         this.salvando = false;
-        this.router.navigate(["/admin/pagamentos"]);
+        this.router.navigate(["/admin/pagamento"]);
       },
       error: (error: any) => {
         console.error("Erro ao salvar pagamento:", error);
@@ -111,6 +111,6 @@ export class PagamentoFormComponent implements OnInit {
   }
 
   cancelar(): void {
-    this.router.navigate(["/admin/pagamentos"]);
+    this.router.navigate(["/admin/pagamento"]);
   }
 }

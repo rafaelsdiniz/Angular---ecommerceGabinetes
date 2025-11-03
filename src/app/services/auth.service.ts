@@ -1,14 +1,14 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders, HttpResponse } from "@angular/common/http";
-import { Observable, BehaviorSubject, tap } from "rxjs";
+import { Observable, BehaviorSubject, tap, map } from "rxjs";
 
 export interface Endereco {
-  rua: string;
-  numero: string;
-  complemento: string;
-  cidade: string;
   estado: string;
+  cidade: string;
+  bairro: string;
   cep: string;
+  numero: string;
+  complemento?: string;
 }
 
 export interface Cliente {
@@ -17,7 +17,7 @@ export interface Cliente {
   email: string;
   telefone: string;
   cpf: string;
-  perfil?: string;       // ADMIN, CLIENTE
+  perfil: string; // ADMIN, CLIENTE
   enderecos?: Endereco[];
 }
 
@@ -45,22 +45,21 @@ export class AuthService {
   // ========================
   // LOGIN
   // ========================
-    login(email: string, senha: string): Observable<HttpResponse<Cliente>> {
-    const body = { email, senha };
-
+  login(email: string, senha: string): Observable<Cliente> {
     return this.http
-        .post<Cliente>(`${this.apiUrl}/auth`, body, { observe: 'response' })
-        .pipe(
-        tap((response) => {
-            const token = response.headers.get('Authorization');
-            if (token) {
+      .post<Cliente>(`${this.apiUrl}/auth`, { email, senha }, { observe: 'response' })
+      .pipe(
+        tap((resp: HttpResponse<Cliente>) => {
+          const token = resp.headers.get('Authorization')?.replace('Bearer ', '');
+          if (token) {
             this.salvarToken(token);
             this.isLogado$.next(true);
-            this.clienteLogado$.next(response.body ?? null);
-            }
-        })
-        );
-    }
+            this.clienteLogado$.next(resp.body ?? null);
+          }
+        }),
+        map((resp: HttpResponse<Cliente>) => resp.body!)
+      );
+  }
 
   // ========================
   // REGISTRO
@@ -81,66 +80,48 @@ export class AuthService {
   // ========================
   // PERFIL
   // ========================
-  getClienteLogado(): Observable<Cliente | null> {
-    const token = this.obterToken();
-    if (!token) throw new Error("Token não encontrado");
-
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`,
-    });
-
-    return this.http.get<Cliente>(`${this.apiUrl}/cliente/perfil`, { headers });
+  getCliente(): Observable<Cliente | null> {
+    return this.clienteLogado$.asObservable();
   }
 
-  carregarCliente(): void {
-    try {
-      this.getClienteLogado().subscribe({
-        next: (cliente) => {
-          this.clienteLogado$.next(cliente);
-        },
-        error: () => {
-          // Se falhar, mantém o cliente nulo
-        },
-      });
-    } catch {
-      // Token não disponível
-    }
-  }
-
-  private verificarLogin(): void {
-    if (this.estaLogado()) {
-      this.isLogado$.next(true);
-      this.carregarCliente();
-    }
-  }
-
-  // ========================
-  // OBSERVABLES
-  // ========================
   isLogado(): Observable<boolean> {
     return this.isLogado$.asObservable();
   }
 
-  getCliente(): Observable<Cliente | null> {
-    return this.clienteLogado$.asObservable();
+  carregarCliente(): void {
+    const token = this.obterToken();
+    if (!token) return;
+
+    const headers = new HttpHeaders({ Authorization: `Bearer ${token}` });
+    this.http.get<Cliente>(`${this.apiUrl}/clientes/perfil`, { headers }).subscribe({
+      next: (cliente) => this.clienteLogado$.next(cliente),
+      error: () => this.logout(),
+    });
   }
 
   // ========================
   // TOKEN
   // ========================
-  salvarToken(token: string): void {
-    localStorage.setItem("token", token);
-  }
-
   obterToken(): string | null {
-    return localStorage.getItem("token");
+    return localStorage.getItem('token');
   }
 
-  removerToken(): void {
-    localStorage.removeItem("token");
+  private salvarToken(token: string) {
+    localStorage.setItem('token', token);
+  }
+
+  private removerToken() {
+    localStorage.removeItem('token');
   }
 
   estaLogado(): boolean {
     return !!this.obterToken();
+  }
+
+  private verificarLogin() {
+    if (this.estaLogado()) {
+      this.isLogado$.next(true);
+      this.carregarCliente();
+    }
   }
 }

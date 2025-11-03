@@ -1,0 +1,73 @@
+<div class="dashboard-container">
+  <div class="dashboard-header">
+    <h1>Meu Perfil</h1>
+    <p class="header-subtitle">Gerencie seus dados, pedidos e endereços</p>
+  </div>
+
+  <div class="dashboard-content">
+    <!-- Sidebar -->
+    <aside class="dashboard-sidebar">
+      <button class="tab-button" [class.ativo]="tabAtiva === 'dados'" (click)="trocarAba('dados')">
+        <span>Dados Pessoais</span>
+      </button>
+      <button class="tab-button" [class.ativo]="tabAtiva === 'pedidos'" (click)="trocarAba('pedidos')">
+        <span>Meus Pedidos</span>
+      </button>
+      <button class="tab-button" [class.ativo]="tabAtiva === 'enderecos'" (click)="trocarAba('enderecos')">
+        <span>Endereços</span>
+      </button>
+    </aside>
+
+    <!-- Conteúdo principal -->
+    <main class="dashboard-main">
+      <!-- Dados Pessoais -->
+      <section *ngIf="tabAtiva === 'dados' && cliente">
+        <h2>Dados Pessoais</h2>
+        <div class="dados-card">
+          <p><strong>Nome:</strong> {{ cliente.nome || 'Não informado' }}</p>
+          <p><strong>Email:</strong> {{ cliente.email || 'Não informado' }}</p>
+          <p><strong>Telefone:</strong> {{ cliente.telefone || 'Não informado' }}</p>
+          <p><strong>CPF:</strong> {{ cliente.cpf || 'Não informado' }}</p>
+        </div>
+      </section>
+
+      <!-- Meus Pedidos -->
+      <section *ngIf="tabAtiva === 'pedidos'">
+        <h2>Meus Pedidos ({{ pedidos.length }})</h2>
+        <div *ngFor="let pedido of pedidos" class="pedido-card">
+          <div class="pedido-header">
+            <span>Pedido #{{ pedido.id }}</span>
+            <span [class]="'pedido-status ' + getStatusClass(pedido.status)">{{ pedido.status }}</span>
+          </div>
+          <div>
+            <span>Data: {{ formatarData(pedido.data) }}</span>
+            <span>Itens: {{ pedido.itens }}</span>
+            <span>Total: {{ formatarPreco(pedido.total) }}</span>
+          </div>
+        </div>
+        <p *ngIf="pedidos.length === 0">Você ainda não fez pedidos.</p>
+      </section>
+
+      <!-- Endereços -->
+      <section *ngIf="tabAtiva === 'enderecos'">
+        <h2>Meus Endereços</h2>
+
+        <div *ngIf="enderecos.length > 0; else semEnderecos">
+          <div *ngFor="let endereco of enderecos" class="endereco-card">
+            <p>{{ endereco.cidade }}, {{ endereco.numero }} - {{ endereco.bairro }}, {{ endereco.estado }}</p>
+            <div class="endereco-acoes">
+              <button class="btn-small">Editar</button>
+              <button class="btn-small btn-danger">Remover</button>
+            </div>
+          </div>
+        </div>
+
+        <ng-template #semEnderecos>
+          <p>Você ainda não possui endereços cadastrados.</p>
+        </ng-template>
+
+        <button class="btn-adicionar-endereco">+ Adicionar Novo Endereço</button>
+      </section>
+    </main>
+  </div>
+</div>

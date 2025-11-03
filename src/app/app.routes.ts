@@ -29,10 +29,11 @@ import { CartComponent } from "./pages/public/cart/cart.component"
 import { ContactComponent } from "./pages/public/contact/contact.component"
 import { RegisterComponent } from "./pages/public/register/register.component"
 import { LoginComponent } from "./pages/public/login/login.component"
+import { UserDashboardComponent } from "./pages/public/user-dashboard/user-dashboard.component"
 import { NoAuthGuard } from "./guards/no-auth.guard"
 import { AuthGuard } from "./guards/auth.guard"
 import { MarcaFormComponent } from "./pages/admin/marca/marca-form/marca-form"
-
+import { AdminGuard } from "./guards/admin.guard"
 
 export const routes: Routes = [
   {
@@ -46,6 +47,7 @@ export const routes: Routes = [
       { path: "sobre", component: AboutComponent },
       { path: "pagamento", component: PaymentComponent, canActivate: [AuthGuard] },
       { path: "carrinho", component: CartComponent, canActivate: [AuthGuard] },
+      { path: "perfil", component: UserDashboardComponent, canActivate: [AuthGuard] },
       { path: "contato", component: ContactComponent },
       { path: "registrar", component: RegisterComponent, canActivate: [NoAuthGuard] },
       { path: "login", component: LoginComponent, canActivate: [NoAuthGuard] },
@@ -55,7 +57,7 @@ export const routes: Routes = [
   {
     path: "admin",
     component: AdminLayoutComponent,
-    canActivate: [AuthGuard],
+    canActivate: [AdminGuard],
     children: [
       { path: "categorias", component: CategoriaListComponent },
       { path: "categorias/form", component: CategoriaFormComponent },

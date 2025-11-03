@@ -1,7 +1,7 @@
-import { Component, OnInit } from "@angular/core"
+import { Component, type OnInit } from "@angular/core"
 import { CommonModule } from "@angular/common"
 import { RouterModule } from "@angular/router"
-import { CarrinhoService } from "../../../services/carrinho.service"
+import { CarrinhoService, ItemCarrinho } from "../../../services/carrinho.service"
 
 @Component({
   selector: "app-cart",
@@ -11,7 +11,7 @@ import { CarrinhoService } from "../../../services/carrinho.service"
   styleUrl: "./cart.component.css",
 })
 export class CartComponent implements OnInit {
-  cartItems: any[] = []
+  cartItems: ItemCarrinho[] = []
 
   constructor(private carrinhoService: CarrinhoService) {}
 
@@ -32,7 +32,7 @@ export class CartComponent implements OnInit {
   }
 
   aumentarQuantidade(id: number): void {
-    const item = this.cartItems.find(i => i.id === id)
+    const item = this.cartItems.find((i) => i.id === id)
     if (item) {
       const novaQtd = item.quantidade + 1
       this.carrinhoService.atualizarQuantidade(id, novaQtd)
@@ -41,7 +41,7 @@ export class CartComponent implements OnInit {
   }
 
   diminuirQuantidade(id: number): void {
-    const item = this.cartItems.find(i => i.id === id)
+    const item = this.cartItems.find((i) => i.id === id)
     if (item && item.quantidade > 1) {
       const novaQtd = item.quantidade - 1
       this.carrinhoService.atualizarQuantidade(id, novaQtd)

@@ -82,7 +82,7 @@ export class PagamentoListComponent implements OnInit {
   }
 
   editar(id: number | undefined): void {
-    if (id) this.router.navigate(["/admin/pagamentos", id]);
+    if (id) this.router.navigate(["/admin/pagamento/form", id]);
   }
 
   deletar(id: number | undefined): void {
@@ -103,7 +103,7 @@ export class PagamentoListComponent implements OnInit {
   }
 
   novo(): void {
-    this.router.navigate(["/admin/pagamentos/novo"]);
+    this.router.navigate(["/admin/pagamento/form"]);
   }
 
   formatarValor(valor: number): string {

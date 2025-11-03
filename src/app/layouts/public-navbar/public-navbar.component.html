@@ -1,45 +1,91 @@
-<!-- Ações do usuário - LOGADO -->
-<ng-container *ngIf="isLogado">
-  <li class="navbar-item navbar-item-action">
-    <a
-      routerLink="/carrinho"
-      routerLinkActive="ativo"
-      class="navbar-link-icon"
-      (click)="fecharMenu()"
-      title="Carrinho"
-    >
-      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="9" cy="21" r="1"></circle>
-        <circle cx="20" cy="21" r="1"></circle>
-        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-      </svg>
-      <span class="icon-label">Carrinho</span>
-    </a>
-  </li>
+<!-- Refazendo navbar pública com novo layout moderno -->
+<nav class="navbar">
+  <div class="navbar-container">
+    <!-- Logo -->
+    <div class="navbar-logo">
+      <a routerLink="/" class="logo-link">
+        <span class="logo-text">RD GABINETES</span>
+      </a>
+    </div>
 
-  <li class="navbar-item navbar-item-action">
-    <a
-      routerLink="/perfil"
-      routerLinkActive="ativo"
-      class="navbar-link-perfil"
-      (click)="fecharMenu()"
-      title="Meu Perfil"
-    >
-      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-        <circle cx="12" cy="7" r="4"></circle>
-      </svg>
-      <span class="icon-label">{{ clienteNome }}</span>
-    </a>
-  </li>
+    <!-- Menu móvel toggle -->
+    <div class="hamburger" [class.ativo]="menuAberto" (click)="abrirFecharMenu()"></div>
 
-  <li class="navbar-item navbar-item-action">
-    <button
-      class="navbar-btn-logout"
-      (click)="logout()"
-      type="button"
-    >
-      Sair
-    </button>
-  </li>
-</ng-container>
+    <!-- Menu -->
+    <ul class="navbar-menu" [class.ativo]="menuAberto">
+      <!-- Links públicos -->
+      <li class="navbar-item">
+        <a routerLink="/produtos" routerLinkActive="ativo" class="navbar-link" (click)="fecharMenu()">
+          Produtos
+        </a>
+      </li>
+      <li class="navbar-item">
+        <a routerLink="/sobre" routerLinkActive="ativo" class="navbar-link" (click)="fecharMenu()">
+          Sobre
+        </a>
+      </li>
+      <li class="navbar-item">
+        <a routerLink="/contato" routerLinkActive="ativo" class="navbar-link" (click)="fecharMenu()">
+          Contato
+        </a>
+      </li>
+
+      <div class="navbar-divider"></div>
+
+      <!-- Ações do usuário - NÃO LOGADO -->
+      <ng-container *ngIf="!isLogado">
+        <li class="navbar-item">
+          <a routerLink="/login" class="navbar-btn-login" (click)="fecharMenu()">
+            Entrar
+          </a>
+        </li>
+        <li class="navbar-item">
+          <a routerLink="/registrar" class="navbar-btn-register" (click)="fecharMenu()">
+            Cadastro
+          </a>
+        </li>
+      </ng-container>
+
+      <!-- Ações do usuário - LOGADO -->
+      <ng-container *ngIf="isLogado">
+        <!-- Botão de admin - aparece apenas para admins -->
+        <li class="navbar-item navbar-item-action" *ngIf="isAdmin">
+          <button class="navbar-btn-admin" (click)="irParaAdmin()" type="button" title="Área de Administração">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z"></path>
+              <path d="M10 17l-3-3 1.41-1.41L10 14.17l3.59-3.58L15 12l-5 5z"></path>
+            </svg>
+            <span class="icon-label">Admin</span>
+          </button>
+        </li>
+
+        <li class="navbar-item navbar-item-action">
+          <a routerLink="/carrinho" routerLinkActive="ativo" class="navbar-link-icon" (click)="fecharMenu()" title="Carrinho">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="9" cy="21" r="1"></circle>
+              <circle cx="20" cy="21" r="1"></circle>
+              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+            </svg>
+            <span class="icon-label">Carrinho</span>
+          </a>
+        </li>
+
+        <li class="navbar-item navbar-item-action">
+          <a routerLink="/perfil" routerLinkActive="ativo" class="navbar-link-perfil" (click)="fecharMenu()" title="Meu Perfil">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            <span class="icon-label">{{ clienteNome }}</span>
+          </a>
+        </li>
+
+        <li class="navbar-item navbar-item-action">
+          <button class="navbar-btn-logout" (click)="logout()" type="button">
+            Sair
+          </button>
+        </li>
+      </ng-container>
+    </ul>
+  </div>
+</nav>

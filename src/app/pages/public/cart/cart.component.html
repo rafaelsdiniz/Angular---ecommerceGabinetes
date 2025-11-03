@@ -2,7 +2,7 @@
   <!-- Hero Section -->
   <section class="cart-hero">
     <div class="cart-hero-content">
-      <h1 class="cart-title">Meu Carrinho</h1>
+      <h1 class="cart-title">🛒 Meu Carrinho</h1>
       <p class="cart-subtitle">{{ totalItens }} item(ns) no carrinho</p>
     </div>
   </section>
@@ -21,13 +21,24 @@
 
         <div *ngIf="cartItems.length > 0" class="items-list">
           <div class="cart-item" *ngFor="let item of cartItems">
+            <!-- CHANGE: Exibir imagem ou placeholder com cor -->
             <div class="item-image">
-              <span>{{ item.imagem }}</span>
+              <img 
+                *ngIf="item.produto.imagemUrl" 
+                [src]="item.produto.imagemUrl" 
+                [alt]="item.produto.nomeExibicao"
+                class="product-img"
+              />
+              <div *ngIf="!item.produto.imagemUrl" class="image-placeholder">
+                <span class="placeholder-icon">📦</span>
+              </div>
             </div>
 
+            <!-- CHANGE: Mostrar nome e detalhes do produto -->
             <div class="item-details">
-              <h3>{{ item.nome }}</h3>
-              <p class="item-price">R$ {{ item.preco | number: '1.2-2' }}</p>
+              <h3>{{ item.produto.nomeExibicao }}</h3>
+              <p class="item-marca">{{ item.produto.marca }}</p>
+              <p class="item-price">R$ {{ item.produto.preco | number: '1.2-2' }}</p>
             </div>
 
             <div class="item-quantity">
@@ -37,7 +48,7 @@
             </div>
 
             <div class="item-subtotal">
-              <p>R$ {{ (item.preco * item.quantidade) | number: '1.2-2' }}</p>
+              <p>R$ {{ (item.produto.preco * item.quantidade) | number: '1.2-2' }}</p>
             </div>
 
             <button (click)="removerItem(item.id)" class="remove-btn">✕</button>
