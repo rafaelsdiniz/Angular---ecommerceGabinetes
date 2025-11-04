@@ -22,6 +22,7 @@ export class AdminNavbarComponent {
   }
 
   menuItems = [
+    { label: "Dashboard", route: "/admin/dashboard", icon: "dashboard"},
     { label: "Home", route: "/admin/home", icon: "home" },
     { label: "Categorias", route: "/admin/categorias", icon: "category" },
     { label: "Clientes", route: "/admin/clientes", icon: "people" },

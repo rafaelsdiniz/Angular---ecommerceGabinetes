@@ -1,7 +1,7 @@
 import { Component } from "@angular/core"
 import { CommonModule } from "@angular/common"
 import { FormsModule } from "@angular/forms"
-import { Router, RouterModule } from "@angular/router"
+import { RouterModule } from "@angular/router"
 import { AuthService } from "../../../services/auth.service"
 
 @Component({
@@ -18,10 +18,7 @@ export class LoginComponent {
   carregando = false
   mostrarSenha = false
 
-  constructor(
-    private authService: AuthService,
-    private router: Router,
-  ) {}
+  constructor(private authService: AuthService) {}
 
   onSubmit(): void {
     if (!this.email || !this.senha) {
@@ -34,9 +31,7 @@ export class LoginComponent {
 
     this.authService.login(this.email, this.senha).subscribe({
       next: () => {
-        setTimeout(() => {
-          this.router.navigate(["/"])
-        }, 100)
+        // Redirecionamento agora é feito dentro do AuthService
       },
       error: (err) => {
         console.error("[v0] Login error:", err)

@@ -12,9 +12,9 @@
     <div class="search-box">
       <input
         type="text"
-        [(ngModel)]="filtroMarca"
-        (keyup)="buscarPorMarca()"
-        placeholder="Buscar por marca..."
+        [(ngModel)]="filtroNome"
+        (keyup)="buscarPorNome()"
+        placeholder="Buscar por nome..."
         class="search-input"
       />
     </div>
@@ -32,8 +32,8 @@
   </div>
 
   <!-- Grid de Produtos -->
-  <div class="products-grid" *ngIf="!loading && gabinetes.length > 0">
-    <div class="product-card" *ngFor="let gabinete of gabinetes">
+  <div class="products-grid" *ngIf="!loading && gabinetesFiltrados.length > 0">
+    <div class="product-card" *ngFor="let gabinete of gabinetesFiltrados">
       <!-- Imagem do Produto -->
       <div class="product-image">
         <img
@@ -74,7 +74,31 @@
   </div>
 
   <!-- Mensagem vazia -->
-  <div *ngIf="!loading && gabinetes.length === 0" class="empty-state">
+  <div *ngIf="!loading && gabinetesFiltrados.length === 0 && totalItens === 0" class="empty-state">
     <p>Nenhum gabinete encontrado</p>
+  </div>
+
+  <!-- Paginação -->
+  <div class="pagination-section" *ngIf="!loading && totalPaginas > 1">
+    <button 
+      class="pagination-btn" 
+      (click)="paginaAnterior()"
+      [disabled]="paginaAtual === 1"
+    >
+      ← Anterior
+    </button>
+
+    <div class="pagination-info">
+      <span>Página {{ paginaAtual }} de {{ totalPaginas }}</span>
+      <span class="info-itens">Mostrando {{ obterInicio() }} - {{ obterFim() }} de {{ totalItens }}</span>
+    </div>
+
+    <button 
+      class="pagination-btn" 
+      (click)="proximaPagina()"
+      [disabled]="paginaAtual === totalPaginas"
+    >
+      Próxima →
+    </button>
   </div>
 </div>

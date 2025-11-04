@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders, HttpResponse } from "@angular/common/http";
 import { Observable, BehaviorSubject, tap, map } from "rxjs";
+import { Router } from "@angular/router";
 
 export interface Endereco {
   estado: string;
@@ -38,7 +39,7 @@ export class AuthService {
   private clienteLogado$ = new BehaviorSubject<Cliente | null>(null);
   private isLogado$ = new BehaviorSubject<boolean>(false);
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private router: Router) {
     this.verificarLogin();
   }
 
@@ -51,10 +52,19 @@ export class AuthService {
       .pipe(
         tap((resp: HttpResponse<Cliente>) => {
           const token = resp.headers.get('Authorization')?.replace('Bearer ', '');
-          if (token) {
+          const cliente = resp.body;
+
+          if (token && cliente) {
             this.salvarToken(token);
             this.isLogado$.next(true);
-            this.clienteLogado$.next(resp.body ?? null);
+            this.clienteLogado$.next(cliente);
+
+            // 🔁 Redirecionamento automático
+            if (cliente.perfil === "ADMIN") {
+              this.router.navigate(["/admin/dashboard"]);
+            } else {
+              this.router.navigate(["/"]);
+            }
           }
         }),
         map((resp: HttpResponse<Cliente>) => resp.body!)
@@ -75,6 +85,7 @@ export class AuthService {
     this.removerToken();
     this.isLogado$.next(false);
     this.clienteLogado$.next(null);
+    this.router.navigate(["/login"]);
   }
 
   // ========================
@@ -103,15 +114,15 @@ export class AuthService {
   // TOKEN
   // ========================
   obterToken(): string | null {
-    return localStorage.getItem('token');
+    return localStorage.getItem("token");
   }
 
   private salvarToken(token: string) {
-    localStorage.setItem('token', token);
+    localStorage.setItem("token", token);
   }
 
   private removerToken() {
-    localStorage.removeItem('token');
+    localStorage.removeItem("token");
   }
 
   estaLogado(): boolean {

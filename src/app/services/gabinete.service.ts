@@ -1,4 +1,3 @@
-// src/app/services/gabinete.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -13,21 +12,33 @@ export class GabineteService {
 
   constructor(private http: HttpClient, private authService: AuthService) {}
 
+  // ✅ gera headers apenas se houver token
   private getHeaders(): HttpHeaders {
     const token = this.authService.obterToken();
-    return new HttpHeaders({ 'Authorization': `Bearer ${token}` });
+    return token
+      ? new HttpHeaders({ 'Authorization': `Bearer ${token}` })
+      : new HttpHeaders();
   }
 
+  // ============================================
+  // PÚBLICOS
+  // ============================================
+
   listarTodos(): Observable<Gabinete[]> {
-    return this.http.get<Gabinete[]>(this.apiUrl, { headers: this.getHeaders() });
+    return this.http.get<Gabinete[]>(this.apiUrl);
   }
+
+  buscarPorNome(nome: string): Observable<Gabinete[]> {
+    const params = new HttpParams().set('nome', nome);
+    return this.http.get<Gabinete[]>(`${this.apiUrl}/buscar/nome`, { params });
+  }
+
+  // ============================================
+  // PROTEGIDOS (precisam de token)
+  // ============================================
 
   salvar(gabinete: Gabinete): Observable<Gabinete> {
     return this.http.post<Gabinete>(this.apiUrl, gabinete, { headers: this.getHeaders() });
-  }
-
-  buscarPorId(id: number): Observable<Gabinete> {
-    return this.http.get<Gabinete>(`${this.apiUrl}/${id}`, { headers: this.getHeaders() });
   }
 
   atualizar(id: number, gabinete: Gabinete): Observable<Gabinete> {
@@ -38,41 +49,42 @@ export class GabineteService {
     return this.http.delete<void>(`${this.apiUrl}/${id}`, { headers: this.getHeaders() });
   }
 
+  buscarPorId(id: number): Observable<Gabinete> {
+    return this.http.get<Gabinete>(`${this.apiUrl}/${id}`, { headers: this.getHeaders() });
+  }
+
   buscarPorMarca(marca: string): Observable<Gabinete[]> {
     const params = new HttpParams().set('marca', marca);
-    return this.http.get<Gabinete[]>(`${this.apiUrl}/marca`, { headers: this.getHeaders(), params });
+    return this.http.get<Gabinete[]>(`${this.apiUrl}/buscar/marca`, { params, headers: this.getHeaders() });
   }
 
   buscarPorFaixaPreco(precoMin: number, precoMax: number): Observable<Gabinete[]> {
-    const params = new HttpParams().set('precoMin', precoMin.toString()).set('precoMax', precoMax.toString());
-    return this.http.get<Gabinete[]>(`${this.apiUrl}/faixa-preco`, { headers: this.getHeaders(), params });
+    const params = new HttpParams()
+      .set('min', precoMin.toString())
+      .set('max', precoMax.toString());
+    return this.http.get<Gabinete[]>(`${this.apiUrl}/buscar/preco`, { params, headers: this.getHeaders() });
   }
 
   buscarPorCor(cor: string): Observable<Gabinete[]> {
     const params = new HttpParams().set('cor', cor);
-    return this.http.get<Gabinete[]>(`${this.apiUrl}/cor`, { headers: this.getHeaders(), params });
+    return this.http.get<Gabinete[]>(`${this.apiUrl}/buscar/cor`, { params, headers: this.getHeaders() });
   }
 
   buscarPorFormato(formato: string): Observable<Gabinete[]> {
     const params = new HttpParams().set('formato', formato);
-    return this.http.get<Gabinete[]>(`${this.apiUrl}/formato`, { headers: this.getHeaders(), params });
-  }
-
-  buscarPorNome(nome: string): Observable<Gabinete[]> {
-    const params = new HttpParams().set('nome', nome);
-    return this.http.get<Gabinete[]>(`${this.apiUrl}/nome`, { headers: this.getHeaders(), params });
+    return this.http.get<Gabinete[]>(`${this.apiUrl}/buscar/formato`, { params, headers: this.getHeaders() });
   }
 
   buscarPorCategoria(categoriaId: number): Observable<Gabinete[]> {
-    return this.http.get<Gabinete[]>(`${this.apiUrl}/categoria/${categoriaId}`, { headers: this.getHeaders() });
+    return this.http.get<Gabinete[]>(`${this.apiUrl}/buscar/categoria/${categoriaId}`, { headers: this.getHeaders() });
   }
 
   listarOrdenadoPorPreco(crescente = true): Observable<Gabinete[]> {
     const params = new HttpParams().set('crescente', crescente.toString());
-    return this.http.get<Gabinete[]>(`${this.apiUrl}/ordenado-preco`, { headers: this.getHeaders(), params });
+    return this.http.get<Gabinete[]>(`${this.apiUrl}/ordenar/preco`, { params, headers: this.getHeaders() });
   }
 
   listarOrdenadoPorNome(): Observable<Gabinete[]> {
-    return this.http.get<Gabinete[]>(`${this.apiUrl}/ordenado-nome`, { headers: this.getHeaders() });
+    return this.http.get<Gabinete[]>(`${this.apiUrl}/ordenar/nome`, { headers: this.getHeaders() });
   }
 }

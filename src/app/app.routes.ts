@@ -34,6 +34,7 @@ import { NoAuthGuard } from "./guards/no-auth.guard"
 import { AuthGuard } from "./guards/auth.guard"
 import { MarcaFormComponent } from "./pages/admin/marca/marca-form/marca-form"
 import { AdminGuard } from "./guards/admin.guard"
+import { AdminDashboardComponent } from "./pages/admin/admin-dashboard/admin-dashboard"
 
 export const routes: Routes = [
   {
@@ -98,6 +99,8 @@ export const routes: Routes = [
       { path: "pedidos", component: PedidoListComponent },
       { path: "pedidos/form", component: PedidoForm },
       { path: "pedidos/form/:id", component: PedidoForm },
+
+      {path: "dashboard", component: AdminDashboardComponent}
     ],
   },
 
