@@ -1,0 +1,89 @@
+<div class="list-container">
+  <div class="list-header">
+    <h1>Pagamentos</h1>
+    <button class="btn btn-primary" (click)="novo()">
+      + Novo Pagamento
+    </button>
+  </div>
+
+  <div class="list-toolbar">
+    <input
+      type="text"
+      placeholder="Buscar por ID, forma, status ou valor..."
+      [(ngModel)]="busca"
+      (input)="aplicarFiltro()"
+      class="search-input"
+    />
+  </div>
+
+  <div class="list-content" *ngIf="!loading">
+    <div *ngIf="pagamentosExibidos.length > 0; else vazio">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Pedido</th>
+            <th>Forma de Pagamento</th>
+            <th>Status</th>
+            <th>Valor</th>
+            <th>Data</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let pagamento of pagamentosExibidos" class="table-row">
+            <td data-label="ID">{{ pagamento.id }}</td>
+            <td data-label="Pedido">Pedido #{{ pagamento.pedido?.id }}</td>
+            <td data-label="Forma de Pagamento">
+              <span class="badge" [ngClass]="'forma-' + pagamento.formaPagamento?.toLowerCase()">
+                {{ pagamento.formaPagamento }}
+              </span>
+            </td>
+            <td data-label="Status">
+              <span class="badge" [ngClass]="'status-' + pagamento.statusPagamento?.toLowerCase()">
+                {{ pagamento.statusPagamento }}
+              </span>
+            </td>
+            <td data-label="Valor" class="valor">{{ formatarValor(pagamento.valor) }}</td>
+            <td data-label="Data">{{ formatarData(pagamento.data) }}</td>
+            <td class="acoes">
+              <button
+                class="btn-icon btn-edit"
+                (click)="editar(pagamento.id)"
+                title="Editar"
+              >
+                ✏️
+              </button>
+              <button
+                class="btn-icon btn-delete"
+                (click)="deletar(pagamento.id)"
+                [disabled]="deletando"
+                title="Deletar"
+              >
+                🗑️
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <mat-paginator
+        [length]="totalItems"
+        [pageSize]="pageSize"
+        [pageSizeOptions]="[5, 10, 25, 50]"
+        (page)="onPageChange($event)"
+      ></mat-paginator>
+    </div>
+
+    <ng-template #vazio>
+      <div class="empty-state">
+        <p>Nenhum pagamento encontrado</p>
+      </div>
+    </ng-template>
+  </div>
+
+  <div class="loading" *ngIf="loading">
+    <div class="spinner"></div>
+    <p>Carregando pagamentos...</p>
+  </div>
+</div>

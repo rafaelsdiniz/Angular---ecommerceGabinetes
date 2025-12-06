@@ -1,0 +1,88 @@
+.main-container {
+  display: flex;
+  height: 100vh;
+}
+
+.content {
+  width: 90%;
+  padding: 20px;
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+td, th {
+  padding: 8px 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.botaoNova {
+  text-decoration: none;
+  font-size: 18px;
+  width: 180px;
+  height: 50px;
+  background-color: #2fcf34;
+  color: white;
+  border-radius: 8px;
+  border: none;
+  display: flex;            
+  align-items: center;       
+  justify-content: center;   
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.botaoNova:hover {
+  background-color: #27a830;
+}
+
+.botaoEditar {
+  font-size: 14px;
+  padding: 6px 12px;
+  background-color: #2196F3;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.botaoEditar:hover {
+  background-color: #1565C0;
+}
+
+.botaoExcluir {
+  font-size: 14px;
+  padding: 6px 12px;
+  background-color: #F44336;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.botaoExcluir:hover {
+  background-color: #D32F2F;
+}
+
+.acoesContainer {
+  display: flex;
+  gap: 10px;
+}
+
+.containerBotao {
+  margin: 1rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.erro {
+  color: red;
+  margin-top: 1rem;
+}

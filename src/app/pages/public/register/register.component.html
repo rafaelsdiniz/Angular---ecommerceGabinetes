@@ -1,0 +1,196 @@
+<div class="register-container">
+  <div class="register-banner">
+    <h1>Criar Conta</h1>
+    <p>Junte-se a nós e comece sua jornada</p>
+  </div>
+
+  <div class="register-form-wrapper">
+    <!-- Updated to use FormGroup with formControlName instead of ngModel -->
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register-form">
+      <!-- Erro -->
+      <div *ngIf="erro" class="erro-message">{{ erro }}</div>
+
+      <!-- Nome -->
+      <div class="form-group">
+        <label for="nome">Nome Completo</label>
+        <input 
+          id="nome" 
+          type="text" 
+          formControlName="nome" 
+          placeholder="Digite seu nome completo"
+          [class.invalid]="isFieldInvalid('nome')"
+        />
+        <span *ngIf="isFieldInvalid('nome')" class="error-text">{{ getFieldError('nome') }}</span>
+      </div>
+
+      <!-- Email -->
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input 
+          id="email" 
+          type="email" 
+          formControlName="email" 
+          placeholder="seu@email.com"
+          [class.invalid]="isFieldInvalid('email')"
+        />
+        <span *ngIf="isFieldInvalid('email')" class="error-text">{{ getFieldError('email') }}</span>
+      </div>
+
+      <!-- Telefone -->
+      <div class="form-group">
+        <label for="telefone">Telefone</label>
+        <input 
+          id="telefone" 
+          type="tel" 
+          formControlName="telefone" 
+          placeholder="(11) 99999-9999"
+          [class.invalid]="isFieldInvalid('telefone')"
+        />
+        <span *ngIf="isFieldInvalid('telefone')" class="error-text">{{ getFieldError('telefone') }}</span>
+      </div>
+
+      <!-- CPF -->
+      <div class="form-group">
+        <label for="cpf">CPF</label>
+        <input 
+          id="cpf" 
+          type="text" 
+          formControlName="cpf" 
+          placeholder="12345678901"
+          [class.invalid]="isFieldInvalid('cpf')"
+        />
+        <span *ngIf="isFieldInvalid('cpf')" class="error-text">{{ getFieldError('cpf') }}</span>
+      </div>
+
+      <!-- Senha -->
+      <div class="form-group">
+        <label for="senha">Senha</label>
+        <div class="password-input-wrapper">
+          <input
+            id="senha"
+            [type]="mostrarSenha ? 'text' : 'password'"
+            formControlName="senha"
+            placeholder="Mínimo 6 caracteres"
+            [class.invalid]="isFieldInvalid('senha')"
+          />
+          <button type="button" (click)="toggleMostrarSenha()" class="toggle-btn">
+            {{ mostrarSenha ? "Ocultar" : "Mostrar" }}
+          </button>
+        </div>
+        <div [ngClass]="'forca-' + getSenhaForca()" class="forca-indicador">
+          <span>Força: {{ getSenhaForca() }}</span>
+        </div>
+        <span *ngIf="isFieldInvalid('senha')" class="error-text">{{ getFieldError('senha') }}</span>
+      </div>
+
+      <!-- Confirmar Senha -->
+      <div class="form-group">
+        <label for="confirmarSenha">Confirmar Senha</label>
+        <div class="password-input-wrapper">
+          <input
+            id="confirmarSenha"
+            [type]="mostrarConfirmarSenha ? 'text' : 'password'"
+            formControlName="confirmarSenha"
+            placeholder="Repita sua senha"
+            [class.invalid]="isFieldInvalid('confirmarSenha') || registerForm.errors?.['senhasNaoConferem']"
+          />
+          <button type="button" (click)="toggleMostrarConfirmarSenha()" class="toggle-btn">
+            {{ mostrarConfirmarSenha ? "Ocultar" : "Mostrar" }}
+          </button>
+        </div>
+        <span *ngIf="registerForm.errors?.['senhasNaoConferem'] && registerForm.get('confirmarSenha')?.touched" class="error-text">As senhas não conferem</span>
+      </div>
+
+      <!-- Endereços -->
+      <div class="endereco-section">
+        <h3>Endereços</h3>
+        <div formArrayName="enderecos">
+          <div *ngFor="let endereco of enderecosArray.controls; let i = index" [formGroupName]="i" class="endereco-group">
+            <div class="endereco-title">Endereço {{ i + 1 }}</div>
+
+            <div class="form-row">
+              <div class="form-group full">
+                <label>Bairro</label>
+                <input 
+                  type="text" 
+                  formControlName="bairro"
+                  [class.invalid]="isEnderecoFieldInvalid(i, 'bairro')"
+                />
+                <span *ngIf="isEnderecoFieldInvalid(i, 'bairro')" class="error-text">{{ getEnderecoFieldError(i, 'bairro') }}</span>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label>Número</label>
+                <input 
+                  type="text" 
+                  formControlName="numero"
+                  [class.invalid]="isEnderecoFieldInvalid(i, 'numero')"
+                />
+                <span *ngIf="isEnderecoFieldInvalid(i, 'numero')" class="error-text">{{ getEnderecoFieldError(i, 'numero') }}</span>
+              </div>
+              <div class="form-group">
+                <label>Complemento</label>
+                <input type="text" formControlName="complemento" />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label>Cidade</label>
+                <input 
+                  type="text" 
+                  formControlName="cidade"
+                  [class.invalid]="isEnderecoFieldInvalid(i, 'cidade')"
+                />
+                <span *ngIf="isEnderecoFieldInvalid(i, 'cidade')" class="error-text">{{ getEnderecoFieldError(i, 'cidade') }}</span>
+              </div>
+              <div class="form-group">
+                <label>Estado</label>
+                <input 
+                  type="text" 
+                  formControlName="estado" 
+                  maxlength="2"
+                  [class.invalid]="isEnderecoFieldInvalid(i, 'estado')"
+                />
+                <span *ngIf="isEnderecoFieldInvalid(i, 'estado')" class="error-text">{{ getEnderecoFieldError(i, 'estado') }}</span>
+              </div>
+              <div class="form-group">
+                <label>CEP</label>
+                <input 
+                  type="text" 
+                  formControlName="cep"
+                  [class.invalid]="isEnderecoFieldInvalid(i, 'cep')"
+                />
+                <span *ngIf="isEnderecoFieldInvalid(i, 'cep')" class="error-text">{{ getEnderecoFieldError(i, 'cep') }}</span>
+              </div>
+            </div>
+
+            <button type="button" *ngIf="enderecosArray.length > 1" (click)="removerEndereco(i)" class="btn-remover-endereco">
+              Remover Endereço
+            </button>
+          </div>
+        </div>
+
+        <button type="button" (click)="adicionarEndereco()" class="btn-adicionar-endereco">
+          + Adicionar Outro Endereço
+        </button>
+      </div>
+
+      <!-- Termos -->
+      <div class="form-group checkbox">
+        <input id="termos" type="checkbox" formControlName="aceitouTermos" />
+        <label for="termos">Aceito os termos de uso e política de privacidade</label>
+      </div>
+
+      <button type="submit" [disabled]="carregando" class="btn-submit">
+        {{ carregando ? "Criando conta..." : "Criar Conta" }}
+      </button>
+
+      <p class="link-login">
+        Já tem conta? <a routerLink="/login">Faça login aqui</a>
+      </p>
+    </form>
+  </div>
+</div>

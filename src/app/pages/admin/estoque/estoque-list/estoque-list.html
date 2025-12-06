@@ -1,0 +1,95 @@
+<div class="page-container">
+  <!-- Removed large header, simplified to just action button -->
+  <div class="toolbar">
+    <button mat-fab extended class="btn-add" (click)="novoEstoque()">
+      <mat-icon>add</mat-icon>
+      Novo Estoque
+    </button>
+  </div>
+
+  <div class="content-card">
+    <!-- Search bar -->
+    <div class="search-bar">
+      <mat-form-field appearance="outline" class="search-input">
+        <mat-icon matPrefix>search</mat-icon>
+        <input matInput (keyup)="applyFilter($event)" placeholder="Buscar estoque..." #input>
+      </mat-form-field>
+    </div>
+
+    <!-- Loading state -->
+    <div *ngIf="carregando" class="loading-state">
+      <mat-spinner diameter="48"></mat-spinner>
+    </div>
+
+    <!-- Table -->
+    <div *ngIf="!carregando" class="table-wrapper">
+      <table mat-table [dataSource]="dataSource" matSort class="data-table">
+        
+        <!-- ID Column -->
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+          <td mat-cell *matCellDef="let row"> 
+            <span class="id-chip">{{row.id}}</span>
+          </td>
+        </ng-container>
+
+        <!-- Gabinete Column -->
+        <ng-container matColumnDef="gabinete">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Gabinete </th>
+          <td mat-cell *matCellDef="let row"> 
+            <span class="category-name">{{row.gabinete?.nomeExibicao}}</span>
+          </td>
+        </ng-container>
+
+        <!-- Quantidade Disponível Column -->
+        <ng-container matColumnDef="quantidadeDisponivel">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Quantidade </th>
+          <td mat-cell *matCellDef="let row"> 
+            <span class="quantity">{{row.quantidadeDisponivel}}</span>
+          </td>
+        </ng-container>
+
+        <!-- Ações Column -->
+        <ng-container matColumnDef="acoes">
+          <th mat-header-cell *matHeaderCellDef> Ações </th>
+          <td mat-cell *matCellDef="let row">
+            <div class="actions">
+              <button 
+                mat-icon-button 
+                (click)="editarEstoque(row.id)"
+                matTooltip="Editar"
+                class="action-btn edit-btn">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button 
+                mat-icon-button 
+                (click)="excluirEstoque(row.id)"
+                matTooltip="Excluir"
+                class="action-btn delete-btn">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="data-row"></tr>
+
+        <!-- No data row -->
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell" colspan="4">
+            <div class="empty-state">
+              <mat-icon>inbox</mat-icon>
+              <p>Nenhum estoque encontrado</p>
+            </div>
+          </td>
+        </tr>
+      </table>
+
+      <mat-paginator 
+        [pageSizeOptions]="[5, 10, 25, 50]" 
+        showFirstLastButtons>
+      </mat-paginator>
+    </div>
+  </div>
+</div>

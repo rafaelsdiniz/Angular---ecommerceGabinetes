@@ -1,0 +1,40 @@
+<div class="category-form container">
+  <div class="form-card">
+    <div class="form-header">
+      <h2>{{ estoque.id ? 'Editar Estoque' : 'Novo Estoque' }}</h2>
+    </div>
+    <div class="form-body">
+      <form (ngSubmit)="salvar()" #estoqueForm="ngForm" novalidate>
+
+        <!-- Gabinete -->
+        <div class="form-group">
+          <label for="gabinete">Gabinete</label>
+          <input type="text" id="gabinete" [(ngModel)]="estoque.gabinete.nomeExibicao" name="gabinete" required
+                 class="form-control"
+                 [ngClass]="{'is-invalid': estoqueForm.submitted && !estoque.gabinete.nomeExibicao}">
+          <div *ngIf="estoqueForm.submitted && !estoque.gabinete?.nomeExibicao" class="invalid-feedback">
+            O gabinete é obrigatório.
+          </div>
+        </div>
+
+        <!-- Quantidade Disponível -->
+        <div class="form-group">
+          <label for="quantidade">Quantidade Disponível</label>
+          <input type="number" id="quantidade" [(ngModel)]="estoque.quantidadeDisponivel"
+                 name="quantidadeDisponivel" required class="form-control"
+                 [ngClass]="{'is-invalid': estoqueForm.submitted && !estoque.quantidadeDisponivel}">
+          <div *ngIf="estoqueForm.submitted && !estoque.quantidadeDisponivel" class="invalid-feedback">
+            A quantidade é obrigatória.
+          </div>
+        </div>
+
+        <!-- Botões -->
+        <div class="form-actions">
+          <button type="submit" class="btn btn-save">Salvar</button>
+          <button type="button" class="btn btn-cancel" (click)="cancelar()">Cancelar</button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>

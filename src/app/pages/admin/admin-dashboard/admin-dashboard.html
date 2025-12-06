@@ -1,0 +1,254 @@
+<div class="dashboard-container">
+  <!-- Header -->
+  <div class="dashboard-header">
+    <h1 class="dashboard-title">Painel Administrativo</h1>
+    <p class="dashboard-subtitle">
+      Bem-vindo! Aqui você pode gerenciar gabinetes, pedidos e clientes.
+    </p>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="carregando" class="loading-container">
+    <mat-spinner diameter="48"></mat-spinner>
+    <p>Carregando dados...</p>
+  </div>
+
+  <!-- Error Alert -->
+  <div *ngIf="erro && !carregando" class="error-alert">
+    <mat-icon>error_outline</mat-icon>
+    <span>{{ erro }}</span>
+  </div>
+
+  <!-- Content -->
+  <div *ngIf="!carregando && !erro" class="dashboard-content">
+    <!-- Statistics Cards -->
+    <div class="stats-grid">
+      <div *ngFor="let stat of stats" class="stat-card" [style.border-left]="'4px solid ' + stat.cor">
+        <div class="stat-icon" [style.background]="stat.cor + '15'">
+          <mat-icon [style.color]="stat.cor">{{ stat.icone }}</mat-icon>
+        </div>
+        <div class="stat-info">
+          <p class="stat-title">{{ stat.titulo }}</p>
+          <p class="stat-value">{{ stat.valor }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tables Section -->
+    <div class="tables-section">
+      <!-- Pedidos Recentes -->
+      <mat-card class="table-card">
+        <mat-card-header>
+          <mat-card-title>Pedidos Recentes</mat-card-title>
+          <button mat-icon-button (click)="verMais('pedidos')" class="header-btn">
+            <mat-icon>more_horiz</mat-icon>
+          </button>
+        </mat-card-header>
+        <mat-card-content>
+          <table mat-table [dataSource]="pedidosRecentes" class="responsive-table">
+            <!-- ID Column -->
+            <ng-container matColumnDef="id">
+              <th mat-header-cell>ID</th>
+              <td mat-cell *matCellDef="let element">
+                <span class="id-badge">#{{ element.id }}</span>
+              </td>
+            </ng-container>
+
+            <!-- Cliente Column -->
+            <ng-container matColumnDef="cliente">
+              <th mat-header-cell>Cliente</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.cliente?.nome || 'N/A' }}
+              </td>
+            </ng-container>
+
+            <!-- Total Column -->
+            <ng-container matColumnDef="total">
+              <th mat-header-cell>Total</th>
+              <td mat-cell *matCellDef="let element">
+                {{ formatarMoeda(element.total) }}
+              </td>
+            </ng-container>
+
+            <!-- Status Column -->
+            <ng-container matColumnDef="status">
+              <th mat-header-cell>Status</th>
+              <td mat-cell *matCellDef="let element">
+                <mat-chip
+                  [style.background]="obterCorStatus(element.status)"
+                  class="status-chip">
+                  {{ element.status }}
+                </mat-chip>
+              </td>
+            </ng-container>
+
+            <!-- Data Column -->
+            <ng-container matColumnDef="data">
+              <th mat-header-cell>Data</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.dataPedido | date : 'dd/MM/yyyy' }}
+              </td>
+            </ng-container>
+
+            <!-- Action Column -->
+            <ng-container matColumnDef="acao">
+              <th mat-header-cell>Ação</th>
+              <td mat-cell *matCellDef="let element">
+                <button
+                  mat-icon-button
+                  (click)="editarPedido(element.id)"
+                  class="action-btn"
+                  matTooltip="Editar pedido">
+                  <mat-icon>edit</mat-icon>
+                </button>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumnsPedidos"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumnsPedidos"></tr>
+          </table>
+
+          <div *ngIf="pedidosRecentes.length === 0" class="empty-state">
+            <mat-icon>shopping_cart</mat-icon>
+            <p>Nenhum pedido encontrado</p>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Gabinetes em Destaque -->
+      <mat-card class="table-card">
+        <mat-card-header>
+          <mat-card-title>Gabinetes em Destaque</mat-card-title>
+          <button mat-icon-button (click)="verMais('gabinetes')" class="header-btn">
+            <mat-icon>more_horiz</mat-icon>
+          </button>
+        </mat-card-header>
+        <mat-card-content>
+          <table mat-table [dataSource]="gabinetesDestaque" class="responsive-table">
+            <!-- ID Column -->
+            <ng-container matColumnDef="id">
+              <th mat-header-cell>ID</th>
+              <td mat-cell *matCellDef="let element">
+                <span class="id-badge">#{{ element.id }}</span>
+              </td>
+            </ng-container>
+
+            <!-- Nome Column -->
+            <ng-container matColumnDef="nome">
+              <th mat-header-cell>Nome</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.nomeExibicao }}
+              </td>
+            </ng-container>
+
+            <!-- Marca Column -->
+            <ng-container matColumnDef="marca">
+              <th mat-header-cell>Marca</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.marca }}
+              </td>
+            </ng-container>
+
+            <!-- Preço Column -->
+            <ng-container matColumnDef="preco">
+              <th mat-header-cell>Preço</th>
+              <td mat-cell *matCellDef="let element">
+                <span class="preco-badge">
+                  {{ formatarMoeda(element.preco) }}
+                </span>
+              </td>
+            </ng-container>
+
+            <!-- Estoque Column -->
+            <ng-container matColumnDef="estoque">
+              <th mat-header-cell>Estoque</th>
+              <td mat-cell *matCellDef="let element">
+                <span
+                  class="estoque-badge"
+                  [class.low]="element.estoque < 10"
+                  [class.mid]="element.estoque >= 10 && element.estoque < 50">
+                  {{ element.estoque }} un.
+                </span>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumnsGabinetes"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumnsGabinetes"></tr>
+          </table>
+
+          <div *ngIf="gabinetesDestaque.length === 0" class="empty-state">
+            <mat-icon>inventory_2</mat-icon>
+            <p>Nenhum gabinete encontrado</p>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Clientes Ativos -->
+      <mat-card class="table-card">
+        <mat-card-header>
+          <mat-card-title>Clientes Ativos</mat-card-title>
+          <button mat-icon-button (click)="verMais('clientes')" class="header-btn">
+            <mat-icon>more_horiz</mat-icon>
+          </button>
+        </mat-card-header>
+        <mat-card-content>
+          <table mat-table [dataSource]="clientesAtivos" class="responsive-table">
+            <!-- ID Column -->
+            <ng-container matColumnDef="id">
+              <th mat-header-cell>ID</th>
+              <td mat-cell *matCellDef="let element">
+                <span class="id-badge">#{{ element.id }}</span>
+              </td>
+            </ng-container>
+
+            <!-- Nome Column -->
+            <ng-container matColumnDef="nome">
+              <th mat-header-cell>Nome</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.nome }}
+              </td>
+            </ng-container>
+
+            <!-- Email Column -->
+            <ng-container matColumnDef="email">
+              <th mat-header-cell>Email</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.email }}
+              </td>
+            </ng-container>
+
+            <!-- Telefone Column -->
+            <ng-container matColumnDef="telefone">
+              <th mat-header-cell>Telefone</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.telefone }}
+              </td>
+            </ng-container>
+
+            <!-- Ação Column -->
+            <ng-container matColumnDef="acao">
+              <th mat-header-cell>Ação</th>
+              <td mat-cell *matCellDef="let element">
+                <button
+                  mat-icon-button
+                  (click)="editarCliente(element.id)"
+                  class="action-btn"
+                  matTooltip="Editar cliente">
+                  <mat-icon>edit</mat-icon>
+                </button>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumnsClientes"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumnsClientes"></tr>
+          </table>
+
+          <div *ngIf="clientesAtivos.length === 0" class="empty-state">
+            <mat-icon>people</mat-icon>
+            <p>Nenhum cliente encontrado</p>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>

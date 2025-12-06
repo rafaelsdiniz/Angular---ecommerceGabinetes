@@ -1,0 +1,516 @@
+/* Complete redesign with better spacing, hierarchy and visual organization */
+
+/* Page Container */
+.page-container {
+  min-height: 100vh;
+  background: linear-gradient(to bottom, #fafafa 0%, #f5f5f5 100%);
+  padding: 2rem;
+}
+
+/* Page Header */
+.page-header {
+  max-width: 1200px;
+  margin: 0 auto 2.5rem;
+}
+
+.page-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0 0 1.5rem 0;
+  text-align: center;
+}
+
+.search-container {
+  display: flex;
+  justify-content: center;
+}
+
+.search-field {
+  width: 100%;
+  max-width: 600px;
+}
+
+::ng-deep .search-field .mat-mdc-text-field-wrapper {
+  background: white;
+  border-radius: 12px;
+}
+
+::ng-deep .search-field.mat-focused .mdc-notched-outline__leading,
+::ng-deep .search-field.mat-focused .mdc-notched-outline__notch,
+::ng-deep .search-field.mat-focused .mdc-notched-outline__trailing {
+  border-color: #ff6500 !important;
+  border-width: 2px !important;
+}
+
+::ng-deep .search-field .mat-mdc-form-field-icon-prefix {
+  color: #ff6500;
+  margin-right: 8px;
+}
+
+/* Loading State */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 5rem 2rem;
+  gap: 1.5rem;
+}
+
+::ng-deep .loading-container .mat-mdc-progress-spinner circle {
+  stroke: #ff6500;
+}
+
+.loading-text {
+  font-size: 1rem;
+  color: #666;
+  margin: 0;
+}
+
+/* Empty State */
+.empty-state {
+  max-width: 500px;
+  margin: 5rem auto;
+  text-align: center;
+  padding: 3rem;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.empty-icon {
+  font-size: 80px;
+  width: 80px;
+  height: 80px;
+  color: #e0e0e0;
+  margin-bottom: 1.5rem;
+}
+
+.empty-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 0.5rem 0;
+}
+
+.empty-description {
+  font-size: 1rem;
+  color: #999;
+  margin: 0;
+}
+
+/* Pedidos Grid */
+.pedidos-grid {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(550px, 1fr));
+  gap: 2rem;
+}
+
+/* Pedido Card */
+.pedido-card {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+  border: 2px solid transparent;
+}
+
+.pedido-card:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  transform: translateY(-4px);
+}
+
+.pedido-card.card-expanded {
+  border-color: #ff6500;
+  box-shadow: 0 8px 24px rgba(255, 101, 0, 0.15);
+}
+
+/* Card Header */
+.card-header {
+  padding: 1.75rem;
+  cursor: pointer;
+  background: white;
+  transition: background 0.2s ease;
+  position: relative;
+}
+
+.card-header:hover {
+  background: #fffbf7;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.25rem;
+}
+
+.pedido-number {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.pedido-icon {
+  color: #ff6500;
+  font-size: 28px;
+  width: 28px;
+  height: 28px;
+}
+
+.number-text {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+/* Status Chip */
+/* Updated status classes to match the new enum values */
+.status-chip {
+  font-weight: 600;
+  font-size: 0.8rem;
+  height: 32px;
+  padding: 0 16px;
+  border-radius: 16px;
+}
+
+.status-processando {
+  background: #fef3c7 !important;
+  color: #92400e !important;
+}
+
+.status-enviado {
+  background: #dbeafe !important;
+  color: #1e40af !important;
+}
+
+.status-entregue {
+  background: #d1fae5 !important;
+  color: #047857 !important;
+}
+
+.status-cancelado {
+  background: #fee2e2 !important;
+  color: #991b1b !important;
+}
+
+/* Header Info */
+.header-info {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 1.25rem;
+}
+
+.info-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.info-icon {
+  color: #999;
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+}
+
+.info-text {
+  font-size: 0.95rem;
+  color: #666;
+  font-weight: 500;
+}
+
+/* Valor Total */
+.valor-total-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.25rem;
+  background: linear-gradient(135deg, #fff5ed 0%, #ffe8d6 100%);
+  border-radius: 12px;
+  margin-bottom: 1rem;
+}
+
+.valor-label {
+  font-size: 0.875rem;
+  color: #666;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.valor-total {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #ff6500;
+}
+
+/* Expand Toggle */
+.expand-toggle {
+  display: flex;
+  justify-content: center;
+  padding-top: 0.5rem;
+}
+
+.expand-toggle mat-icon {
+  color: #ff6500;
+  font-size: 28px;
+  width: 28px;
+  height: 28px;
+  transition: transform 0.3s ease;
+}
+
+.card-expanded .expand-toggle mat-icon {
+  transform: rotate(180deg);
+}
+
+/* Card Body */
+.card-body {
+  padding: 0 1.75rem 1.75rem;
+}
+
+.section-divider {
+  margin: 2rem 0;
+}
+
+/* Details Section */
+.details-section {
+  margin: 1.5rem 0;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.section-icon {
+  color: #ff6500;
+  font-size: 24px;
+  width: 24px;
+  height: 24px;
+}
+
+.section-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0;
+}
+
+/* Itens Container */
+.itens-container {
+  background: #fafafa;
+  border-radius: 12px;
+  padding: 1rem;
+}
+
+.item-card {
+  padding: 1rem 0;
+}
+
+.item-card:first-child {
+  padding-top: 0;
+}
+
+.item-card:last-child {
+  padding-bottom: 0;
+}
+
+.item-main {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.item-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+.item-name {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.item-qty {
+  font-size: 0.875rem;
+  color: #666;
+}
+
+.item-prices {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.25rem;
+}
+
+.item-unit-price {
+  font-size: 0.875rem;
+  color: #999;
+}
+
+.item-total-price {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+/* Endereço Card */
+.endereco-card {
+  background: #fafafa;
+  border-radius: 12px;
+  padding: 1.25rem;
+  line-height: 1.8;
+}
+
+.endereco-row {
+  font-size: 0.95rem;
+  color: #666;
+  margin-bottom: 0.5rem;
+}
+
+.endereco-row:last-child {
+  margin-bottom: 0;
+}
+
+.endereco-row strong {
+  color: #1a1a1a;
+}
+
+/* Actions Container */
+.actions-container {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  margin-top: 1.5rem;
+}
+
+.action-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  padding: 0 1.5rem;
+  height: 44px;
+  border-radius: 10px;
+  transition: all 0.2s ease;
+}
+
+.action-button mat-icon {
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+}
+
+.cancel-button {
+  border: 2px solid #e5e5e5;
+  color: #dc2626;
+}
+
+.cancel-button:hover {
+  background: #fef2f2;
+  border-color: #dc2626;
+}
+
+.primary-button {
+  background: #ff6500;
+  color: white;
+}
+
+.primary-button:hover {
+  background: #ff7a1a;
+  box-shadow: 0 4px 12px rgba(255, 101, 0, 0.3);
+  transform: translateY(-2px);
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .pedidos-grid {
+    grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .page-container {
+    padding: 1rem;
+  }
+
+  .page-title {
+    font-size: 1.5rem;
+  }
+
+  .pedidos-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .card-header {
+    padding: 1.25rem;
+  }
+
+  .header-info {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .valor-total-container {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .valor-total {
+    font-size: 1.75rem;
+  }
+
+  .item-main {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .item-prices {
+    align-items: flex-start;
+    width: 100%;
+  }
+
+  .actions-container {
+    flex-direction: column;
+  }
+
+  .action-button {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-container {
+    padding: 0.75rem;
+  }
+
+  .card-header {
+    padding: 1rem;
+  }
+
+  .card-body {
+    padding: 0 1rem 1rem;
+  }
+
+  .number-text {
+    font-size: 1.1rem;
+  }
+
+  .valor-total {
+    font-size: 1.5rem;
+  }
+}

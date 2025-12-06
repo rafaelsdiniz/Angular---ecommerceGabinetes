@@ -1,0 +1,149 @@
+<div class="container">
+  <div class="form-card">
+    <div class="form-header">
+      <h2>{{ pedido.id ? 'Editar Pedido' : 'Novo Pedido' }}</h2>
+      <p *ngIf="pedido.id">ID: {{ pedido.id }}</p>
+    </div>
+
+    <div class="form-body">
+      <form (ngSubmit)="salvar()" #pedidoForm="ngForm" novalidate>
+
+        <!-- Informações do Cliente -->
+        <div class="section">
+          <h3>Informações do Cliente</h3>
+          <div class="form-row">
+            <mat-form-field appearance="outline" class="form-field">
+              <mat-label>ID do Cliente</mat-label>
+              <input matInput type="number" [(ngModel)]="pedido.cliente.id" name="clienteId" required>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="form-field">
+              <mat-label>Nome do Cliente</mat-label>
+              <input matInput [(ngModel)]="pedido.cliente.nome" name="clienteNome">
+            </mat-form-field>
+          </div>
+        </div>
+
+        <!-- Itens do Pedido -->
+        <div class="section">
+          <div class="section-header">
+            <h3>Itens do Pedido</h3>
+            <button type="button" mat-button color="primary" (click)="adicionarItem()">
+              <mat-icon>add</mat-icon> Adicionar Item
+            </button>
+          </div>
+
+          <div *ngFor="let item of pedido.itens; let i = index" class="item-row">
+            <div class="form-row">
+              <mat-form-field appearance="outline" class="form-field">
+                <mat-label>ID do Gabinete</mat-label>
+                <input matInput type="number" [(ngModel)]="item.idGabinete" name="idGabinete{{i}}" required
+                       (change)="calcularTotal()">
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="form-field">
+                <mat-label>Nome do Gabinete</mat-label>
+                <input matInput [(ngModel)]="item.nomeGabinete" name="nomeGabinete{{i}}">
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="form-field">
+                <mat-label>Quantidade</mat-label>
+                <input matInput type="number" [(ngModel)]="item.quantidade" name="quantidade{{i}}" required
+                       (change)="calcularTotal()" min="1">
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="form-field">
+                <mat-label>Preço Unitário</mat-label>
+                <input matInput type="number" [(ngModel)]="item.precoUnitario" name="precoUnitario{{i}}" required
+                       (change)="calcularTotal()" step="0.01">
+              </mat-form-field>
+
+              <div class="item-total">
+                <strong>Total: {{ formatarValor(item.precoTotal) }}</strong>
+              </div>
+
+              <button type="button" mat-icon-button color="warn" (click)="removerItem(i)" 
+                      *ngIf="pedido.itens.length > 1">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </div>
+
+          <div class="total-section" *ngIf="pedido.itens.length > 0">
+            <h4>Total do Pedido: {{ formatarValor(pedido.valorTotal) }}</h4>
+          </div>
+        </div>
+
+        <!-- Endereço de Entrega -->
+        <div class="section">
+          <h3>Endereço de Entrega</h3>
+          <div class="form-row">
+            <mat-form-field appearance="outline" class="form-field">
+              <mat-label>Número</mat-label>
+              <input matInput [(ngModel)]="pedido.endereco.numero" name="numero" required>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="form-field">
+              <mat-label>Complemento</mat-label>
+              <input matInput [(ngModel)]="pedido.endereco.complemento" name="complemento">
+            </mat-form-field>
+          </div>
+
+          <div class="form-row">
+            <mat-form-field appearance="outline" class="form-field">
+              <mat-label>Bairro</mat-label>
+              <input matInput [(ngModel)]="pedido.endereco.bairro" name="bairro" required>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="form-field">
+              <mat-label>Cidade</mat-label>
+              <input matInput [(ngModel)]="pedido.endereco.cidade" name="cidade" required>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="form-field">
+              <mat-label>Estado</mat-label>
+              <input matInput [(ngModel)]="pedido.endereco.estado" name="estado" required maxlength="2">
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="form-field">
+              <mat-label>CEP</mat-label>
+              <input matInput [(ngModel)]="pedido.endereco.cep" name="cep" required>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <!-- Status do Pedido -->
+        <div class="section">
+          <h3>Status do Pedido</h3>
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Status</mat-label>
+            <mat-select [(ngModel)]="pedido.status" name="status" required>
+              <mat-option *ngFor="let status of statusOptions" [value]="status.value">
+                {{ status.label }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <!-- Mensagens de Erro -->
+        <div *ngIf="erro" class="error-message">
+          <mat-icon>error</mat-icon>
+          <span>{{ erro }}</span>
+        </div>
+
+        <!-- Botões de Ação -->
+        <div class="form-actions">
+          <button type="button" mat-button (click)="cancelar()">
+            <mat-icon>cancel</mat-icon>
+            Cancelar
+          </button>
+          <button type="submit" mat-raised-button color="primary" [disabled]="salvando">
+            <mat-icon *ngIf="!salvando">save</mat-icon>
+            <mat-spinner *ngIf="salvando" diameter="20"></mat-spinner>
+            {{ salvando ? 'Salvando...' : 'Salvar' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

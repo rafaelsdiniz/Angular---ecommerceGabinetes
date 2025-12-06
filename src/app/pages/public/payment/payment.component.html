@@ -1,0 +1,164 @@
+<div class="payment-container">
+  <!-- Hero Section -->
+  <section class="payment-hero">
+    <div class="payment-hero-content">
+      <h1 class="payment-title">Finalizar Pagamento</h1>
+      <p class="payment-subtitle">Escolha a forma de pagamento mais conveniente</p>
+    </div>
+  </section>
+
+  <!-- Success Message -->
+  <div *ngIf="pagamentoRealizado" class="success-banner">
+    <div class="success-content">
+      <div class="success-icon">✓</div>
+      <h2>Pagamento Realizado com Sucesso!</h2>
+      <p>Seu pedido foi confirmado. Você receberá um email de confirmação em breve.</p>
+      <a routerLink="/produtos" class="back-btn">Voltar para Loja</a>
+    </div>
+  </div>
+
+  <!-- Payment Content -->
+  <section class="payment-section" *ngIf="!pagamentoRealizado">
+    <div class="payment-wrapper">
+      <!-- Order Summary -->
+      <div class="order-summary">
+        <h2>Resumo do Pedido</h2>
+
+        <div *ngFor="let item of resumoItens" class="summary-item">
+          <span>{{ item.produto.nomeExibicao }} (x{{ item.quantidade }})</span>
+          <span>R$ {{ (item.produto.preco * item.quantidade).toFixed(2) }}</span>
+        </div>
+
+        <div class="summary-divider"></div>
+
+        <div class="summary-total">
+          <span>Total:</span>
+          <span>R$ {{ total.toFixed(2) }}</span>
+        </div>
+
+        <div class="summary-info">
+          <h3>Informações de Entrega</h3>
+          <p><strong>Nome:</strong> {{ clienteLogado?.nome || 'Não cadastrado' }}</p>
+          <p>
+            <strong>Endereço:</strong>
+            {{ endereco.bairro }}, {{ endereco.numero }} - {{ endereco.bairro }}, {{ endereco.cidade }}, {{ endereco.estado }}
+          </p>
+          <p><strong>CEP:</strong> {{ endereco.cep }}</p>
+          <p><strong>Frete:</strong> Grátis</p>
+          <p><strong>Prazo:</strong> 5-7 dias úteis</p>
+        </div>
+      </div>
+
+      <!-- Payment Methods -->
+      <div class="payment-methods">
+        <h2>Forma de Pagamento</h2>
+
+        <!-- Cartão de Crédito -->
+        <div class="method-option">
+          <input type="radio" id="cartao" value="cartao" [(ngModel)]="metodoPagamento" name="metodo" />
+          <label for="cartao" class="method-label">
+            <span class="method-icon">💳</span>
+            <span class="method-text">
+              <strong>Cartão de Crédito</strong>
+              <small>Parcelado em até 12x</small>
+            </span>
+          </label>
+        </div>
+
+        <div *ngIf="metodoPagamento === 'cartao'" class="method-form">
+          <div class="form-group">
+            <label for="titular">Titular do Cartão</label>
+            <input id="titular" type="text" placeholder="Nome completo" [(ngModel)]="dadosCartao.titular" />
+          </div>
+
+          <div class="form-group">
+            <label for="numero">Número do Cartão</label>
+            <input id="numero" type="text" placeholder="0000 0000 0000 0000" [(ngModel)]="dadosCartao.numero" maxlength="19" />
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="mes">Mês</label>
+              <input id="mes" type="text" placeholder="MM" [(ngModel)]="dadosCartao.mes" maxlength="2" />
+            </div>
+            <div class="form-group">
+              <label for="ano">Ano</label>
+              <input id="ano" type="text" placeholder="AA" [(ngModel)]="dadosCartao.ano" maxlength="2" />
+            </div>
+            <div class="form-group">
+              <label for="cvv">CVV</label>
+              <input id="cvv" type="text" placeholder="123" [(ngModel)]="dadosCartao.cvv" maxlength="3" />
+            </div>
+          </div>
+        </div>
+
+        <!-- PIX -->
+        <div class="method-option">
+          <input type="radio" id="pix" value="pix" [(ngModel)]="metodoPagamento" name="metodo" />
+          <label for="pix" class="method-label">
+            <span class="method-icon">💰</span>
+            <span class="method-text">
+              <strong>PIX</strong>
+              <small>Pagamento instantâneo</small>
+            </span>
+          </label>
+        </div>
+
+        <div *ngIf="metodoPagamento === 'pix'" class="method-form pix-form">
+          <div class="pix-info">
+            <p>Escaneie o QR Code ou copie a chave PIX abaixo para efetuar o pagamento:</p>
+          </div>
+
+          <div class="pix-qrcode">
+            <div class="qrcode-placeholder">📱 QR Code</div>
+          </div>
+
+          <div class="pix-key">
+            <p>Chave PIX:</p>
+            <div class="key-box">
+              <span class="key-text">00020126580014br.gov.bcb.pix...</span>
+              <button (click)="copiarChavePIX()" class="copy-btn">Copiar</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Boleto -->
+        <div class="method-option">
+          <input type="radio" id="boleto" value="boleto" [(ngModel)]="metodoPagamento" name="metodo" />
+          <label for="boleto" class="method-label">
+            <span class="method-icon">🏦</span>
+            <span class="method-text">
+              <strong>Boleto Bancário</strong>
+              <small>Vencimento em 3 dias</small>
+            </span>
+          </label>
+        </div>
+
+        <div *ngIf="metodoPagamento === 'boleto'" class="method-form">
+          <div class="boleto-info">
+            <p>Um boleto será gerado após a conclusão do pagamento.</p>
+            <div class="form-group checkbox">
+              <input id="boleto-confirm" type="checkbox" [(ngModel)]="dadosBoleto.confirmado" />
+              <label for="boleto-confirm">
+                Concordo em receber o boleto por email e realizarei o pagamento
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="payment-actions">
+      <button (click)="processarPagamento()" [disabled]="processando || !validarPagamento()" class="pay-btn">
+        <span *ngIf="!processando">Confirmar Pagamento</span>
+        <span *ngIf="processando">Processando...</span>
+      </button>
+      <a routerLink="/carrinho" class="cancel-btn">Voltar ao Carrinho</a>
+    </div>
+  </section>
+
+
+<div *ngIf="!pagamentoRealizado" style="text-align: center; margin-top: 10px; font-size: 0.9rem; color: #666;">
+</div>
+</div>

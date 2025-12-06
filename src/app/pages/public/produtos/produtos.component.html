@@ -1,0 +1,217 @@
+<div class="products-container">
+  <!-- Header -->
+  <header class="products-header">
+    <div class="header-content">
+      <h1>Nossos Gabinetes</h1>
+      <p>Escolha o gabinete perfeito para seu build</p>
+    </div>
+  </header>
+
+  <!-- Filtros Mobile Toggle -->
+  <div class="mobile-filter-toggle">
+    <button class="filter-toggle-btn" (click)="toggleFilters()">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M3 6h18M3 12h18M3 18h18"/>
+      </svg>
+      Filtros
+    </button>
+  </div>
+
+  <div class="products-layout">
+    <!-- Sidebar de Filtros -->
+    <aside class="filters-sidebar" [class.active]="filtersActive">
+      <div class="sidebar-header">
+        <h3>Filtros</h3>
+        <button class="close-filters" (click)="toggleFilters()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 6L6 18M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Busca por Nome -->
+      <div class="filter-group">
+        <h4>Buscar</h4>
+        <div class="search-box">
+          <input
+            type="text"
+            [(ngModel)]="filtroNome"
+            (keyup)="aplicarFiltros()"
+            placeholder="Buscar por nome..."
+            class="search-input"
+          />
+        </div>
+      </div>
+
+      <!-- Filtro por Marca -->
+      <div class="filter-group">
+        <h4>Marca</h4>
+        <div class="filter-options">
+          <label *ngFor="let marca of marcasDisponiveis" class="filter-option">
+            <input
+              type="checkbox"
+              [value]="marca"
+              [checked]="filtrosMarcas.includes(marca)"
+              (change)="toggleMarca(marca, $event)"
+            />
+            <span class="checkmark"></span>
+            {{ marca }}
+            <span class="option-count">({{ contarPorMarca(marca) }})</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Filtro por Preço -->
+      <div class="filter-group">
+        <h4>Faixa de Preço</h4>
+        <div class="filter-options">
+          <label *ngFor="let faixa of faixasPreco" class="filter-option">
+            <input
+              type="checkbox"
+              [value]="faixa.id"
+              [checked]="filtroFaixaPreco === faixa.id"
+              (change)="selecionarFaixaPreco(faixa.id)"
+            />
+            <span class="checkmark"></span>
+            {{ faixa.label }}
+            <span class="option-count">({{ contarPorFaixaPreco(faixa.id) }})</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Filtro por Cor -->
+      <div class="filter-group">
+        <h4>Cor</h4>
+        <div class="filter-options">
+          <label *ngFor="let cor of coresDisponiveis" class="filter-option">
+            <input
+              type="checkbox"
+              [value]="cor"
+              [checked]="filtrosCores.includes(cor)"
+              (change)="toggleCor(cor, $event)"
+            />
+            <span class="checkmark"></span>
+            {{ cor || 'Não especificada' }}
+            <span class="option-count">({{ contarPorCor(cor) }})</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Botão Limpar Filtros -->
+      <div class="filter-actions">
+        <button class="clear-filters-btn" (click)="limparFiltros()">
+          Limpar Filtros
+        </button>
+      </div>
+    </aside>
+
+    <!-- Conteúdo Principal -->
+    <main class="products-main">
+      <!-- Info dos Filtros Ativos -->
+      <div class="active-filters" *ngIf="temFiltrosAtivos()">
+        <span class="active-filters-label">Filtros ativos:</span>
+        
+        <span *ngIf="filtroNome" class="active-filter-tag">
+          Nome: "{{ filtroNome }}"
+          <button (click)="removerFiltroNome()">×</button>
+        </span>
+        
+        <span *ngFor="let marca of filtrosMarcas" class="active-filter-tag">
+          {{ marca }}
+          <button (click)="removerMarca(marca)">×</button>
+        </span>
+        
+        <span *ngIf="filtroFaixaPreco" class="active-filter-tag">
+          {{ obterLabelFaixaPreco(filtroFaixaPreco) }}
+          <button (click)="removerFaixaPreco()">×</button>
+        </span>
+        
+        <span *ngFor="let cor of filtrosCores" class="active-filter-tag">
+          {{ cor || 'Sem cor' }}
+          <button (click)="removerCor(cor)">×</button>
+        </span>
+        
+        <button class="clear-all-filters" (click)="limparFiltros()">
+          Limpar Todos
+        </button>
+      </div>
+
+      <!-- Loading e Erro -->
+      <div *ngIf="loading" class="loading-container">
+        <div class="spinner"></div>
+        <p>Carregando gabinetes...</p>
+      </div>
+
+      <div *ngIf="erro && !loading" class="error-container">
+        <p>{{ erro }}</p>
+        <button (click)="carregarTodos()" class="retry-btn">Tentar novamente</button>
+      </div>
+
+      <!-- Grid de Produtos -->
+      <div class="products-grid" *ngIf="!loading && gabinetesFiltrados.length > 0">
+        <div class="product-card" *ngFor="let gabinete of gabinetesFiltrados">
+          <div class="product-image">
+            <img *ngIf="gabinete.imagemUrl; else semImagem"
+                 [src]="gabinete.imagemUrl"
+                 [alt]="gabinete.nomeExibicao"
+                 class="product-img"
+                 (error)="handleImageError($event)"
+                 loading="lazy" />
+            <ng-template #semImagem>
+              <div class="image-placeholder">
+                <span>{{ gabinete.marca }}</span>
+              </div>
+            </ng-template>
+          </div>
+
+          <div class="product-info">
+            <h3 class="product-name">{{ gabinete.nomeExibicao }}</h3>
+            <p class="product-brand">{{ gabinete.marca }}</p>
+
+            <div class="specs-mini">
+              <span *ngIf="gabinete.cor" class="spec-badge">{{ gabinete.cor }}</span>
+              <span *ngIf="gabinete.formato" class="spec-badge">{{ gabinete.formato }}</span>
+            </div>
+
+            <div class="price-section">
+              <span class="price">R$ {{ gabinete.preco | number: "1.2-2" }}</span>
+            </div>
+
+            <button class="add-to-cart-btn" (click)="verDetalhes(gabinete.id)">
+              Ver Detalhes
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mensagem vazia -->
+      <div *ngIf="!loading && gabinetesFiltrados.length === 0 && totalItens === 0" class="empty-state">
+        <p>Nenhum gabinete encontrado</p>
+      </div>
+
+      <!-- Paginação -->
+      <div class="pagination-section" *ngIf="!loading && totalPaginas > 1">
+        <button 
+          class="pagination-btn" 
+          (click)="paginaAnterior()"
+          [disabled]="paginaAtual === 1"
+        >
+          ← Anterior
+        </button>
+
+        <div class="pagination-info">
+          <span>Página {{ paginaAtual }} de {{ totalPaginas }}</span>
+          <span class="info-itens">Mostrando {{ obterInicio() }} - {{ obterFim() }} de {{ totalItens }}</span>
+        </div>
+
+        <button 
+          class="pagination-btn" 
+          (click)="proximaPagina()"
+          [disabled]="paginaAtual === totalPaginas"
+        >
+          Próxima →
+        </button>
+      </div>
+    </main>
+  </div>
+</div>

@@ -1,0 +1,228 @@
+<!-- user-dashboard.component.html -->
+<div class="dashboard-container">
+  <!-- Header -->
+  <div class="dashboard-header">
+    <h1>👤 Meu Perfil</h1>
+    <p>Gerencie suas informações e acompanhe seus pedidos</p>
+  </div>
+
+  <!-- Tabs -->
+  <div class="dashboard-tabs">
+    <button 
+      class="tab-btn" 
+      [class.active]="tabAtiva === 'dados'"
+      (click)="trocarAba('dados')">
+      📝 Meus Dados
+    </button>
+    <button 
+      class="tab-btn" 
+      [class.active]="tabAtiva === 'pedidos'"
+      (click)="trocarAba('pedidos')">
+      🛒 Meus Pedidos
+    </button>
+    <button 
+      class="tab-btn" 
+      [class.active]="tabAtiva === 'enderecos'"
+      (click)="trocarAba('enderecos')">
+      📍 Meus Endereços
+    </button>
+  </div>
+
+  <!-- Alertas -->
+  <div *ngIf="sucesso" class="alert alert-success">
+    {{ sucesso }}
+  </div>
+
+  <div *ngIf="erro" class="alert alert-error">
+    {{ erro }}
+  </div>
+
+  <!-- Aba: Meus Dados -->
+  <div *ngIf="tabAtiva === 'dados'" class="dashboard-card">
+    <div class="card-header">
+      <h2>Informações Pessoais</h2>
+      <div class="card-actions" *ngIf="!modoEdicao && !modoTrocaSenha">
+        <button class="btn btn-primary" (click)="ativarEdicao()">✏️ Editar Perfil</button>
+        <button class="btn btn-outline" (click)="ativarTrocaSenha()">🔒 Alterar Senha</button>
+      </div>
+    </div>
+
+    <!-- Edição de Perfil -->
+    <div *ngIf="modoEdicao" class="edit-form">
+      <div class="form-group">
+        <label>Nome Completo</label>
+        <input type="text" class="form-control" [(ngModel)]="nomeEdit" placeholder="Seu nome">
+      </div>
+
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" class="form-control" [(ngModel)]="emailEdit" placeholder="seu@email.com">
+      </div>
+
+      <div class="form-group">
+        <label>Telefone</label>
+        <input type="text" class="form-control" [(ngModel)]="telefoneEdit" placeholder="(11) 99999-9999">
+      </div>
+
+      <div class="form-group">
+        <label>CPF (apenas consulta)</label>
+        <input type="text" class="form-control" [value]="cliente?.cpf" disabled>
+      </div>
+
+      <div class="form-actions">
+        <button class="btn btn-primary" (click)="salvarPerfil()" [disabled]="carregando">
+          <span *ngIf="!carregando">💾 Salvar Alterações</span>
+          <span *ngIf="carregando">⏳ Salvando...</span>
+        </button>
+        <button class="btn btn-secondary" (click)="cancelarEdicao()">❌ Cancelar</button>
+      </div>
+    </div>
+
+    <!-- Troca de Senha -->
+    <div *ngIf="modoTrocaSenha" class="password-form">
+      <div class="form-group">
+        <label>Senha Atual</label>
+        <input type="password" class="form-control" [(ngModel)]="senhaAtual" placeholder="Digite sua senha atual">
+      </div>
+
+      <div class="form-group">
+        <label>Nova Senha</label>
+        <input type="password" class="form-control" [(ngModel)]="novaSenha" placeholder="Mínimo 6 caracteres">
+      </div>
+
+      <div class="form-group">
+        <label>Confirmar Nova Senha</label>
+        <input type="password" class="form-control" [(ngModel)]="confirmarNovaSenha" placeholder="Repita a nova senha">
+      </div>
+
+      <div class="form-actions">
+        <button class="btn btn-primary" (click)="salvarNovaSenha()" [disabled]="carregando">
+          <span *ngIf="!carregando">🔐 Alterar Senha</span>
+          <span *ngIf="carregando">⏳ Alterando...</span>
+        </button>
+        <button class="btn btn-secondary" (click)="cancelarTrocaSenha()">❌ Cancelar</button>
+      </div>
+    </div>
+
+    <!-- Visualização de Dados -->
+    <div *ngIf="!modoEdicao && !modoTrocaSenha" class="view-data">
+      <div class="info-row">
+        <strong>Nome:</strong> <span>{{ cliente?.nome }}</span>
+      </div>
+      <div class="info-row">
+        <strong>Email:</strong> <span>{{ cliente?.email }}</span>
+      </div>
+      <div class="info-row">
+        <strong>Telefone:</strong> <span>{{ cliente?.telefone }}</span>
+      </div>
+      <div class="info-row">
+        <strong>CPF:</strong> <span>{{ cliente?.cpf }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Aba: Meus Pedidos -->
+  <div *ngIf="tabAtiva === 'pedidos'" class="dashboard-card">
+    <div class="card-header">
+      <h2>Histórico de Pedidos</h2>
+      <div class="card-actions">
+        <button class="btn btn-primary" (click)="carregarPedidos()">🔄 Atualizar</button>
+        <button class="btn btn-outline" (click)="verDadosPedidos()">🔧 Debug</button>
+      </div>
+    </div>
+
+    <!-- Loading -->
+    <div *ngIf="carregandoPedidos" class="loading">
+      <div class="loading-spinner"></div>
+      <p>Carregando seus pedidos...</p>
+    </div>
+
+    <!-- Lista de Pedidos -->
+    <div *ngIf="!carregandoPedidos && pedidos.length > 0" class="pedido-list">
+      <div *ngFor="let pedido of pedidos" class="pedido-card">
+        <div class="pedido-header">
+          <div>
+            <div class="pedido-id">Pedido #{{ pedido.id }}</div>
+            <div class="pedido-data">{{ formatarData(pedido.dataPedido) }}</div>
+          </div>
+          <div class="pedido-status" [class]="getStatusClass(pedido.status)">
+            {{ formatarStatus(pedido.status) }}
+          </div>
+        </div>
+
+        <!-- Itens do Pedido -->
+        <div class="pedido-itens">
+          <div *ngFor="let item of pedido.itens" class="item-pedido">
+            <div class="item-nome">{{ item.nomeGabinete }} (x{{ item.quantidade }})</div>
+            <div class="item-preco">{{ formatarPreco(item.precoTotal) }}</div>
+          </div>
+        </div>
+
+        <!-- Footer do Pedido -->
+        <div class="pedido-footer">
+          <div class="pedido-total">Total: {{ formatarPreco(pedido.valorTotal) }}</div>
+          <div class="pedido-acoes">
+            <button class="btn btn-outline" [routerLink]="['/pedido-detalhes', pedido.id]">
+              📋 Detalhes
+            </button>
+            <button *ngIf="pedido.status === 'PENDENTE'" class="btn btn-primary">
+              ⏸️ Cancelar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sem Pedidos -->
+    <div *ngIf="!carregandoPedidos && pedidos.length === 0" class="no-orders">
+      <div style="text-align: center; padding: 40px;">
+        <div style="font-size: 3rem; margin-bottom: 20px;">🛒</div>
+        <h3>Nenhum pedido encontrado</h3>
+        <p>Você ainda não realizou nenhum pedido.</p>
+        <button class="btn btn-primary" routerLink="/produtos">
+          🛍️ Ir para Loja
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Aba: Meus Endereços -->
+  <div *ngIf="tabAtiva === 'enderecos'" class="dashboard-card">
+    <div class="card-header">
+      <h2>Meus Endereços</h2>
+      <div class="card-actions">
+        <button class="btn btn-primary">📍 Adicionar Endereço</button>
+      </div>
+    </div>
+
+    <div class="endereco-list">
+      <div *ngFor="let endereco of enderecos; let i = index" class="endereco-card">
+        <h4>Endereço {{ i + 1 }} {{ i === 0 ? '(Principal)' : '' }}</h4>
+        <p><strong>Rua/Avenida:</strong> {{ endereco.numero }}</p>
+        <p><strong>Complemento:</strong> {{ endereco.complemento || 'Não informado' }}</p>
+        <p><strong>Bairro:</strong> {{ endereco.bairro }}</p>
+        <p><strong>Cidade/Estado:</strong> {{ endereco.cidade }}/{{ endereco.estado }}</p>
+        <p><strong>CEP:</strong> {{ endereco.cep }}</p>
+      </div>
+
+      <div *ngIf="enderecos.length === 0" class="no-address">
+        <p style="text-align: center; color: #666; padding: 20px;">
+          Nenhum endereço cadastrado. Adicione um endereço para facilitar suas compras.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Painel de Debug (opcional) -->
+  <div *ngIf="pedidos.length === 0 && !carregandoPedidos" class="debug-panel">
+    <h3>🔧 Para Desenvolvimento</h3>
+    <p style="margin-bottom: 15px; color: #666;">
+      <strong>⚠️ Atenção:</strong> Se nenhum pedido aparecer aqui, pode ser que:<br>
+      1. O backend esteja offline<br>
+      2. Não haja pedidos para este cliente<br>
+      3. Haja erro de autenticação
+    </p>
+    <button (click)="verDadosPedidos()" class="debug-btn">Ver Dados dos Pedidos</button>
+    <button (click)="carregarPedidos()" class="debug-btn">Recarregar Pedidos</button>
+  </div>
+</div>

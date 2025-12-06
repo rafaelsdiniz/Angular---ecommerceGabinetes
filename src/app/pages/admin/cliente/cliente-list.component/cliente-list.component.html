@@ -1,0 +1,101 @@
+<div class="page-container">
+  <div class="toolbar">
+    <button mat-fab extended class="btn-add" (click)="novoCliente()">
+      <mat-icon>add</mat-icon>
+      Novo Cliente
+    </button>
+  </div>
+
+  <div class="content-card">
+    <div class="search-bar">
+      <mat-form-field appearance="outline" class="search-input">
+        <mat-icon matPrefix>search</mat-icon>
+        <input matInput (keyup)="applyFilter($event)" placeholder="Buscar clientes..." #input>
+      </mat-form-field>
+    </div>
+
+    <div *ngIf="!carregando; else loading" class="table-wrapper">
+      <table mat-table [dataSource]="dataSource" matSort class="data-table">
+
+        <!-- ID -->
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+          <td mat-cell *matCellDef="let row">
+            <span class="id-chip">{{ row.id }}</span>
+          </td>
+        </ng-container>
+
+        <!-- Nome -->
+        <ng-container matColumnDef="nome">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Nome</th>
+          <td mat-cell *matCellDef="let row">
+            <span class="client-name">{{ row.nome }}</span>
+          </td>
+        </ng-container>
+
+        <!-- Email -->
+        <ng-container matColumnDef="email">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
+          <td mat-cell *matCellDef="let row">{{ row.email }}</td>
+        </ng-container>
+
+        <!-- Telefone -->
+        <ng-container matColumnDef="telefone">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Telefone</th>
+          <td mat-cell *matCellDef="let row">{{ row.telefone }}</td>
+        </ng-container>
+
+        <!-- CPF -->
+        <ng-container matColumnDef="cpf">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>CPF</th>
+          <td mat-cell *matCellDef="let row">{{ row.cpf }}</td>
+        </ng-container>
+
+        <!-- Adicionado coluna de Perfil para identificar admin ou cliente -->
+        <ng-container matColumnDef="perfil">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Perfil</th>
+          <td mat-cell *matCellDef="let row">
+            <span class="perfil-badge" [class.admin]="row.perfil === 'ADMIN'" [class.cliente]="row.perfil === 'CLIENTE'">
+              {{ row.perfil || 'CLIENTE' }}
+            </span>
+          </td>
+        </ng-container>
+
+        <!-- Ações -->
+        <ng-container matColumnDef="acoes">
+          <th mat-header-cell *matHeaderCellDef>Ações</th>
+          <td mat-cell *matCellDef="let row">
+            <div class="actions">
+              <button mat-icon-button (click)="editarCliente(row.id)" matTooltip="Editar" class="edit-btn">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button (click)="excluirCliente(row.id)" matTooltip="Excluir" class="delete-btn">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell" [attr.colspan]="displayedColumns.length">
+            <div class="empty-state">
+              <mat-icon>inbox</mat-icon>
+              <p>Nenhum cliente encontrado</p>
+            </div>
+          </td>
+        </tr>
+      </table>
+
+      <mat-paginator [pageSizeOptions]="[5, 10, 25, 50]" showFirstLastButtons></mat-paginator>
+    </div>
+
+    <ng-template #loading>
+      <div class="loading-state">
+        <mat-spinner diameter="48"></mat-spinner>
+      </div>
+    </ng-template>
+  </div>
+</div>

@@ -1,0 +1,47 @@
+<div class="confirmation-container">
+  <div class="confirmation-hero">
+    <div class="hero-content">
+      <h1>🎉 Pedido Confirmado!</h1>
+      <p>Obrigado pela sua compra!</p>
+    </div>
+  </div>
+
+  <div class="confirmation-section">
+    <div class="confirmation-card">
+      <div class="success-icon">✓</div>
+      <h2>Seu pedido foi realizado com sucesso!</h2>
+      
+      <div *ngIf="erro" class="error">
+        <p>{{ erro }}</p>
+        <button (click)="voltarParaLoja()" class="btn-primary">
+          Voltar para Loja
+        </button>
+      </div>
+
+      <div *ngIf="!erro">
+        <p class="order-number">Número do pedido: <strong>#{{ pedidoId }}</strong></p>
+        
+        <div class="confirmation-info">
+          <p>Você pode acompanhar seu pedido na página do seu perfil.</p>
+          <p>Um email de confirmação será enviado para você em breve.</p>
+        </div>
+
+        <div class="actions">
+          <button (click)="verMeuPerfil()" class="btn-primary">
+            📋 Ver Meu Perfil
+          </button>
+          <button (click)="voltarParaLoja()" class="btn-secondary">
+            🛒 Continuar Comprando
+          </button>
+        </div>
+
+        <div class="help-info">
+          <p>
+            <strong>Precisa de ajuda?</strong><br>
+            Entre em contato: suporte@faculdade.com
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

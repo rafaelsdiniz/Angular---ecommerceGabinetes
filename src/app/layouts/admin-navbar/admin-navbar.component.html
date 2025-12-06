@@ -1,0 +1,41 @@
+<nav class="admin-navbar">
+  <div class="navbar-container">
+    <!-- Logo e Brand -->
+    <div class="navbar-brand">
+      <a routerLink="/admin/home" class="brand-link">
+        <div class="brand-icon-wrapper">
+          <span class="brand-icon">⚙️</span>
+        </div>
+        <span class="brand-text">Admin</span>
+      </a>
+    </div>
+
+    <!-- Toggle Menu (Mobile) -->
+    <button class="menu-toggle" (click)="toggleMenu()" aria-label="Toggle menu">
+      <span class="hamburger" [class.active]="isMenuOpen"></span>
+    </button>
+
+    <!-- Navigation Links -->
+    <ul class="navbar-menu" [class.active]="isMenuOpen">
+      <li *ngFor="let item of menuItems" class="nav-item">
+        <a 
+          [routerLink]="item.route" 
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: false }"
+          class="nav-link"
+          (click)="closeMenu()">
+          <mat-icon class="nav-icon">{{ item.icon }}</mat-icon>
+          <span class="nav-label">{{ item.label }}</span>
+        </a>
+      </li>
+    </ul>
+
+    <!-- User Section -->
+    <div class="navbar-user">
+      <button class="user-btn" title="Perfil do usuário">
+        <span class="user-avatar">👤</span>
+        <span class="user-text">Admin</span>
+      </button>
+    </div>
+  </div>
+</nav>

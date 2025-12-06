@@ -1,0 +1,304 @@
+<!-- src/app/components/gabinete-form/gabinete-form.component.html -->
+<div class="page-container">
+  <div class="form-container">
+
+    <!-- ✅ SEÇÃO DE VERIFICAÇÃO DE PERMISSÃO -->
+    <div *ngIf="!usuarioLogado || usuarioLogado?.perfil !== 'ADMIN'" class="permission-alert">
+      <div class="alert-content">
+        <mat-icon>admin_panel_settings</mat-icon>
+        <div>
+          <h4>Acesso Restrito</h4>
+          <p>Apenas administradores podem gerenciar gabinetes.</p>
+           <button mat-button color="primary" (click)="router.navigate(['/login'])">
+            Fazer Login como Admin
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Header -->
+    <div class="form-header">
+      <button mat-icon-button class="back-btn" (click)="cancelar()">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <h2 class="form-title">{{ isEdicao ? "Editar Gabinete" : "Novo Gabinete" }}</h2>
+      
+      <!-- ✅ BOTÕES DE DEBUG (APENAS PARA ADMIN) -->
+      <div class="header-actions" *ngIf="usuarioLogado?.perfil === 'ADMIN'">
+        <button mat-icon-button class="test-btn" 
+                (click)="testarConexaoMinio()" matTooltip="Testar MinIO">
+          <mat-icon>storage</mat-icon>
+        </button>
+        <button mat-icon-button class="auth-btn" 
+                (click)="verificarAutenticacao()" matTooltip="Verificar Autenticação">
+          <mat-icon>security</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <!-- Loading State -->
+    <div *ngIf="carregando" class="loading-state">
+      <mat-spinner diameter="48"></mat-spinner>
+      <p>Carregando gabinete...</p>
+    </div>
+
+    <!-- ✅ DEBUG ACTIONS (APENAS PARA ADMIN) -->
+    <div class="debug-actions" *ngIf="usuarioLogado?.perfil === 'ADMIN' && !carregando">
+      <div class="debug-info">
+        <span class="debug-badge" [class.authenticated]="usuarioLogado">
+          {{ usuarioLogado ? '✅ Autenticado' : '❌ Não Autenticado' }}
+        </span>
+        <span class="debug-badge" [class.admin]="usuarioLogado?.perfil === 'ADMIN'">
+          {{ usuarioLogado?.perfil === 'ADMIN' ? '👑 ADMIN' : '👤 USUÁRIO' }}
+        </span>
+      </div>
+    </div>
+
+    <!-- Form -->
+    <div *ngIf="!carregando && usuarioLogado?.perfil === 'ADMIN'" class="form-card">
+      <form [formGroup]="gabineteForm" (ngSubmit)="salvar()" novalidate>
+
+        <!-- ===== IMAGEM (UPLOAD MINIO) ===== -->
+        <div class="form-section">
+          <h3 class="section-title">Imagem do Gabinete</h3>
+
+          <div class="upload-container">
+            <input
+              type="file"
+              accept="image/jpeg, image/jpg, image/png, image/gif, image/webp"
+              (change)="onFileSelected($event)"
+              #fileInput
+              style="display: none;"
+              id="imageUpload" 
+              [disabled]="uploadando || !podeFazerUpload()" />
+            
+            <button
+              type="button"
+              mat-stroked-button
+              class="upload-btn"
+              (click)="fileInput.click()"
+              [disabled]="!podeFazerUpload()">
+              <mat-icon>cloud_upload</mat-icon>
+              {{ uploadando ? 'Enviando...' : (imagemPreviewUrl ? 'Alterar Imagem' : 'Selecionar Imagem') }}
+            </button>
+            
+            <div class="upload-info">
+              <span class="upload-hint">PNG, JPG, JPEG, GIF, WebP (máx. 5MB)</span>
+              <span class="upload-status" *ngIf="uploadando">
+                <mat-spinner diameter="16"></mat-spinner>
+                Otimizando e enviando...
+              </span>
+            </div>
+          </div>
+
+          <!-- ✅ ESTADO DE UPLOAD -->
+          <div *ngIf="uploadando" class="upload-progress">
+            <div class="progress-content">
+              <mat-spinner diameter="32"></mat-spinner>
+              <div>
+                <p>Processando imagem...</p>
+                <span class="progress-text">Otimizando e enviando para MinIO</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- ✅ PREVIEW DA IMAGEM -->
+          <div class="image-preview" *ngIf="imagemPreviewUrl && !uploadando">
+            <img [src]="imagemPreviewUrl" alt="Preview da imagem do gabinete" />
+            <button type="button" class="remove-btn" (click)="removerImagem()" 
+                    matTooltip="Remover imagem" [disabled]="!podeFazerUpload()">
+              <mat-icon>delete</mat-icon>
+            </button>
+            
+            <!-- ✅ BADGE DE ORIGEM DA IMAGEM -->
+            <div class="image-source-badge">
+              <mat-icon>cloud_done</mat-icon>
+              <span>MinIO Storage</span>
+            </div>
+
+            <!-- ✅ INFO DA IMAGEM ATUAL -->
+            <div class="image-info" *ngIf="imagemKeyAtual">
+              <mat-icon>info</mat-icon>
+              <span>Chave: {{ imagemKeyAtual | slice:0:8 }}...</span>
+            </div>
+          </div>
+
+          <!-- ✅ PLACEHOLDER QUANDO NÃO TEM IMAGEM -->
+          <div *ngIf="!imagemPreviewUrl && !uploadando" class="no-image-placeholder">
+            <mat-icon>image</mat-icon>
+            <p>Nenhuma imagem selecionada</p>
+            <span>Faça upload de uma imagem para o gabinete</span>
+          </div>
+        </div>
+
+        <!-- ===== INFORMAÇÕES BÁSICAS ===== -->
+        <div class="form-section">
+          <h3 class="section-title">Informações Básicas</h3>
+          
+          <!-- Nome de Exibição -->
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Nome de Exibição *</mat-label>
+            <input matInput 
+                   formControlName="nomeExibicao"
+                   type="text" 
+                   placeholder="Ex: Gabinete Gamer RGB" />
+            <mat-icon matPrefix>computer</mat-icon>
+            <mat-error *ngIf="isFieldInvalid('nomeExibicao')">
+              {{ getFieldError('nomeExibicao') }}
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Marca -->
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Marca *</mat-label>
+            <input matInput 
+                   formControlName="marca"
+                   type="text" 
+                   placeholder="Ex: Corsair, NZXT" />
+            <mat-icon matPrefix>business</mat-icon>
+            <mat-error *ngIf="isFieldInvalid('marca')">
+              {{ getFieldError('marca') }}
+            </mat-error>
+          </mat-form-field>
+
+          <div class="form-row">
+            <!-- Preço -->
+            <mat-form-field appearance="outline" class="form-field">
+              <mat-label>Preço *</mat-label>
+              <input matInput 
+                     formControlName="preco"
+                     type="number" 
+                     min="0" 
+                     step="0.01"
+                     placeholder="0.00" />
+              <mat-icon matPrefix>attach_money</mat-icon>
+              <mat-error *ngIf="isFieldInvalid('preco')">
+                {{ getFieldError('preco') }}
+              </mat-error>
+            </mat-form-field>
+
+            <!-- Cor -->
+            <mat-form-field appearance="outline" class="form-field">
+              <mat-label>Cor *</mat-label>
+              <input matInput 
+                     formControlName="cor"
+                     type="text" 
+                     placeholder="Ex: Preto, Branco, RGB" />
+              <mat-icon matPrefix>palette</mat-icon>
+              <mat-error *ngIf="isFieldInvalid('cor')">
+                {{ getFieldError('cor') }}
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <!-- Formato -->
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Formato</mat-label>
+            <input matInput 
+                   formControlName="formato"
+                   type="text" 
+                   placeholder="Ex: ATX, Micro-ATX, Mini-ITX" />
+            <mat-icon matPrefix>view_in_ar</mat-icon>
+          </mat-form-field>
+        </div>
+
+        <!-- ===== DIMENSÕES E PESO ===== -->
+        <div class="form-section">
+          <h3 class="section-title">Dimensões e Peso</h3>
+          
+          <div class="form-row">
+            <!-- Altura -->
+            <mat-form-field appearance="outline" class="form-field">
+              <mat-label>Altura (mm)</mat-label>
+              <input matInput 
+                     formControlName="altura"
+                     type="number" 
+                     min="0"
+                     placeholder="Ex: 480" />
+              <mat-icon matPrefix>height</mat-icon>
+            </mat-form-field>
+
+            <!-- Largura -->
+            <mat-form-field appearance="outline" class="form-field">
+              <mat-label>Largura (mm)</mat-label>
+              <input matInput 
+                     formControlName="largura"
+                     type="number" 
+                     min="0"
+                     placeholder="Ex: 210" />
+              <mat-icon matPrefix>straighten</mat-icon>
+            </mat-form-field>
+          </div>
+
+          <!-- Peso -->
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Peso (kg)</mat-label>
+            <input matInput 
+                   formControlName="peso"
+                   type="number" 
+                   min="0" 
+                   step="0.1"
+                   placeholder="Ex: 5.2" />
+            <mat-icon matPrefix>scale</mat-icon>
+          </mat-form-field>
+        </div>
+
+        <!-- ===== OUTROS CAMPOS ===== -->
+        <div class="form-section">
+          <h3 class="section-title">Outras Informações</h3>
+
+          <!-- Descrição -->
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Descrição</mat-label>
+            <textarea matInput 
+                      formControlName="descricao"
+                      rows="4"
+                      placeholder="Descreva as características do gabinete..."></textarea>
+            <mat-icon matPrefix>notes</mat-icon>
+          </mat-form-field>
+        </div>
+
+        <!-- ===== RESUMO DO FORM ===== -->
+        <div class="form-section" *ngIf="imagemKeyAtual">
+          <h3 class="section-title">Resumo</h3>
+          <div class="summary-card">
+            <div class="summary-item">
+              <mat-icon>image</mat-icon>
+              <span>Imagem: {{ imagemKeyAtual ? 'Configurada' : 'Não definida' }}</span>
+            </div>
+            <div class="summary-item">
+              <mat-icon>code</mat-icon>
+              <span>Chave: {{ imagemKeyAtual | slice:0:20 }}...</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== ERRO ===== -->
+        <div *ngIf="erro" class="error-alert">
+          <mat-icon>error_outline</mat-icon>
+          <div class="error-content">
+            <span class="error-title">Erro</span>
+            <span class="error-message">{{ erro }}</span>
+          </div>
+          <button mat-icon-button class="close-error" (click)="erro = undefined">
+            <mat-icon>close</mat-icon>
+          </button>
+        </div>
+
+        <!-- ===== AÇÕES ===== -->
+        <div class="form-actions">
+          <button mat-stroked-button type="button" class="cancel-btn" 
+                  (click)="cancelar()" [disabled]="salvando || uploadando">
+            Cancelar
+          </button>
+          <button mat-flat-button type="submit" class="save-btn" 
+                  [disabled]="!podeSalvar()">
+            <mat-spinner *ngIf="salvando" diameter="20" class="btn-spinner"></mat-spinner>
+            <span *ngIf="!salvando">{{ isEdicao ? "Salvar Alterações" : "Criar Gabinete" }}</span>
+            <span *ngIf="salvando">Salvando...</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

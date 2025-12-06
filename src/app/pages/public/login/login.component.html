@@ -1,0 +1,56 @@
+<div class="login-container">
+  <div class="login-banner">
+    <h1>Bem-vindo</h1>
+    <p>Acesse sua conta para continuar</p>
+  </div>
+
+  <div class="login-form-wrapper">
+    <!-- Updated form to use reactive forms with validation -->
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+      <div *ngIf="erro" class="erro-message">{{ erro }}</div>
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input
+          id="email"
+          type="email"
+          formControlName="email"
+          placeholder="seu@email.com"
+          [class.input-error]="isFieldInvalid('email')"
+        />
+        <!-- Added validation error message -->
+        <div *ngIf="isFieldInvalid('email')" class="error-text">
+          {{ getFieldError('email') }}
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="senha">Senha</label>
+        <div class="password-input-wrapper">
+          <input
+            id="senha"
+            [type]="mostrarSenha ? 'text' : 'password'"
+            formControlName="senha"
+            placeholder="Sua senha"
+            [class.input-error]="isFieldInvalid('senha')"
+          />
+          <button type="button" (click)="toggleMostrarSenha()" class="toggle-btn">
+            {{ mostrarSenha ? "Ocultar" : "Mostrar" }}
+          </button>
+        </div>
+        <!-- Added validation error message -->
+        <div *ngIf="isFieldInvalid('senha')" class="error-text">
+          {{ getFieldError('senha') }}
+        </div>
+      </div>
+
+      <button type="submit" [disabled]="carregando" class="btn-submit">
+        {{ carregando ? "Entrando..." : "Entrar" }}
+      </button>
+
+      <p class="link-criar-conta">
+        Não tem conta? <a routerLink="/registrar">Crie uma aqui</a>
+      </p>
+    </form>
+  </div>
+</div>
