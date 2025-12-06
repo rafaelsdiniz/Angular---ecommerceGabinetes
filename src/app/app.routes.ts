@@ -36,6 +36,9 @@ import { MarcaFormComponent } from "./pages/admin/marca/marca-form/marca-form"
 import { AdminGuard } from "./guards/admin.guard"
 import { AdminDashboardComponent } from "./pages/admin/admin-dashboard/admin-dashboard"
 import { PedidoConfirmadoComponent } from "./pages/public/pedido-confirmado.component/pedido-confirmado.component"
+import { InformacaoAdicionalListComponent } from "./pages/admin/informacap-adicional/informacao-adicional-list.component/informacao-adicional-list.component"
+import { InformacaoAdicionalFormComponent } from "./pages/admin/informacap-adicional/informacao-adicional-form.component/informacao-adicional-form.component"
+
 
 export const routes: Routes = [
   {
@@ -102,7 +105,11 @@ export const routes: Routes = [
       { path: "pedidos/form", component: PedidoForm },
       { path: "pedidos/form/:id", component: PedidoForm },
 
-      {path: "dashboard", component: AdminDashboardComponent}
+      { path: "informacoes-adicionais", component: InformacaoAdicionalListComponent },
+      { path: "informacoes-adicionais/form", component: InformacaoAdicionalFormComponent},
+      { path: "informacoes-adicionais/form/:id", component: InformacaoAdicionalFormComponent },
+
+      { path: "dashboard", component: AdminDashboardComponent }
     ],
   },
 

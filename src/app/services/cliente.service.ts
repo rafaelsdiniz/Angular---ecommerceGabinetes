@@ -21,6 +21,12 @@ export class ClienteService {
     };
   }
 
+  // Endpoints públicos → sem token
+  criar(cliente: Cliente): Observable<Cliente> {
+    return this.http.post<Cliente>(this.apiUrl, cliente);
+  }
+
+  // Endpoints autenticados → com token
   listarTodos(): Observable<Cliente[]> {
     return this.http.get<Cliente[]>(this.apiUrl, this.getHttpOptions());
   }
@@ -33,20 +39,13 @@ export class ClienteService {
     return this.http.get<Cliente>(`${this.apiUrl}/cpf?cpf=${cpf}`, this.getHttpOptions());
   }
 
-  criar(cliente: Cliente): Observable<Cliente> {
-    return this.http.post<Cliente>(this.apiUrl, cliente, this.getHttpOptions());
-  }
-
   atualizar(id: number, cliente: Cliente): Observable<Cliente> {
     return this.http.put<Cliente>(`${this.apiUrl}/${id}`, cliente, this.getHttpOptions());
   }
 
   alterarSenha(id: number, senhaAtual: string, novaSenha: string): Observable<any> {
-    const dados = {
-      senhaAtual: senhaAtual,
-      senha: novaSenha
-    };
-    return this.http.put(`${this.apiUrl}/${id}/senha`, dados, this.getHttpOptions());
+    const dados = { senhaAtual, novaSenha };
+    return this.http.put(`${this.apiUrl}/${id}/minha-senha`, dados, this.getHttpOptions());
   }
 
   deletar(id: number): Observable<void> {

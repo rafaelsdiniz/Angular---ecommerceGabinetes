@@ -1,8 +1,8 @@
 import { Component } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators, FormArray } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Router, RouterModule } from "@angular/router";
-import { AuthService, Cliente, Endereco, DadosRegistro } from "../../../services/auth.service";
+import { AuthService, DadosRegistro } from "../../../services/auth.service";
 
 @Component({
   selector: "app-register",
@@ -31,19 +31,8 @@ export class RegisterComponent {
       senha: ['', [Validators.required, Validators.minLength(6)]],
       confirmarSenha: ['', [Validators.required]],
       aceitouTermos: [false, [Validators.requiredTrue]],
-      enderecos: this.fb.array([this.criarEnderecoFormGroup()])
+      // REMOVI o FormArray de endereços
     }, { validators: this.senhasIguaisValidator });
-  }
-
-  criarEnderecoFormGroup(): FormGroup {
-    return this.fb.group({
-      estado: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(2)]],
-      cidade: ['', [Validators.required]],
-      bairro: ['', [Validators.required]],
-      cep: ['', [Validators.required, Validators.pattern(/^\d{8}$/)]],
-      numero: ['', [Validators.required]],
-      complemento: ['']
-    });
   }
 
   senhasIguaisValidator(group: FormGroup) {
@@ -52,16 +41,11 @@ export class RegisterComponent {
     return senha === confirmarSenha ? null : { senhasNaoConferem: true };
   }
 
-  get enderecosArray(): FormArray {
-    return this.registerForm.get('enderecos') as FormArray;
-  }
-
   onSubmit(): void {
     this.erro = "";
 
     if (this.registerForm.invalid) {
       this.registerForm.markAllAsTouched();
-      this.markFormGroupTouched(this.registerForm);
       this.erro = "Por favor, preencha todos os campos corretamente";
       return;
     }
@@ -71,17 +55,23 @@ export class RegisterComponent {
       return;
     }
 
+    if (!this.registerForm.get('aceitouTermos')?.value) {
+      this.erro = "Você precisa aceitar os termos de uso";
+      return;
+    }
+
     this.carregando = true;
 
     const formValue = this.registerForm.value;
 
+    // ENVIA APENAS OS DADOS QUE O DTO ESPERA (sem endereços)
     const dadosRegistro: DadosRegistro = {
       nome: formValue.nome,
       email: formValue.email,
       telefone: formValue.telefone.replace(/\D/g, ""),
       cpf: formValue.cpf.replace(/\D/g, ""),
       senha: formValue.senha,
-      enderecos: formValue.enderecos,
+      // Não precisa enviar perfil, o backend define como CLIENTE automaticamente
     };
 
     this.authService.registrar(dadosRegistro).subscribe({
@@ -99,27 +89,6 @@ export class RegisterComponent {
         this.carregando = false;
       },
     });
-  }
-
-  private markFormGroupTouched(formGroup: FormGroup | FormArray) {
-    Object.keys(formGroup.controls).forEach(key => {
-      const control = formGroup.get(key);
-      control?.markAsTouched();
-
-      if (control instanceof FormGroup || control instanceof FormArray) {
-        this.markFormGroupTouched(control);
-      }
-    });
-  }
-
-  adicionarEndereco(): void {
-    this.enderecosArray.push(this.criarEnderecoFormGroup());
-  }
-
-  removerEndereco(index: number): void {
-    if (this.enderecosArray.length > 1) {
-      this.enderecosArray.removeAt(index);
-    }
   }
 
   toggleMostrarSenha(): void {
@@ -143,11 +112,6 @@ export class RegisterComponent {
     return !!(field && field.invalid && (field.dirty || field.touched));
   }
 
-  isEnderecoFieldInvalid(index: number, fieldName: string): boolean {
-    const field = this.enderecosArray.at(index).get(fieldName);
-    return !!(field && field.invalid && (field.dirty || field.touched));
-  }
-
   getFieldError(fieldName: string): string {
     const field = this.registerForm.get(fieldName);
     if (!field || !field.errors) return '';
@@ -160,18 +124,6 @@ export class RegisterComponent {
       if (fieldName === 'telefone') return 'Telefone deve ter 10 ou 11 dígitos';
       if (fieldName === 'cpf') return 'CPF deve ter 11 dígitos';
     }
-
-    return '';
-  }
-
-  getEnderecoFieldError(index: number, fieldName: string): string {
-    const field = this.enderecosArray.at(index).get(fieldName);
-    if (!field || !field.errors) return '';
-
-    if (field.errors['required']) return 'Obrigatório';
-    if (field.errors['minlength']) return `Mín. ${field.errors['minlength'].requiredLength}`;
-    if (field.errors['maxlength']) return `Máx. ${field.errors['maxlength'].requiredLength}`;
-    if (field.errors['pattern'] && fieldName === 'cep') return 'CEP deve ter 8 dígitos';
 
     return '';
   }

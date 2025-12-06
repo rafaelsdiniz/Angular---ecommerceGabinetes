@@ -33,5 +33,6 @@ export class AdminNavbarComponent {
     { label: "Modelos", route: "/admin/modelos", icon: "widgets" },
     { label: "Pedidos", route: "/admin/pedidos", icon: "shopping_cart" },
     { label: "Pagamentos", route: "/admin/pagamento", icon: "payment" },
+    { label: "Inf. Adicionais", route: "/admin/informacoes-adicionais", icon: "info" },
   ]
 }

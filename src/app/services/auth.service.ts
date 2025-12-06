@@ -28,7 +28,7 @@ export interface DadosRegistro {
   telefone: string;
   cpf: string;
   senha: string;
-  enderecos: Endereco[];
+  perfil?: string; 
 }
 
 export interface AtualizarPerfilDto {

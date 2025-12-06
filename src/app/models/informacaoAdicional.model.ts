@@ -1,8 +1,8 @@
-import { Gabinete } from "./gabinete.model";
 
-export interface InformacaoAdicional{
-    id?: number;
-    titulo: string;
-    descricao: string;
-    gabinete: Gabinete;
+export interface InformacaoAdicional {
+  id?: number;
+  titulo: string;
+  descricao: string;
+  gabineteId: number;
+  nomeGabinete?: string; 
 }

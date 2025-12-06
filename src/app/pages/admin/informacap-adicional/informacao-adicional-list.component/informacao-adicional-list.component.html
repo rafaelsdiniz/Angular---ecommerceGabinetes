@@ -1,0 +1,132 @@
+<div class="page-container">
+  <div class="toolbar">
+    <button mat-fab extended class="btn-add" (click)="novaInformacao()">
+      <mat-icon>add</mat-icon>
+      Nova Informação
+    </button>
+  </div>
+
+  <div class="content-card">
+    <!-- Search bar -->
+    <div class="search-bar">
+      <div class="filter-controls">
+
+        <mat-form-field appearance="outline" class="search-input">
+          <mat-icon matPrefix>search</mat-icon>
+          <input matInput (keyup)="aplicarFiltro($event)" placeholder="Buscar informações..." />
+        </mat-form-field>
+
+        <div class="gabinete-filter" *ngIf="!filtroGabineteId">
+          <mat-form-field appearance="outline">
+            <mat-label>Filtrar por Gabinete</mat-label>
+            <input matInput type="number" placeholder="ID do Gabinete"
+                   [(ngModel)]="filtroGabineteId" (change)="carregarInformacoes()">
+            <mat-icon matSuffix>filter_list</mat-icon>
+          </mat-form-field>
+        </div>
+
+        <button *ngIf="filtroGabineteId"
+                mat-stroked-button
+                (click)="limparFiltroGabinete()"
+                class="clear-filter-btn">
+          <mat-icon>clear</mat-icon>
+          Limpar Filtro
+        </button>
+
+      </div>
+    </div>
+
+    <!-- Loading state -->
+    <div *ngIf="carregando" class="loading-state">
+      <mat-spinner diameter="48"></mat-spinner>
+    </div>
+
+    <!-- Table -->
+    <div *ngIf="!carregando" class="table-wrapper">
+
+      <table mat-table [dataSource]="dataSource" matSort class="data-table">
+
+        <!-- ID Column -->
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+          <td mat-cell *matCellDef="let informacao">
+            <span class="id-chip">{{informacao.id}}</span>
+          </td>
+        </ng-container>
+
+        <!-- Título Column -->
+        <ng-container matColumnDef="titulo">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Título </th>
+          <td mat-cell *matCellDef="let informacao">
+            <span class="info-title">{{informacao.titulo}}</span>
+          </td>
+        </ng-container>
+
+        <!-- Descrição Column -->
+        <ng-container matColumnDef="descricao">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Descrição </th>
+          <td mat-cell *matCellDef="let informacao">
+            <span class="info-description">
+              {{informacao.descricao | slice:0:100}}{{informacao.descricao.length > 100 ? '...' : ''}}
+            </span>
+          </td>
+        </ng-container>
+
+        <!-- Gabinete Column -->
+        <ng-container matColumnDef="gabinete">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Gabinete </th>
+          <td mat-cell *matCellDef="let informacao">
+            <div class="gabinete-info">
+              <span class="gabinete-id">ID: {{informacao.gabineteId}}</span>
+              <span *ngIf="informacao.nomeGabinete" class="gabinete-nome">
+                {{informacao.nomeGabinete}}
+              </span>
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Ações Column -->
+        <ng-container matColumnDef="acoes">
+          <th mat-header-cell *matHeaderCellDef> Ações </th>
+          <td mat-cell *matCellDef="let informacao">
+            <div class="actions">
+              <button mat-icon-button
+                      (click)="editarInformacao(informacao.id!)"
+                      matTooltip="Editar"
+                      class="action-btn edit-btn">
+                <mat-icon>edit</mat-icon>
+              </button>
+
+              <button mat-icon-button
+                      (click)="excluirInformacao(informacao.id!)"
+                      matTooltip="Excluir"
+                      class="action-btn delete-btn">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Rows -->
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="data-row"></tr>
+
+        <!-- No data row -->
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell" colspan="6">
+            <div class="empty-state">
+              <mat-icon>inbox</mat-icon>
+              <p *ngIf="filtroGabineteId">Nenhuma informação encontrada para este gabinete</p>
+              <p *ngIf="!filtroGabineteId">Nenhuma informação adicional encontrada</p>
+            </div>
+          </td>
+        </tr>
+
+      </table>
+
+      <mat-paginator [pageSizeOptions]="[5, 10, 25, 50]" showFirstLastButtons>
+      </mat-paginator>
+
+    </div>
+  </div>
+</div>

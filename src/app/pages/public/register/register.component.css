@@ -130,68 +130,6 @@
   grid-column: 1 / -1;
 }
 
-.endereco-section {
-  margin: 30px 0;
-  padding: 20px;
-  background: #f9f9f9;
-  border-radius: 8px;
-  border-left: 4px solid #ff6b35;
-}
-
-.endereco-section h3 {
-  margin: 0 0 20px 0;
-  color: #333;
-  font-size: 1.1rem;
-}
-
-.endereco-group {
-  margin-bottom: 25px;
-  padding: 15px;
-  background: white;
-  border-radius: 6px;
-  border: 1px solid #e0e0e0;
-}
-
-.endereco-title {
-  font-weight: 600;
-  color: #ff6b35;
-  margin-bottom: 15px;
-  font-size: 0.95rem;
-}
-
-.btn-remover-endereco {
-  margin-top: 12px;
-  padding: 8px 12px;
-  background: #e74c3c;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 0.85rem;
-  transition: background 0.2s;
-}
-
-.btn-remover-endereco:hover {
-  background: #c0392b;
-}
-
-.btn-adicionar-endereco {
-  margin-top: 12px;
-  padding: 12px;
-  background: #ff6b35;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: 600;
-  transition: background 0.2s;
-  width: 100%;
-}
-
-.btn-adicionar-endereco:hover {
-  background: #e55a28;
-}
-
 .form-group.checkbox {
   flex-direction: row;
   align-items: center;

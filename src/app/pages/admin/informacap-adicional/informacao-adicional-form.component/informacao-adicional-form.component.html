@@ -1,0 +1,101 @@
+<!-- src/app/components/informacao-adicional-form/informacao-adicional-form.component.html -->
+<div class="page-container">
+  <div class="form-container">
+    <div class="form-header">
+      <button mat-icon-button class="back-btn" (click)="cancelar()">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <h2 class="form-title">{{ isEdicao ? 'Editar Informação' : 'Nova Informação' }}</h2>
+    </div>
+
+    <!-- Loading State -->
+    <div *ngIf="carregando" class="loading-state">
+      <mat-spinner diameter="48"></mat-spinner>
+    </div>
+
+    <!-- Form -->
+    <div *ngIf="!carregando" class="form-card">
+      <form [formGroup]="informacaoForm" (ngSubmit)="salvar()">
+        
+        <!-- Título -->
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Título</mat-label>
+          <input 
+            matInput 
+            type="text" 
+            formControlName="titulo"
+            placeholder="Ex: Instruções de Uso">
+          <mat-icon matPrefix>title</mat-icon>
+          <mat-error *ngIf="titulo?.hasError('required')">
+            Campo obrigatório
+          </mat-error>
+          <mat-error *ngIf="titulo?.hasError('maxlength')">
+            Máximo de 100 caracteres
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Descrição -->
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Descrição</mat-label>
+          <textarea 
+            matInput 
+            formControlName="descricao"
+            rows="4"
+            placeholder="Descreva a informação adicional..."></textarea>
+          <mat-icon matPrefix>description</mat-icon>
+          <mat-error *ngIf="descricao?.hasError('required')">
+            Campo obrigatório
+          </mat-error>
+          <mat-error *ngIf="descricao?.hasError('maxlength')">
+            Máximo de 500 caracteres
+          </mat-error>
+        </mat-form-field>
+
+        <!-- ID do Gabinete -->
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>ID do Gabinete</mat-label>
+          <input 
+            matInput 
+            type="number" 
+            formControlName="gabineteId"
+            placeholder="Ex: 1">
+          <mat-icon matPrefix>meeting_room</mat-icon>
+          <mat-error *ngIf="gabineteId?.hasError('required')">
+            Campo obrigatório
+          </mat-error>
+          <mat-error *ngIf="gabineteId?.hasError('min')">
+            ID deve ser maior que zero
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Error message -->
+        <div *ngIf="erro" class="error-alert">
+          <mat-icon>error_outline</mat-icon>
+          <span>{{ erro }}</span>
+        </div>
+
+        <!-- Actions -->
+        <div class="form-actions">
+          <button 
+            mat-stroked-button 
+            type="button" 
+            class="cancel-btn" 
+            (click)="cancelar()"
+            [disabled]="salvando">
+            Cancelar
+          </button>
+          <button 
+            mat-flat-button 
+            type="submit" 
+            class="save-btn"
+            [disabled]="salvando || informacaoForm.invalid">
+            <mat-spinner *ngIf="salvando" diameter="20" class="btn-spinner"></mat-spinner>
+            <span *ngIf="!salvando">{{ isEdicao ? 'Salvar' : 'Criar' }}</span>
+            <span *ngIf="salvando">Salvando...</span>
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>
